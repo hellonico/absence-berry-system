@@ -1,2 +1,3 @@
 FROM my-clojure-app
+COPY . /usr/src/app
 CMD ["lein", "run", "-m", "absence.receive"]

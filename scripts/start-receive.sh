@@ -1,0 +1,1 @@
+docker run -d -v `pwd`/db:/usr/src/app/db --restart=always --name absence-receive absence-receive

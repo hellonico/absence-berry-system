@@ -26,9 +26,9 @@
      :date (u/today)
      :times (second drt)
     }
-    {:reason (second drt)  
+    {:reason (nth drt 2)
      :date (u/short-date-to-date (first drt))
-     :times (nth drt 2)
+     :times (second drt)
     }
     )))
 
@@ -40,7 +40,7 @@
          ]
   {
    :name (-> msg :from first :name)
-   :timesent (u/fmt-time (:date-sent msg))
+   :timesent (u/fmt-utc-time (:date-sent msg))
    :email (-> msg :from first :address)
    :reason (:reason drt)
    :times  (:times drt)
@@ -88,13 +88,13 @@
     (stop-manager)
 
   (def my-inbox-messages
-    (take 5 (all-messages gmail-test-store "inbox")))
+    (take 1 (all-messages gmail-store "inbox")))
 
   (def first-message
     (first my-inbox-messages))
 
   (p/insert-one (parse-msg (read-message first-message)))
 
-  (clojure.pprint/pprint
-    (parse-msg (read-message first-message)))
+  (clojure.pprint/pprint (read-message  first-message))
+    ; (parse-msg (read-message first-message)))
   )
