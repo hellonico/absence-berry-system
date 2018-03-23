@@ -1,0 +1,2 @@
+FROM my-clojure-app
+CMD ["lein", "run", "-m", "absence.receive"]

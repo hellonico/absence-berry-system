@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <title>Absence Berry System</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/skeleton.css">
+
+  <style>
+  .help {
+    font-style: italic;
+  }
+  </style>
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="images/favicon.png">
+
+</head>
+<body>
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div class="container">
+    <div class="row">
+      <div class="two-half column" style="margin-top: 3%">
+        <a href="/"><img src="/images/berry.jpg" width="64" height="64"/></a>
+        <h4>Absence Berry System ABS {{today}}</h4>
+        <table>
+        <tbody>
+          <tr>
+            <td>
+        <a href="/abs">Today</a><br/>
+            </td>
+            <td>
+        <a href="/abs/{{yesterday}}">Yesterday {{yesterday}}</a><br/>
+      </td>
+      <td>
+        <a href="/abs/{{tomorrow}}">Tomorrow {{tomorrow}}</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+      </div>
+    </div>
+    <div class="row">
+      <div class="two-half column" style="margin-top: 3%">
+      <p class="help">
+        To try the system, send an email to <a href="mailto:otcabsence@gmail.com?subject=~10am,train delay">{{email}}</a>
+        <br/>
+        with the subject in one of the following form: <br/>
+        <b>TIMES, REASON</b><br/>
+        or<br/>
+        <b>MM-DD, TIMES, REASON</b><br/>
+        where TIMES should be the time <u>not</u> attending during normal hours. Examples:<br/>
+        <ul class="help">
+          <li>~10am, train delay</li>
+          <li>10am~11am,meeting</li>
+          <li>03-20,5pm~,帰社</li>
+        </ul>
+        <br/>
+        
+      </p>
+    </div>
+    </div>
+  </div>
+
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>
