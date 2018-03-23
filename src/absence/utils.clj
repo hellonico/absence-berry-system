@@ -23,6 +23,7 @@
 (defn fmt-utc-time [java-date]
     (let [ cal (java.util.Calendar/getInstance)]
         (.setTime cal java-date)
+        (.add cal java.util.Calendar/HOUR_OF_DAY 9)
         (fmt-time (.getTime cal))))
 
 (defn yesterday[]
