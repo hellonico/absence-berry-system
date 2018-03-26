@@ -41,7 +41,7 @@
          ]
   {
    :name (-> msg :from first :name)
-   :timesent (u/fmt-time (:date-sent msg))
+   :timesent (u/fmt-date-time (:date-sent msg))
    :email (-> msg :from first :address)
    :reason (:reason drt)
    :times  (:times drt)
@@ -49,7 +49,7 @@
   }))
 
 (defn dump-raw-msg [msg]
-  (println "< " (System/currentTimeMillis) "\t" (-> msg :from first :address))
+  (println "< " (u/now) "\t" (-> msg :from first :address))
   (u/write-msg-to-file
     (str 
       (-> env :inbox) 

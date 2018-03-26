@@ -18,10 +18,14 @@
         (.set cal java.util.Calendar/MONTH month)
         (fmt (.getTime cal))))
 
-(defn fmt-time [java-date]
+(defn fmt-date-time [java-date]
     (.format
-    (java.text.SimpleDateFormat. "HH:mm")
+    (java.text.SimpleDateFormat. "yyyy-MM-dd HH:mm")
     java-date))
+
+(defn now []
+    (fmt-date-time (java.util.Date.))
+    )
 
 (defn yesterday[]
     (let[ cal (java.util.Calendar/getInstance)]
