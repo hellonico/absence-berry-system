@@ -1,6 +1,7 @@
 (ns absence.persistence
     (:require
       [absence.utils :as u]
+      [config.core :refer [env]]
       [clojure.java.jdbc :refer :all]))
 
 (def db
