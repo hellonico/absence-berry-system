@@ -17,12 +17,14 @@
 (def manager
   (atom nil))
 
-(defn day-reason-times [ subject]
+(defn day-reason-times [ msg ]
   (let [
+    subject (:subject msg)
     drt (str/split  subject #"," )
+    date-sent (u/fmt (:date-sent msg))
     ]
     (if (= 2 (count drt)) ;two-field-mode
-    {:date (u/today)
+    {:date date-sent
      :times (first drt)
      :reason  (second drt)
     }
@@ -33,11 +35,8 @@
     )))
 
 (defn parse-msg[ msg ]
-  ; (if (env :debug)
-  ;   (clojure.pprint/pprint msg))
-  
   (let [ raw (select-keys msg [:date-sent :from :subject] )
-         drt (day-reason-times (:subject msg))
+         drt (day-reason-times msg)
          ]
   {
    :name (-> msg :from first :name)
@@ -51,11 +50,11 @@
 (defn dump-raw-msg [msg]
   (println "< " (u/now) "\t" (-> msg :from first :address))
   (u/write-msg-to-file
-    (str 
-      (-> env :inbox) 
+    (str
+      (-> env :inbox)
       (System/currentTimeMillis)
-      " < " 
-      (-> msg :from first :address)) 
+      " < "
+      (-> msg :from first :address))
     msg)
   msg)
 
@@ -90,6 +89,15 @@
   (events/stop manager)
   (reset! manager nil))
 
+(defn recover []
+  (let[ my-messages (all-messages gmail-store "inbox")]
+  (doseq [m my-messages]
+    (try
+    (p/insert-one
+      (parse-msg (read-message m)))
+      (catch Exception e
+      (println e))))))
+
 (defn -main [& args]
   (start-manager gmail-store)
   (println "Listener started..." (-> env :user-timezone)))
@@ -99,6 +107,7 @@
 
   (def my-inbox-messages
     (take 1 (all-messages gmail-store "inbox")))
+
 
   (def first-message
     (first my-inbox-messages))
