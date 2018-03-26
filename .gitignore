@@ -9,3 +9,6 @@ pom.xml.asc
 /.nrepl-port
 .hgignore
 .hg/
+!INBOX/.keep
+INBOX/1*
+db/*.db

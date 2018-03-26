@@ -22,31 +22,42 @@
     drt (str/split  subject #"," )
     ]
     (if (= 2 (count drt)) ;two-field-mode
-    {:reason  (first drt)
-     :date (u/today)
-     :times (second drt)
+    {:date (u/today)
+     :times (first drt)
+     :reason  (second drt)
     }
-    {:reason (nth drt 2)
-     :date (u/short-date-to-date (first drt))
+    {:date (u/short-date-to-date (first drt))
      :times (second drt)
+     :reason (nth drt 2)
     }
     )))
 
 (defn parse-msg[ msg ]
-  (if (env :debug)
-    (clojure.pprint/pprint msg))
+  ; (if (env :debug)
+  ;   (clojure.pprint/pprint msg))
+  
   (let [ raw (select-keys msg [:date-sent :from :subject] )
          drt (day-reason-times (:subject msg))
          ]
   {
    :name (-> msg :from first :name)
-   :timesent (u/fmt-utc-time (:date-sent msg))
+   :timesent (u/fmt-time (:date-sent msg))
    :email (-> msg :from first :address)
    :reason (:reason drt)
    :times  (:times drt)
-   ; :date (u/today)
    :date (:date drt)
   }))
+
+(defn dump-raw-msg [msg]
+  (println "< " (System/currentTimeMillis) "\t" (-> msg :from first :address))
+  (u/write-msg-to-file
+    (str 
+      (-> env :inbox) 
+      (System/currentTimeMillis)
+      " < " 
+      (-> msg :from first :address)) 
+    msg)
+  msg)
 
 (defn insert-new-mails[e]
   (try
@@ -54,12 +65,12 @@
   (->> e
     :messages
     (map read-message)
+    (map dump-raw-msg)
     (map parse-msg)
     (map p/insert-one)
     (map s/abs-ack-send)
     ))
-    (catch Exception e (.printStackTrace e)))
-  (println "> " (java.util.Date.)))
+    (catch Exception e (.printStackTrace e))))
 
 (defn mail-removed [e]
   (prn "removed" e))
@@ -81,8 +92,7 @@
 
 (defn -main [& args]
   (start-manager gmail-store)
-  (println "Listener started...")
-  )
+  (println "Listener started..." (-> env :user-timezone)))
 
 (comment
     (stop-manager)

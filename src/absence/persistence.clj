@@ -6,7 +6,7 @@
 (def db
   {:classname   "org.sqlite.JDBC"
     :subprotocol "sqlite"
-    :subname     "db/database.db"
+    :subname     (-> env :database-file)
     })
 
 (defn get-fruits
@@ -15,7 +15,6 @@
     (query db ["select * from fruit where date = ? order by timesent desc" today ])))
 
 (defn insert-one [ abs ]
-  (println db)
   (insert! db :fruit abs)
   abs
   )
