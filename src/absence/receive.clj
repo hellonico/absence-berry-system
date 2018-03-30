@@ -22,30 +22,51 @@
     subject (:subject msg)
     drt (str/split  subject #"," )
     date-sent (u/fmt (:date-sent msg))
+    date-field (first drt)
+    date-split (str/split  date-field #"-")
+    is-holiday (> (count date-split) 1)
     ]
     (if (= 2 (count drt)) ;two-field-mode
     {:date date-sent
      :times (first drt)
      :reason  (second drt)
     }
-    {:date (u/short-date-to-date (first drt))
+    (if is-holiday
+    {
+     :times "ALL DAY"
+     :reason (nth drt 2)
+     :holidaystart (u/short-date-to-date (first date-split))
+     :holidayend (u/short-date-to-date (second date-split))
+    }
+    {:date (u/short-date-to-date date-field)
      :times (second drt)
      :reason (nth drt 2)
-    }
+    })
     )))
 
-(defn parse-msg[ msg ]
-  (let [ raw (select-keys msg [:date-sent :from :subject] )
-         drt (day-reason-times msg)
-         ]
-  {
+(defrecord entry
+  [name timesent email reason times date])
+
+(defn notification [msg drt]
+  (map->entry
+   {
    :name (-> msg :from first :name)
    :timesent (u/fmt-date-time (:date-sent msg))
    :email (-> msg :from first :address)
    :reason (:reason drt)
    :times  (:times drt)
    :date (:date drt)
-  }))
+   :holidaystart (:holidaystart drt)
+   :holidayend (:holidayend drt)
+   })
+  )
+
+(defn parse-msg[ msg ]
+  (let [ raw (select-keys msg [:date-sent :from :subject] )
+         drt (day-reason-times msg)
+         ]
+  (notification msg drt)
+  ))
 
 (defn dump-raw-msg [msg]
   (println "< " (u/now) "\t" (-> msg :from first :address))
@@ -86,7 +107,7 @@
  (reset! manager im)))
 
 (defn stop-manager []
-  (events/stop manager)
+  (events/stop @manager)
   (reset! manager nil))
 
 (defn recover []
@@ -104,6 +125,8 @@
 
 (comment
     (stop-manager)
+
+    (recover)
 
   (def my-inbox-messages
     (take 1 (all-messages gmail-store "inbox")))

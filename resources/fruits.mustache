@@ -21,6 +21,7 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="stylesheet" href="/css/normalize.css">
   <link rel="stylesheet" href="/css/skeleton.css">
+  <link rel="stylesheet" href="/css/custom.css">
 
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -32,13 +33,14 @@
   <!-- Primary Page Layout
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <div class="container">
-    <div class="row">
-      <div class="two-half column" style="margin-top: 3%">
-       <a href="/"><img src="/images/berry.jpg" width="64" height="64"/></a>
+    <div class="row u-full-width">
+      <div class="twelve column" style="margin-top: 3%">
+        <a href="/"><img src="/images/berry.jpg" width="64" height="64"/></a>
         <h4>Absence {{today}}</h4>
-        <table class="u-full-width">
+        <table class="mytable u-full-width">
         <thead>
           <tr>
+            <th></th>
             <th>Name</th>
             <th>Email</th>
             <th>Sent</th>
@@ -48,14 +50,21 @@
         </thead>
         <tbody>
         {{#fruits}}
+
+
+          {{#fruits}}
           <tr>
+            <td></td>
           <td>{{name}}</td>
           <td>{{email}}</td>
           <td>{{timesent}}</td>
           <td>{{times}}</td>
           <td>{{reason}}</td>
           </tr>
+          {{/fruits}}
+
         {{/fruits}}
+
         </tbody>
         </table>
       </div>

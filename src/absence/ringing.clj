@@ -1,5 +1,5 @@
 (ns absence.ringing
-    (:require 
+    (:require
         [absence.persistence :as p]
         [absence.utils :as u]
         [clojure.java.shell :as sh]
@@ -9,11 +9,11 @@
         [clostache.parser :as m]))
 
 (defn- expected-connected-ips []
-    (drop 1 
-        (clojure.string/split 
+    (drop 1
+        (clojure.string/split
             (:out (sh/sh "bash" "-c" (str "dig +short " (-> env :store :imap)) )) #"\n")))
 
-(defn is-listening [ip] 
+(defn is-listening [ip]
     (let [
         command (sh/sh "bash" "-c" (str "netstat -an | grep '" ip "'"))
         netstat (:out command)]
@@ -37,20 +37,26 @@
         (if (is-imap-listening)
             {:status 200}
             {:status 404}))
-    (GET "/" [] 
-        (m/render-resource "index.mustache" 
+    (GET "/" []
+        (m/render-resource "index.mustache"
             {:email (-> env :store :user)
-             :today (u/today) 
-             :tomorrow (u/tomorrow) 
+             :today (u/today)
+             :tomorrow (u/tomorrow)
              :yesterday (u/yesterday) }))
     (GET "/abs" []
-        (m/render-resource "fruits.mustache" 
-            {:today (u/today) 
-             :yesterday (u/yesterday) 
-             :fruits (p/get-fruits)}))
+        (m/render-resource "fruits.mustache"
+            {:today (u/today)
+             :fruits (p/get-fruits2)}))
+    (GET "/debug/:date" [date]
+     {:body
+      (apply str {:data (p/get-fruits2 date)
+       :config env
+      })}
+
+        )
     (GET "/abs/:date" [date]
-        (m/render-resource "fruits.mustache" 
-            {:today date 
-             :fruits (p/get-fruits date)}))   
+        (m/render-resource "fruits.mustache"
+            {:today date
+             :fruits (p/get-fruits2 date)}))
      (route/resources "/")
      (route/not-found "<h1>Page not found</h1>"))

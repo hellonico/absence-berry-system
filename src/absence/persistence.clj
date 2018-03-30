@@ -10,15 +10,33 @@
     :subname     (-> env :database-file)
     })
 
-(defn get-fruits
-  ([] (get-fruits (u/today)))
+
+    (defn get-fruits
+      ([] (get-fruits (u/today)))
+      ([today]
+        (query db [
+          (str
+          "select * from fruit where
+          date = '" today "'
+          or
+          holidaystart <= '" today "' and holidayend >= '" today "'
+          order by timesent desc"
+           )])))
+
+(defn get-fruits2
+  ([] (get-fruits2 (u/today)))
   ([today]
-    (query db ["select * from fruit where date = ? order by timesent desc" today ])))
+    (let [f  (get-fruits today)]
+    {:fruits (filter #(nil? (:holidaystart %)) f)
+     :holiday (filter #(not (nil? (:holidaystart %))) f)
+   })))
+
 
 (defn insert-one [ abs ]
   (insert! db :fruit abs)
   abs
   )
+
 
 (comment
 
