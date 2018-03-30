@@ -51,6 +51,17 @@
         <tbody>
         {{#fruits}}
 
+          {{#holiday}}
+          <tr class="holiday">
+            <td><img src="images/beach.svg" width="14" height="14"/></td>
+          <td>{{name}}</td>
+          <td>{{email}}</td>
+          <td>{{timesent}}</td>
+          <td>{{holidaystart}}~{{holidayend}}</td>
+          <td>{{reason}}</td>
+          </tr>
+
+            {{/holiday}}
 
           {{#fruits}}
           <tr>
