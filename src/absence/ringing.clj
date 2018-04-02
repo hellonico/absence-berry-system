@@ -49,11 +49,10 @@
              :fruits (p/get-fruits2)}))
     (GET "/debug/:date" [date]
      {:body
-      (apply str {:data (p/get-fruits2 date)
-       :config env
-      })}
-
-        )
+      (apply 
+        str 
+        {:data (p/get-fruits2 date) :config env}
+        )})
     (GET "/abs/:date" [date]
         (m/render-resource "fruits.mustache"
             {:today date

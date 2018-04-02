@@ -6,6 +6,7 @@ body {
 .holiday td {
   background-color: beige;
 }
+
 .holiday td img {
     border: 0 0 0 0;
     height: 32px;
@@ -13,6 +14,16 @@ body {
     text-align: center;
     float: left;
     padding-left: 30%;
+}
+
+.absence.full td {
+  background-color: beige;
+}
+.absence td img {
+  display: block;
+  float:left;
+  height: 30px;
+  width: 30px;
 }
 
 .mytable {
@@ -23,18 +34,7 @@ body {
   font-style: italic;
 }
 
-#root {
-
-}
-#root div  {
-
-}
-#root div  div{
-
-}
 .mylink {
   padding-left: -100px;
   padding-top: -100px;
-  
-
 }

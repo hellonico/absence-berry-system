@@ -11,23 +11,50 @@
     })
 
 
-    (defn get-fruits
-      ([] (get-fruits (u/today)))
-      ([today]
-        (query db [
-          (str
-          "select * from fruit where
-          date = '" today "'
-          or
-          holidaystart <= '" today "' and holidayend >= '" today "'
-          order by timesent desc"
-           )])))
+(defn get-fruits
+  ([] (get-fruits (u/today)))
+  ([today]
+    (query db [
+      (str
+      "select * from fruit where
+      date = '" today "'
+      or
+      holidaystart <= '" today "' and holidayend >= '" today "'
+      order by timesent desc"
+        )])))
+
+(defn add-times-icon [fruit]
+  (let [times (clojure.string/lower-case (:times fruit))]
+  (condp #(clojure.string/includes? %2 %1)  times
+    "full" (conj {:times_icon "full"} fruit)
+    "am" (conj {:times_icon "am"} fruit)
+    ;"am" (update-in fruit [:class] #(apply str % "am"))
+    "pm" (conj {:times_icon "pm"} fruit)
+    "朝" (conj {:times_icon "am"} fruit)
+    "午後" (conj {:times_icon "pm"} fruit)
+    (conj {:times_icon "blank"} fruit)
+    )))
+
+(defn add-reason-icon [fruit]
+  (let [reason (clojure.string/lower-case (:reason fruit))  ]
+  (condp #(clojure.string/includes? %2 %1)  reason
+    "電車" (conj {:reason_icon "train"} fruit)
+    "train" (conj {:reason_icon "train"} fruit)
+    "sick" (conj {:reason_icon "sick"} fruit)
+    "病気" (conj {:reason_icon "sick"} fruit)
+    "痛" (conj {:reason_icon "sick"} fruit)
+    (conj {:reason_icon "blank"} fruit)
+    )))
 
 (defn get-fruits2
   ([] (get-fruits2 (u/today)))
   ([today]
     (let [f  (get-fruits today)]
-    {:fruits (filter #(nil? (:holidaystart %)) f)
+    {:fruits 
+      (->> f
+      (filter #(nil? (:holidaystart %)))
+      (map add-times-icon)
+      (map add-reason-icon))
      :holiday (filter #(not (nil? (:holidaystart %))) f)
    })))
 

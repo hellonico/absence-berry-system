@@ -43,7 +43,6 @@
             <th></th>
             <th>Name</th>
             <th>Email</th>
-            <!-- <th>Sent</th> -->
             <th>Times</th>
             <th>Reason</th>
           </tr>
@@ -56,7 +55,6 @@
             <td><img src="/images/beach.svg"/></td>
           <td>{{name}}</td>
           <td>{{email}}</td>
-          <!-- <td>{{timesent}}</td> -->
           <td>{{holidaystart}}~{{holidayend}}</td>
           <td>{{reason}}</td>
           </tr>
@@ -64,11 +62,10 @@
             {{/holiday}}
 
           {{#fruits}}
-          <tr title="sent: {{timesent}}">
-            <td></td>
+          <tr title="sent: {{timesent}}" class="absence {{times_icon}} {{reason_icon}}">
+            <td><img src="/images/{{times_icon}}.png"/><img src="/images/{{reason_icon}}.png"/></td>
           <td>{{name}}</td>
           <td>{{email}}</td>
-          <!-- <td>{{timesent}}</td> -->
           <td>{{times}}</td>
           <td>{{reason}}</td>
           </tr>
@@ -81,6 +78,14 @@
     </div>
   </div>
 
+
+  <script type="application/javascript">
+  document.onkeyup = function(e) {
+    if(e.key=="Escape"||e.key=="Esc"||e.keyCode==27) {
+      window.location.href = document.referrer;
+    }
+  }
+  </script>
 <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 </body>
