@@ -23,12 +23,12 @@
       order by timesent desc"
         )])))
 
+        ;"am" (update-in fruit [:class] #(apply str % "am"))
 (defn add-times-icon [fruit]
   (let [times (clojure.string/lower-case (:times fruit))]
   (condp #(clojure.string/includes? %2 %1)  times
     "full" (conj {:times_icon "full"} fruit)
-    "am" (conj {:times_icon "am"} fruit)
-    ;"am" (update-in fruit [:class] #(apply str % "am"))
+    "am" (conj {:times_icon "am"} fruit)    
     "pm" (conj {:times_icon "pm"} fruit)
     "朝" (conj {:times_icon "am"} fruit)
     "午後" (conj {:times_icon "pm"} fruit)
@@ -41,6 +41,8 @@
     "電車" (conj {:reason_icon "train"} fruit)
     "train" (conj {:reason_icon "train"} fruit)
     "shift" (conj {:reason_icon "shift"} fruit)
+    "office" (conj {:reason_icon "office"} fruit)
+    "帰社" (conj {:reason_icon "office"} fruit)
     "sick" (conj {:reason_icon "sick"} fruit)
     "病気" (conj {:reason_icon "sick"} fruit)
     "痛" (conj {:reason_icon "sick"} fruit)
