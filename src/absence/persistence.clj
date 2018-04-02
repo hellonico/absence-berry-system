@@ -40,6 +40,7 @@
   (condp #(clojure.string/includes? %2 %1)  reason
     "電車" (conj {:reason_icon "train"} fruit)
     "train" (conj {:reason_icon "train"} fruit)
+    "shift" (conj {:reason_icon "shift"} fruit)
     "sick" (conj {:reason_icon "sick"} fruit)
     "病気" (conj {:reason_icon "sick"} fruit)
     "痛" (conj {:reason_icon "sick"} fruit)
