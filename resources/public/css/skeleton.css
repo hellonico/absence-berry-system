@@ -164,12 +164,15 @@ a:hover {
 
 
 /* Buttons
-––––––––––––––––––––––––––––––––––––––––––––––––––
-.button,
+,
 button,
 input[type="submit"],
 input[type="reset"],
-input[type="button"] {
+input[type="button"]
+
+––––––––––––––––––––––––––––––––––––––––––––––––––
+*/
+.button {
   display: inline-block;
   height: 38px;
   padding: 0 30px;
@@ -221,7 +224,7 @@ input[type="button"].button-primary:focus {
   color: #FFF;
   background-color: #1EAEDB;
   border-color: #1EAEDB; }
-*/
+
 
 /* Forms
 –––––––––––––––––––––––––––––––––––––––––––––––––– */

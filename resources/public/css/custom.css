@@ -33,8 +33,13 @@ body {
 .help {
   font-style: italic;
 }
-
+#root {
+    width: 100px;
+    margin:0 auto;
+}
 .mylink {
+  display: block;
+  margin: auto;
   padding-left: -100px;
   padding-top: -100px;
 }

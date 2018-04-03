@@ -41,11 +41,14 @@
         (m/render-resource "index.mustache"
             {:email (-> env :store :user)
              :today (u/today)
+             :links (-> env :front :links)
              :tomorrow (u/tomorrow)
              :yesterday (u/yesterday) }))
     (GET "/abs" []
         (m/render-resource "fruits.mustache"
             {:today (u/today)
+             :daybefore (u/yesterday)
+             :dayafter (u/tomorrow)
              :fruits (p/get-fruits2)}))
     (GET "/debug/:date" [date]
      {:body
@@ -56,6 +59,8 @@
     (GET "/abs/:date" [date]
         (m/render-resource "fruits.mustache"
             {:today date
+             :daybefore (u/day-before date)
+             :dayafter (u/day-after date)
              :fruits (p/get-fruits2 date)}))
      (route/resources "/")
      (route/not-found "<h1>Page not found</h1>"))

@@ -9,8 +9,7 @@
     :subprotocol "sqlite"
     :subname     (-> env :database-file)
     })
-
-
+    
 (defn get-fruits
   ([] (get-fruits (u/today)))
   ([today]
@@ -23,31 +22,26 @@
       order by timesent desc"
         )])))
 
-        ;"am" (update-in fruit [:class] #(apply str % "am"))
+(defn findme [target objects _default]
+  (let [ks  (keys objects)]
+  (loop [ k (first ks) ks ks ]
+    (if (nil? k) _default
+     (if  (clojure.string/includes? target k)
+      (objects k)
+      (recur (first ks) (rest ks)))))))
+
+(defn add-icon [fruit src target _default]
+  (let [
+    tt (clojure.string/lower-case (src fruit))
+    icon  (findme tt (-> env :icons src) _default)
+    ]
+    (conj {target icon} fruit)))
+
 (defn add-times-icon [fruit]
-  (let [times (clojure.string/lower-case (:times fruit))]
-  (condp #(clojure.string/includes? %2 %1)  times
-    "full" (conj {:times_icon "full"} fruit)
-    "am" (conj {:times_icon "am"} fruit)    
-    "pm" (conj {:times_icon "pm"} fruit)
-    "朝" (conj {:times_icon "am"} fruit)
-    "午後" (conj {:times_icon "pm"} fruit)
-    (conj {:times_icon "blank"} fruit)
-    )))
+  (add-icon fruit :times :times_icon "blank"))
 
 (defn add-reason-icon [fruit]
-  (let [reason (clojure.string/lower-case (:reason fruit))  ]
-  (condp #(clojure.string/includes? %2 %1)  reason
-    "電車" (conj {:reason_icon "train"} fruit)
-    "train" (conj {:reason_icon "train"} fruit)
-    "shift" (conj {:reason_icon "shift"} fruit)
-    "office" (conj {:reason_icon "office"} fruit)
-    "帰社" (conj {:reason_icon "office"} fruit)
-    "sick" (conj {:reason_icon "sick"} fruit)
-    "病気" (conj {:reason_icon "sick"} fruit)
-    "痛" (conj {:reason_icon "sick"} fruit)
-    (conj {:reason_icon "blank"} fruit)
-    )))
+  (add-icon fruit :reason :reason_icon "blank"))
 
 (defn get-fruits2
   ([] (get-fruits2 (u/today)))

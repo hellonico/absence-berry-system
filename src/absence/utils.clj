@@ -18,28 +18,41 @@
         (.set cal java.util.Calendar/MONTH month)
         (fmt (.getTime cal))))
 
+(defn string-date-to-cal [short-date]
+    (let[
+        cal (java.util.Calendar/getInstance)]
+    (.setTime cal
+    (.parse
+        (java.text.SimpleDateFormat. "yyyy-MM-dd")
+        short-date))
+        cal))
+
 (defn fmt-date-time [java-date]
     (.format
     (java.text.SimpleDateFormat. "yyyy-MM-dd HH:mm")
     java-date))
 
 (defn now []
-    (fmt-date-time (java.util.Date.))
-    )
+    (fmt-date-time (java.util.Date.)))
 
-(defn yesterday[]
-    (let[ cal (java.util.Calendar/getInstance)]
-        (.add cal java.util.Calendar/DATE -1)
-        (fmt (.getTime cal))))
+(defn day-before [ string-date ] 
+    (let [cal (string-date-to-cal string-date)]
+    (.add cal java.util.Calendar/DATE -1)
+    (fmt (.getTime cal))))
+(defn day-after [string-date]
+    (let [cal (string-date-to-cal string-date)]
+    (.add cal java.util.Calendar/DATE 1)
+    (fmt (.getTime cal))))
 
 (defn today[]
    (fmt
     (java.util.Date.)))
 
+(defn yesterday[]
+    (day-before (today)))
+        
 (defn tomorrow[]
-    (let[ cal (java.util.Calendar/getInstance)]
-        (.add cal java.util.Calendar/DATE 1)
-        (fmt (.getTime cal))))
+    (day-after (today)))
 
 (defn write-msg-to-file [ file-name msg ]
   (with-open [w (FileWriter. (File. file-name))]

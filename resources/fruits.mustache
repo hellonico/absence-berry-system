@@ -58,8 +58,7 @@
           <td>{{holidaystart}}~{{holidayend}}</td>
           <td>{{reason}}</td>
           </tr>
-
-            {{/holiday}}
+          {{/holiday}}
 
           {{#fruits}}
           <tr title="sent: {{timesent}}" class="absence {{times_icon}} {{reason_icon}}">
@@ -81,9 +80,30 @@
 
   <script type="application/javascript">
   document.onkeyup = function(e) {
-    if(e.key=="Escape"||e.key=="Esc"||e.keyCode==27) {
-      window.location.href = document.referrer;
+    switch(e.which) {
+        case 27: // esc
+        window.location.href = document.referrer;
+        break;
+
+        case 37: // left
+        window.location.href =  window.location.origin + "/abs/{{daybefore}}";
+        break;
+
+        case 38: // up
+        window.location.href =  window.location.origin;
+        break;
+
+        case 39: // right
+        window.location.href =  window.location.origin + "/abs/{{dayafter}}";
+        break;
+
+        case 40: // down
+        break;
+
+        default: return; // exit this handler for other keys
     }
+    //e.preventDefault(); 
+
   }
   </script>
 <!-- End Document
