@@ -70,13 +70,13 @@
 
 (defn dump-raw-msg [msg]
   (println "< " (u/now) "\t" (-> msg :from first :address))
-  (u/write-msg-to-file
-    (str
-      (-> env :inbox)
-      (System/currentTimeMillis)
-      " < "
-      (-> msg :from first :address))
-    msg)
+  ; (u/write-msg-to-file
+  ;   (str
+  ;     (-> env :inbox)
+  ;     (System/currentTimeMillis)
+  ;     " < "
+  ;     (-> msg :from first :address))
+  ;   msg)
   msg)
 
 (defn insert-new-mails[e]
