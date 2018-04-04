@@ -1,4 +1,4 @@
 FROM my-clojure-app
 COPY . /usr/src/app
-ENV date
+ENV date ""
 CMD ["sh", "-c", "lein run -m absence.recover ${date}"]

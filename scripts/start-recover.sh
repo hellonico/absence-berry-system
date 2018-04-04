@@ -1,1 +1,2 @@
-lein run -m absence.recover $1
+
+docker run -it -e date=$1 absence-recover
