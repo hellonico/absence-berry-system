@@ -110,14 +110,6 @@
   (events/stop @manager)
   (reset! manager nil))
 
-(defn recover []
-  (let[ my-messages (all-messages gmail-store "inbox")]
-  (doseq [m my-messages]
-    (try
-    (p/insert-one
-      (parse-msg (read-message m)))
-      (catch Exception e
-      (println e))))))
 
 (defn -main [& args]
   (start-manager gmail-store)
@@ -131,6 +123,9 @@
   (def my-inbox-messages
     (take 1 (all-messages gmail-store "inbox")))
 
+  (def results
+   (search-inbox gmail-store [:received-on "2018-04-03"]))
+  (count results)
 
   (def first-message
     (first my-inbox-messages))
