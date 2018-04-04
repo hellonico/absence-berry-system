@@ -1,1 +1,1 @@
-docker build -f dockers/receive -t absence-receive .
+docker build -f dockers/recover -t absence-recover .
