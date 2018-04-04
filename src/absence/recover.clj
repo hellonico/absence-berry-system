@@ -17,15 +17,14 @@
     my-messages
      (search-inbox gmail-store [:received-on date])
     ]
-  (doall
     (doseq [m my-messages]
     (try
     (let [msg (r/parse-msg (read-message m))]
     (println "recovering")
     (clojure.pprint/pprint msg)
-    (p/insert-one msg))
+    (doall (p/insert-one msg)))
       (catch Exception e
-      (println e)))))))
+      (println e))))))
 
 (defn -main[ & args]
   (let [date (or (first args) :today )]
