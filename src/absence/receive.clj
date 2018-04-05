@@ -62,7 +62,7 @@
   )
 
 (defn parse-msg[ msg ]
-  (let [ raw (select-keys msg [:date-sent :from :subject] )
+  (let [ ;raw (select-keys msg [:date-sent :from :subject] )
          drt (day-reason-times msg)
          ]
   (notification msg drt)
