@@ -16,4 +16,4 @@
   (p/insert-one msg)))
 
 (defn -main [& args]
-  (import-msg (first args) (second args) (nth args 3)))
+  (import-msg (first args) (second args) (nth args 2)))
