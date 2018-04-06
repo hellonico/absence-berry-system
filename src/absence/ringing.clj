@@ -32,6 +32,13 @@
         result
     ))
 
+(defn handle-date [date]
+        {:today date
+         :today-str (u/date-to-dayoftheweek date)
+         :daybefore (u/day-before date)
+         :dayafter (u/day-after date)
+         :fruits (p/get-fruits2 date)})
+
 (defroutes handler
     (GET "/net" []
         (if (is-imap-listening)
@@ -41,15 +48,12 @@
         (m/render-resource "index.mustache"
             {:email (-> env :store :user)
              :today (u/today)
-             :links (-> env :front :links)
              :tomorrow (u/tomorrow)
-             :yesterday (u/yesterday) }))
+             :yesterday (u/yesterday)
+             :links (-> env :front :links)}))
     (GET "/abs" []
         (m/render-resource "fruits.mustache"
-            {:today (u/today)
-             :daybefore (u/yesterday)
-             :dayafter (u/tomorrow)
-             :fruits (p/get-fruits2)}))
+            (handle-date (u/today))))
     (GET "/debug/:date" [date]
      {:body
       (apply 
@@ -57,10 +61,6 @@
         {:data (p/get-fruits2 date) :config env}
         )})
     (GET "/abs/:date" [date]
-        (m/render-resource "fruits.mustache"
-            {:today date
-             :daybefore (u/day-before date)
-             :dayafter (u/day-after date)
-             :fruits (p/get-fruits2 date)}))
+        (m/render-resource "fruits.mustache" (handle-date date)))
      (route/resources "/")
      (route/not-found "<h1>Page not found</h1>"))

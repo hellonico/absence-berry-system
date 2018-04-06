@@ -1,7 +1,9 @@
 (ns absence.utils
-    (:import [java.io File FileWriter])
-    (:require [clojure.pprint])
-    )
+    (:import 
+        [java.time LocalDate]
+        [java.time.format DateTimeFormatter]
+        [java.io File FileWriter])
+    (:require [clojure.pprint]))
 
 (defn fmt [java-date]
     (.format
@@ -26,6 +28,13 @@
         (java.text.SimpleDateFormat. "yyyy-MM-dd")
         short-date))
         cal))
+
+(defn date-to-dayoftheweek [date]
+    (-> date
+    (LocalDate/parse (DateTimeFormatter/ofPattern "yyyy-MM-dd"))
+    (.getDayOfWeek)
+    (str) 
+    (clojure.string/lower-case)))
 
 (defn fmt-date-time [java-date]
     (.format
