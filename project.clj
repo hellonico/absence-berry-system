@@ -1,7 +1,7 @@
 (defproject absence "0.1.0-SNAPSHOT"
   :plugins [[lein-ring "0.12.3"]]
   :jvm-opts ["-Duser.timezone=Asia/Tokyo -Dfile.encoding=UTF-8"]
-  :ring {:handler absence.ringing/handler}
+  :ring {:handler absence.ringing/handler :init absence.ringing/init}
   :dependencies [
   [org.clojure/clojure "1.8.0"]
 

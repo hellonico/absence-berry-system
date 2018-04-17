@@ -64,3 +64,8 @@
         (m/render-resource "fruits.mustache" (handle-date date)))
      (route/resources "/")
      (route/not-found "<h1>Page not found</h1>"))
+
+(defn init[]
+  (println "Starting..." (u/now)))
+
+(println )

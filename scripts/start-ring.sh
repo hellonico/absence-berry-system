@@ -1,1 +1,1 @@
-docker run -d -v `pwd`/db:/usr/src/app/db --restart=always -p 3000:3000 --name absence-ring absence-ring
+docker run -d -e TZ=Asia/Tokyo -v `pwd`/db:/usr/src/app/db --restart=always -p 3000:3000 --name absence-ring absence-ring
