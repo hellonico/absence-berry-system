@@ -1,6 +1,20 @@
  {:from "Yamato Mari <nico@karabiner-software.com>"
-  :to ["hellonico@gmail.com"]
-  :cc ["hello.nico@gmail.com"]
+  :to [
+  "kiyotaka-ishizaki@jpx.co.jp"
+  "m-nagano@jpx.co.jp"
+  "kensuke-aoki@jpx.co.jp"
+  "na-inoue@jpx.co.jp"
+  "toshiaki.murakami.ha@hitachi-solutions.com"
+  "yamada.yuji@finsbury-consulting.com"
+  "tss-osonoi@jpx.co.jp"
+  ]
+  :cc [
+  "ha-kita@jpx.co.jp"
+  "david.gichangi.axelson@aurorasolutionsltd.com"
+  "E51481@jp.ibm.com"
+  "waki.yuji@finsbury-consulting.com"
+  "koji.amakatsu.ym@hitachi.com"
+  ]
   :subject "全体結合テスト自動　ハッピーメール"
   :body "このメールは自動送信です。
 全体結合テストで遅延・課題がある場合には、鳥井・北・大和・天勝・Davidax・山田までメールでお知らせください。
