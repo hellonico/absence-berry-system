@@ -1,0 +1,1 @@
+docker build -f dockers/send -t absence-send .
