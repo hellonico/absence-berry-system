@@ -7,6 +7,9 @@
   "toshiaki.murakami.ha@hitachi-solutions.com"
   "yamada.yuji@finsbury-consulting.com"
   "tss-osonoi@jpx.co.jp"
+  ; ready to be added
+  "k-inanami@jpx.co.jp"
+  "a-narita@jpx.co.jp"
   ]
   :cc [
   "ha-kita@jpx.co.jp"
