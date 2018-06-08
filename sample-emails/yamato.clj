@@ -18,6 +18,7 @@
   "waki.yuji@finsbury-consulting.com"
   "koji.amakatsu.ym@hitachi.com"
   ]
+  :reply-to "E51481@jp.ibm.com"
   :subject "全体結合テスト自動　ハッピーメール"
   :body "このメールは自動送信です。
 全体結合テストで遅延・課題がある場合には、鳥井・北・大和・天勝・Davidax・山田までメールでお知らせください。
