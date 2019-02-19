@@ -1,1 +1,1 @@
-lein ring server-headless
+export TZ=Asia/Tokyo ; lein ring server-headless
