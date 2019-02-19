@@ -1,5 +1,5 @@
 (defproject absence "0.1.0-SNAPSHOT"
-  :plugins [[lein-ring "0.12.3"]]
+  :plugins [[lein-ring "0.12.5"]]
   :jvm-opts ["-Duser.timezone=Asia/Tokyo -Dfile.encoding=UTF-8"]
   :ring {:handler absence.ringing/handler :init absence.ringing/init}
   :dependencies [
