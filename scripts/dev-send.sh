@@ -1,0 +1,1 @@
+lein run -m absence.send sample-emails/nico.clj
