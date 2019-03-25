@@ -77,7 +77,7 @@
         </div>
 
       <p class="help">
-        To try the system, send an email to <a href="mailto:{{email}}?subject=0320,~10am,train delay">{{email}}</a>
+        To use the system, send an email to <a href="mailto:{{email}}?subject=0320,~10am,train delay">{{email}}</a>
         <br/>
         with the subject in one of the following form: <br/>
 
@@ -85,9 +85,13 @@
         - for an absence on a given day: <b>MMDD, TIMES, REASON</b><br/>
         - for a long holiday: <b>MMDD-MMDD, , REASON</b> <br/>
 
-        where TIMES should be the time <u>not</u> attending during normal hours. Examples:<br/>
-  
+        where TIMES should be the time <u>not</u> attending during normal hours. 
 
+        時間指定する時に、会社いる時ではなく会社いない時間を入力してください。
+        例えば、朝10時出社する時に、<del>10時~</del>はなく,<b>~10時</b>を入力してください.
+
+        Examples:<br/>
+  
         <ul class="help">
           <li><a href="mailto:{{email}}?subject=~10am, train delay">~10am, train delay</a></li>
           <li><a href="mailto:{{email}}?subject=10am~11am,meeting">~10am~11am,meeting</a></li>
