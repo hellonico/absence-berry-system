@@ -1,0 +1,7 @@
+({:name "Jacob Carlsson",
+  :email "jacob.carlsson@aurorasolutionsltd.com",
+  :times "09:00-13-00"}
+ {:name "Nicolas Modrzyk",
+  :email "hellonico@gmail.com",
+  :times "10.30am"}
+ {:name "Fumito Sato", :email "fumito.satou@gmail.com", :times "~0945"})

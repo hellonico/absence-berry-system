@@ -1,0 +1,21 @@
+{"input": "is nico here today",
+  "intent": {
+    "intentName": "hellonico:abs",
+    "confidenceScore": 1
+  },
+  "slots": [
+    {
+      "rawValue": "nico",
+      "value": {
+        "kind": "Custom",
+        "value": "Nico"
+      },
+      "range": {
+        "start": 3,
+        "end": 7
+      },
+      "entity": "string",
+      "slotName": "who"
+    }
+  ]
+}
