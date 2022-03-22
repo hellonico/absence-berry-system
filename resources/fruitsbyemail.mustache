@@ -35,15 +35,15 @@
   <div class="container">
     <div class="row u-full-width">
       <div class="twelve column" style="margin-top: 3%">
+      <h2>Holidays for {{email}}</h2>
         <a href="/"><img style="float:right" src="/images/berry.jpg" width="64" height="64"/></a>
-        <h2><img class="dayoftheweek" src="/images/week/icons8-{{today-str}}-50.png"/> {{today}} </h2>
+        
         <table class="mytable u-full-width">
         <thead>
           <tr>
             <th></th>
             <th>Name</th>
-            <th>Email</th>
-            <th>Times</th>
+            <th>Dates</th>
             <th>Reason</th>
           </tr>
         </thead>
@@ -52,9 +52,9 @@
 
           {{#holiday}}
           <tr title="sent: {{timesent}}" class="holiday">
-            <td><img src="/images/beach.svg"/></td>
+        <td><img src="/images/beach.svg"/></td>
           <td>{{name}}</td>
-          <td><a href="/email/{{email}}">{{email}}</a></td>
+          
           <td>{{holidaystart}}~{{holidayend}}</td>
           <td>{{reason}}</td>
           </tr>
@@ -62,10 +62,9 @@
 
           {{#fruits}}
           <tr title="sent: {{timesent}}" class="absence {{times_icon}} {{reason_icon}}">
-            <td><img src="/images/{{times_icon}}.png"/><img src="/images/{{reason_icon}}.png"/></td>
+            <td><img src="/images/{{reason_icon}}.png"/></td>
           <td>{{name}}</td>
-          <td><a href="/email/{{email}}">{{email}}</a></td>
-          <td>{{times}}</td>
+          <td>{{holidaystart}}~{{holidayend}}</td>
           <td>{{reason}}</td>
           </tr>
           {{/fruits}}
@@ -86,7 +85,7 @@
         break;
 
         case 37: // left
-        window.location.href =  window.location.origin + "/abs/{{daybefore}}";
+        // window.location.href =  window.location.origin + "/abs/{{today}}";
         break;
 
         case 38: // up
@@ -94,10 +93,11 @@
         break;
 
         case 39: // right
-        window.location.href =  window.location.origin + "/abs/{{dayafter}}";
+        // window.location.href =  window.location.origin + "/abs/{{dayafter}}";
         break;
 
         case 40: // down
+        window.location.href =  window.location.origin + "/abs/{{today}}";
         break;
 
         default: return; // exit this handler for other keys

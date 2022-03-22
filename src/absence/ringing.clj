@@ -40,6 +40,9 @@
          :dayafter (u/day-after date)
          :fruits (p/get-fruits2 date)})
 
+(defn handle-email [email]
+        {:fruits (p/get-fruits-by-email email)})
+
 (defroutes handler
     (POST "/form/post" {raw :body}
         (let[ 
@@ -52,6 +55,12 @@
             (p/insert-one entry)
          (m/render-resource "holiday.mustache" entry)
          ))
+    (GET "/email/:email" [email]
+    (let [fruits (handle-email email)]
+    (prn fruits)
+        (m/render-resource "fruitsbyemail.mustache"
+            {:today (u/today) :email email :fruits fruits}
+             )))
     (GET "/net" []
         (if (is-imap-listening)
             {:status 200}
@@ -66,6 +75,7 @@
     (GET "/abs" []
         (m/render-resource "fruits.mustache"
             (handle-date (u/today))))
+
     (GET "/debug/:date" [date]
      {:body
       (apply 

@@ -9,18 +9,8 @@
     :subprotocol "sqlite"
     :subname     (-> env :database-file)
     })
-    
-(defn get-fruits
-  ([] (get-fruits (u/today)))
-  ([today]
-    (query db [
-      (str
-      "select * from fruit where
-      date = '" today "'
-      or
-      holidaystart <= '" today "' and holidayend >= '" today "'
-      order by timesent desc"
-        )])))
+
+
 
 (defn findme [target objects _default]
   (let [ks  (keys objects)]
@@ -47,6 +37,36 @@
   (if (empty? (:name fruit))
     (merge fruit {:name (get (:people env) (:email fruit))} )
     fruit))
+    
+
+(defn get-fruits-by-email
+  [email]
+  
+      (->> 
+     
+     (query db [
+      (str
+      "select * from fruit where
+      email = '" email "'
+      and
+      holidayend >= '" (u/today) "'
+      order by holidaystart desc") ]   )
+
+      (map add-reason-icon))
+      )
+    
+(defn get-fruits
+  ([] (get-fruits (u/today)))
+  ([today]
+    (query db [
+      (str
+      "select * from fruit where
+      date = '" today "'
+      or
+      holidaystart <= '" today "' and holidayend >= '" today "'
+      order by timesent desc"
+        )])))
+
 
 (defn get-fruits2
   ([] (get-fruits2 (u/today)))
