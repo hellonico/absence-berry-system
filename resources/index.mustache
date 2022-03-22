@@ -68,14 +68,32 @@
 </table>
     </div>
     </div>
-    <div class="row">
-      <div class="two-half column" style="margin-top: 3%; margin-bottom: -20%">
-        <div class="links">
-        {{#links}}
-          <a class="button button-primary" href="{{href}}">{{a}}</a>
-        {{/links}}
-        </div>
 
+    <div class="row">
+    <div class="column" style="margin-top: 3%; margin-bottom: 0%">
+      <h4>Holiday Form</h4>
+      <form enctype="application/x-www-form-urlencoded" action="/form/post" method="POST">
+      <label for="name">Name</label>
+      <input name="name" class="u-full-width" type="text"></input> 
+      <label for="email">Email</label>
+      <input name="email" class="u-full-width" type="email"></input> 
+      <label for="dates">Dates</label>
+      <input class="u-full-width" name="dates" type="text"></input>
+      <label for="reason">Reason</label>
+      <input class="u-full-width" name="reason" type="text"></input>
+      <button class="button button-primary">Submit</button>
+      </form>
+      </div>
+
+      </div>
+      
+    <div class="row">
+      
+
+      <div class="two-half column" style="margin-top: 3%; margin-bottom: -20%">
+
+
+      <h4>Usage</h4>
       <p class="jp">
         時間指定する時に、会社いる時ではなく会社いない時間を入力してください。
         <br/>
@@ -104,8 +122,18 @@
         <br/>
 
       </p>
+
+      <h4>Old Excel Form</h4>
+        <div class="links">
+        {{#links}}
+          <a class="button button-primary" href="{{href}}">{{a}}</a>
+        {{/links}}
+        </div>
     </div>
+    
     </div>
+
+    
   </div>
   <script type="text/javascript" src="/static/js/main.0a65fc9e.js"></script>
 

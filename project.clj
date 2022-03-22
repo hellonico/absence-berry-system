@@ -11,7 +11,7 @@
 
   [de.ubercode.clostache/clostache "1.4.0"]
   [org.clojure/java.jdbc "0.7.8"]
-  [org.xerial/sqlite-jdbc "3.25.2"]
+  [org.xerial/sqlite-jdbc "3.36.0.3"]
 
   [ring "1.7.1"]
   [compojure "1.6.1"]

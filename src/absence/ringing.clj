@@ -1,6 +1,7 @@
 (ns absence.ringing
     (:require
         [absence.persistence :as p]
+        [absence.receive :as r]
         [absence.utils :as u]
         [clojure.java.shell :as sh]
         [config.core :refer [env]]
@@ -40,6 +41,17 @@
          :fruits (p/get-fruits2 date)})
 
 (defroutes handler
+    (POST "/form/post" {raw :body}
+        (let[ 
+            body  (ring.util.codec/form-decode (slurp raw)) 
+            msg {:from [{:name (body "name") :address (body "email")}] :subject (str (body "dates") ",," (body "reason")) :date-sent (java.util.Date.)}
+            entry (r/parse-msg msg)
+        ]
+            (prn msg)
+            (prn  entry)
+            (p/insert-one entry)
+         (m/render-resource "holiday.mustache" entry)
+         ))
     (GET "/net" []
         (if (is-imap-listening)
             {:status 200}
@@ -60,6 +72,7 @@
         str 
         {:data (p/get-fruits2 date) :config env}
         )})
+    
     (GET "/abs/:date" [date]
         (m/render-resource "fruits.mustache" (handle-date date)))
      (route/resources "/")
