@@ -43,18 +43,19 @@
           <tr>
             <th></th>
             <th>Name</th>
+            <th>Email</th>
             <th>Dates</th>
             <th>Reason</th>
           </tr>
         </thead>
         <tbody>
-        {{#fruits}}
+        
 
           {{#holiday}}
           <tr title="sent: {{timesent}}" class="holiday">
         <td><img src="/images/beach.svg"/></td>
           <td>{{name}}</td>
-          
+          <td><a href="/email/{{email}}">{{email}}</a></td>
           <td>{{holidaystart}}~{{holidayend}}</td>
           <td>{{reason}}</td>
           </tr>
@@ -62,14 +63,15 @@
 
           {{#fruits}}
           <tr title="sent: {{timesent}}" class="absence {{times_icon}} {{reason_icon}}">
-            <td><img src="/images/{{reason_icon}}.png"/></td>
+            <td><img src="/images/beach.svg"/></td>
           <td>{{name}}</td>
+          <td><a href="/email/{{email}}">{{email}}</a></td>
           <td>{{holidaystart}}~{{holidayend}}</td>
           <td>{{reason}}</td>
           </tr>
           {{/fruits}}
 
-        {{/fruits}}
+        
         </tbody>
         </table>
       </div>

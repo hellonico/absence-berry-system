@@ -64,6 +64,12 @@
         (m/render-resource "fruitsbyemail.mustache"
             {:today (u/today) :email email :fruits fruits}
              )))
+    (GET "/month" []
+      (let [fruits (p/get-fruits-by-month)]
+    ;(prn fruits)
+        (m/render-resource "fruitsbyemail.mustache"
+            {:today (u/today) :email (u/today) :fruits fruits}
+             )))
     (GET "/net" []
         (if (is-imap-listening)
             {:status 200}

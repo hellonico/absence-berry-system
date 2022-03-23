@@ -45,7 +45,9 @@
       (str
       "select name,email,reason,holidaystart,holidayend from fruit where
       ( holidaystart IS NOT NULL and holidayend >= '" (u/first-day-of-month) "')
-      order by holidaystart desc") ]   )))
+      order by holidaystart desc") ]   )
+     ; (map add-reason-icon)
+     ))
 
 (defn get-fruits-by-email
   [email]
