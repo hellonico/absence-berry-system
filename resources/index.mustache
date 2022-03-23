@@ -1,62 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-
-  <!-- Basic Page Needs
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <meta charset="utf-8">
-  <title>Absence Berry System</title>
-  <meta name="description" content="">
-  <meta name="author" content="">
-
-  <!-- Mobile Specific Metas
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!-- FONT
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
-
-  <!-- CSS
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet" href="css/normalize.css">
-  <link rel="stylesheet" href="css/skeleton.css">
-  <link rel="stylesheet" href="css/custom.css">
+{{>header}}
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 
-  <!-- Favicon
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="icon" type="image/png" href="images/favicon.png">
-
-
-  <meta name="theme-color" content="#000000">
-  <!-- <link rel="manifest" href="/static/manifest.json"> -->
-  <link rel="shortcut icon" href="/static/favicon.ico">
-  <!-- <link href="/static/css/main.3371da1c.css" rel="stylesheet"> -->
-  <link href="/static/css/main.3371da1c.css" rel="stylesheet">
-
-
-</head>
 <body>
-
-
-  <!-- Primary Page Layout
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 
   <div class="container">
     <div class="row">
-      <div class="two-half column" style="margin-top: 3%">
-        <a href="/"><img src="/images/berry.jpg" width="64" height="64"/></a>
+      <div class="twelve column">
+        <a href="/"><img src="/images/berry.png" width="64" height="64"/></a>
         <h4>Absence Berry System ABS {{today}}</h4>
         <table>
         <tbody>
           <tr>
           <td>
           <a class="button" href="/month"><img height="32" width="32" src="/images/month.png"/></a>
+          </td>
+          <td>
           <a class="button" href="/excel/abs.xlsx"><img height="32" width="32" src="/images/excel.png"/></a>
           </td>
             <td>
-        <a class="button" href="/abs">Today</a><br/>
+          <a class="button" href="/abs">Today</a><br/>
             </td>
             <td>
         <a class="button" href="/abs/{{yesterday}}">Yesterday {{yesterday}}</a><br/>
@@ -65,7 +31,7 @@
         <a class="button" href="/abs/{{tomorrow}}">Tomorrow {{tomorrow}}</a>
       </td>
       <td>
-        <div name="Pick a date" style="float:left;" id="root"/>
+        <input type="text" placeholder="Pick a date..." id="myID"></input>
       </td>
     </tr>
   </tbody>
@@ -74,7 +40,8 @@
     </div>
 
     <div class="row">
-    <div class="column" style="margin-top: 3%; margin-bottom: 0%">
+
+    <div class="seven columns">
       <h4>Holiday Form</h4>
       <form enctype="application/x-www-form-urlencoded" action="/form/post" method="POST">
       <label for="name">Name</label>
@@ -87,23 +54,13 @@
       <input class="u-full-width" name="reason" type="text" placeholder="France"></input>
       <button class="button button-primary">Submit</button>
       </form>
-      </div>
 
       </div>
-      
-    <div class="row">
-      
 
-      <div class="two-half column" style="margin-top: 3%; margin-bottom: -20%">
+      <div class="five columns">
 
 
-      <h4>Usage</h4>
-      <p class="jp">
-        時間指定する時に、会社いる時ではなく会社いない時間を入力してください。
-        <br/>
-        例えば、朝10時出社する時に、<del>10時~</del>はなく,<b>~10時</b>を入力してください.
-        <br/>
-      </p>
+      <h4>Via Email</h4>
       <p class="help">
         To use the system, send an email to <a href="mailto:{{email}}?subject=0320,~10am,train delay">{{email}}</a>
         <br/>
@@ -126,38 +83,58 @@
         <br/>
 
       </p>
-
-      <h4>Old Excel Form</h4>
-        <div class="links">
-        {{#links}}
-          <a class="button button-primary" href="{{href}}">{{a}}</a>
-        {{/links}}
-        </div>
+        
     </div>
     
     </div>
 
     
   </div>
-  <script type="text/javascript" src="/static/js/main.0a65fc9e.js"></script>
 
   <script type="application/javascript">
+  const fromInput = event => event.srcElement instanceof HTMLInputElement;
+
   document.onkeyup = function(e) {
+    
+    // ignore when adding entry
+    if(fromInput(e))
+      return;
+    
     switch(e.which) {
         
         case 37: // left
         case 38: // up
         case 39: // right
         case 40: // down
+        // console.log(e.target)
         window.location.href =  window.location.origin + "/abs";
         break;
 
         default: return; // exit this handler for other keys
     }
+    
 
   }
   </script>
-<!-- End Document
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  
+  <script type="application/javascript">
+  // https://flatpickr.js.org/events/
+  window.onload = (event) => {
+  
+  flatpickr("#myID", {
+
+    onChange: function(selectedDates, dateStr, instance) {
+        console.log('selected date'+dateStr);
+        
+        window.location = '/abs/'+dateStr; 
+    }
+
+  });
+  
+  };
+  
+  </script>
+
+  {{>footer}}
 </body>
 </html>

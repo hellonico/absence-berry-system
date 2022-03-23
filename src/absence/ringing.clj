@@ -7,7 +7,7 @@
      [clojure.java.shell :as sh]
      [config.core :refer [env]]
      [ring.util.response :as ring]
-     [compojure.core :refer :all]
+     [compojure.core :refer [GET POST defroutes]]
      [compojure.route :as route]
      [clostache.parser :as m]))
 
@@ -45,50 +45,60 @@
 (defn handle-email [email]
         {:fruits (p/get-fruits-by-email email)})
 
+(defn render-html[_template _map] 
+  (m/render-resource 
+   (str _template ".mustache")
+   _map
+   {:header (m/render-resource "_header.mustache")
+    :footer (m/render-resource "_footer.mustache")
+    }
+   ))
+
 (defroutes handler
     (GET "/delete/:id" [id]
       (prn "delete " id)
       (p/delete-by-id id)
-      (ring/redirect "/month")
-      )
+      (ring/redirect "/month"))
+  
     (POST "/form/post" {raw :body}
         (let [body  (ring.util.codec/form-decode (slurp raw))
               msg {:from [{:name (body "name") :address (body "email")}] :subject (str (body "dates") ",," (body "reason")) :date-sent (java.util.Date.)}
               entry (r/parse-msg msg)]
-          ;(prn msg)
           (prn  entry)
           (p/insert-one entry)
-          (m/render-resource "holiday.mustache" entry)))
+          (render-html "holiday" entry)))
+  
     (GET "/excel/abs.xlsx"  []
        {:status 200
         :headers {"Content-Type" "application/vnd.ms-excel"}
         :filename "abs.xlsx"
         :body (ex/get-excel)})
+  
     (GET "/email/:email" [email]
     (let [fruits (handle-email email)]
     ;(prn fruits)
-        (m/render-resource "fruitsbyemail.mustache"
-            (merge fruits {:today (u/today) :email email}))))
+        (render-html "fruitsbyemail"
+                           (merge fruits {:today (u/today) :email email}))))
     (GET "/month" []
       (let [fruits (p/get-fruits-by-month)]
     ;(prn fruits)
-        (m/render-resource "fruitsbyemail.mustache"
+        (render-html "fruitsbyemail"
             {:today (u/today) :email (u/today) :fruits fruits}
              )))
-    (GET "/net" []
-        (if (is-imap-listening)
-            {:status 200}
-            {:status 404}))
+    ;; (GET "/net" []
+    ;;     (if (is-imap-listening)
+    ;;         {:status 200}
+    ;;         {:status 404}))
     (GET "/" []
-        (m/render-resource "index.mustache"
+        (render-html "index"
             {:email (-> env :store :user)
              :today (u/today)
              :tomorrow (u/tomorrow)
              :yesterday (u/yesterday)
              :links (-> env :front :links)}))
+    
     (GET "/abs" []
-        (m/render-resource "fruits.mustache"
-            (handle-date (u/today))))
+        (render-html "fruits" (handle-date (u/today))))
 
     (GET "/debug/:date" [date]
      {:body
@@ -98,11 +108,11 @@
         )})
     
     (GET "/abs/:date" [date]
-        (m/render-resource "fruits.mustache" (handle-date date)))
+        (render-html "fruits" (handle-date date)))
+    
      (route/resources "/")
      (route/not-found "<h1>Page not found</h1>"))
 
 (defn init[]
   (println "Starting..." (u/now)))
 
-(println )
