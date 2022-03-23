@@ -6,6 +6,7 @@
      [absence.exceling :as ex]
      [clojure.java.shell :as sh]
      [config.core :refer [env]]
+     [ring.util.response :as ring]
      [compojure.core :refer :all]
      [compojure.route :as route]
      [clostache.parser :as m]))
@@ -45,6 +46,11 @@
         {:fruits (p/get-fruits-by-email email)})
 
 (defroutes handler
+    (GET "/delete/:id" [id]
+      (prn "delete " id)
+      (p/delete-by-id id)
+      (ring/redirect "/month")
+      )
     (POST "/form/post" {raw :body}
         (let [body  (ring.util.codec/form-decode (slurp raw))
               msg {:from [{:name (body "name") :address (body "email")}] :subject (str (body "dates") ",," (body "reason")) :date-sent (java.util.Date.)}

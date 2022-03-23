@@ -43,11 +43,15 @@
     (->> 
      (query db [
       (str
-      "select name,email,reason,holidaystart,holidayend from fruit where
+      "select id,name,email,reason,holidaystart,holidayend from fruit where
       ( holidaystart IS NOT NULL and holidayend >= '" (u/first-day-of-month) "')
       order by holidaystart desc") ]   )
      ; (map add-reason-icon)
      ))
+
+(defn delete-by-id [id]
+    (delete! db :fruit ["id = ?" id])
+  )
 
 (defn get-fruits-by-email
   [email]
