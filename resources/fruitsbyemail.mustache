@@ -69,7 +69,7 @@
           <td><a href="/email/{{email}}">{{email}}</a></td>
           <td>{{holidaystart}}~{{holidayend}}</td>
           <td>{{reason}}</td>
-          <td><a href="/delete/{{id}}"><img width="32" height="32" src="/images/delete.jpg"/></a></td>
+          <td><a onclick="if (confirm('Delete selected item?')){return true;}else{event.stopPropagation(); event.preventDefault();};"  href="/delete/{{id}}"><img width="32" height="32" src="/images/delete.jpg"/></a></td>
           </tr>
           {{/fruits}}
 
