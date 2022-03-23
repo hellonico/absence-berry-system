@@ -37,7 +37,15 @@
   (if (empty? (:name fruit))
     (merge fruit {:name (get (:people env) (:email fruit))} )
     fruit))
-    
+
+(defn get-fruits-by-month
+  []
+    (->> 
+     (query db [
+      (str
+      "select name,email,reason,holidaystart,holidayend from fruit where
+      ( holidayend >= '" (u/first-day-of-month) "')
+      order by holidaystart desc") ]   )))
 
 (defn get-fruits-by-email
   [email]

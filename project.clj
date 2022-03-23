@@ -13,8 +13,13 @@
   [org.clojure/java.jdbc "0.7.8"]
   [org.xerial/sqlite-jdbc "3.36.0.3"]
 
-  [ring "1.7.1"]
+  ;[ring "1.7.1"]
+  [ring/ring "1.9.5"]
   [compojure "1.6.1"]
   [yogthos/config "1.1.1"]
+
+  ; new excel
+  [org.clojars.mjdowney/excel-clj "2.1.0"]
+  [org.apache.logging.log4j/log4j-core "2.17.2"]
 
   ])

@@ -1,13 +1,14 @@
 (ns absence.ringing
     (:require
-        [absence.persistence :as p]
-        [absence.receive :as r]
-        [absence.utils :as u]
-        [clojure.java.shell :as sh]
-        [config.core :refer [env]]
-        [compojure.core :refer :all]
-        [compojure.route :as route]
-        [clostache.parser :as m]))
+     [absence.persistence :as p]
+     [absence.receive :as r]
+     [absence.utils :as u]
+     [absence.exceling :as ex]
+     [clojure.java.shell :as sh]
+     [config.core :refer [env]]
+     [compojure.core :refer :all]
+     [compojure.route :as route]
+     [clostache.parser :as m]))
 
 (defn- expected-connected-ips []
     (drop 1
@@ -45,19 +46,21 @@
 
 (defroutes handler
     (POST "/form/post" {raw :body}
-        (let[ 
-            body  (ring.util.codec/form-decode (slurp raw)) 
-            msg {:from [{:name (body "name") :address (body "email")}] :subject (str (body "dates") ",," (body "reason")) :date-sent (java.util.Date.)}
-            entry (r/parse-msg msg)
-        ]
-            (prn msg)
-            (prn  entry)
-            (p/insert-one entry)
-         (m/render-resource "holiday.mustache" entry)
-         ))
+        (let [body  (ring.util.codec/form-decode (slurp raw))
+              msg {:from [{:name (body "name") :address (body "email")}] :subject (str (body "dates") ",," (body "reason")) :date-sent (java.util.Date.)}
+              entry (r/parse-msg msg)]
+          ;(prn msg)
+          (prn  entry)
+          (p/insert-one entry)
+          (m/render-resource "holiday.mustache" entry)))
+    (GET "/excel/abs.xlsx"  []
+       {:status 200
+        :headers {"Content-Type" "application/vnd.ms-excel"}
+        :filename "abs.xlsx"
+        :body (ex/get-excel)})
     (GET "/email/:email" [email]
     (let [fruits (handle-email email)]
-    (prn fruits)
+    ;(prn fruits)
         (m/render-resource "fruitsbyemail.mustache"
             {:today (u/today) :email email :fruits fruits}
              )))

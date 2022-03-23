@@ -53,6 +53,12 @@
     (.add cal java.util.Calendar/DATE 1)
     (fmt (.getTime cal))))
 
+(defn first-day-of-month []
+   (.with (java.time.LocalDate/now) (java.time.temporal.TemporalAdjusters/firstDayOfMonth)))
+
+(defn last-day-of-month []
+  (.with (java.time.LocalDate/now) (java.time.temporal.TemporalAdjusters/lastDayOfMonth)))
+
 (defn today[]
    (fmt
     (java.util.Date.)))
