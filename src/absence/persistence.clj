@@ -44,7 +44,7 @@
      (query db [
       (str
       "select name,email,reason,holidaystart,holidayend from fruit where
-      ( holidayend >= '" (u/first-day-of-month) "')
+      ( holidaystart IS NOT NULL and holidayend >= '" (u/first-day-of-month) "')
       order by holidaystart desc") ]   )))
 
 (defn get-fruits-by-email
