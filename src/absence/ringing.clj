@@ -62,8 +62,7 @@
     (let [fruits (handle-email email)]
     ;(prn fruits)
         (m/render-resource "fruitsbyemail.mustache"
-            {:today (u/today) :email email :fruits fruits}
-             )))
+            (merge fruits {:today (u/today) :email email}))))
     (GET "/month" []
       (let [fruits (p/get-fruits-by-month)]
     ;(prn fruits)
