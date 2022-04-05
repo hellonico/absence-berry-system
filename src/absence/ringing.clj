@@ -61,7 +61,7 @@
   (GET "/email/:email" [email]
     (let [fruits (handle-email email)]
       (render-html "fruitsbyemail"
-                   (merge fruits {:month false :email email}))))
+                   (merge fruits {:month false :email (str email " / " (.getMonth (java.time.YearMonth/now)))}))))
   (GET "/month" []
     (let [fruits (p/get-fruits-by-month)]
       (render-html "fruitsbyemail"
