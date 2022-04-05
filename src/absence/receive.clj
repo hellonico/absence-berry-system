@@ -62,11 +62,9 @@
   )
 
 (defn parse-msg[ msg ]
-  (let [ ;raw (select-keys msg [:date-sent :from :subject] )
-         drt (day-reason-times msg)
-         ]
-  (notification msg drt)
-  ))
+  ;raw (select-keys msg [:date-sent :from :subject] )
+  (let [ drt (day-reason-times msg) ]
+  (notification msg drt)))
 
 (defn dump-raw-msg [msg]
   (println "< " (u/now) "\t" (-> msg :from first :address))
@@ -110,28 +108,6 @@
   (events/stop @manager)
   (reset! manager nil))
 
-
 (defn -main [& args]
   (start-manager gmail-store)
   (println "Listener started..." (-> env :user-timezone)))
-
-(comment
-    (stop-manager)
-
-    (recover)
-
-  (def my-inbox-messages
-    (take 1 (all-messages gmail-store "inbox")))
-
-  (def results
-   (search-inbox gmail-store [:received-on "2018-04-03"]))
-  (count results)
-
-  (def first-message
-    (first my-inbox-messages))
-
-  (p/insert-one (parse-msg (read-message first-message)))
-
-  (clojure.pprint/pprint (read-message  first-message))
-    ; (parse-msg (read-message first-message)))
-  )

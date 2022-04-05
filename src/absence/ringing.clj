@@ -5,31 +5,11 @@
    [absence.utils :as u]
    [absence.exceling :as ex]
    [absence.ldap :as ldap]
-   [clojure.java.shell :as sh]
    [config.core :refer [env]]
    [ring.util.response :as ring]
    [compojure.core :refer [GET POST defroutes]]
    [compojure.route :as route]
    [clostache.parser :as m]))
-
-(defn- expected-connected-ips []
-  (drop 1
-        (clojure.string/split
-         (:out (sh/sh "bash" "-c" (str "dig +short " (-> env :store :imap)))) #"\n")))
-
-(defn is-listening [ip]
-  (let [command (sh/sh "bash" "-c" (str "netstat -an | grep '" ip "'"))
-        netstat (:out command)]
-    (< 1 (count (clojure.string/split netstat #"\n")))))
-
-(defn is-imap-listening []
-  (let [status (map is-listening (expected-connected-ips))
-        c (count (filter true? status))
-        result (<= 1 c)]
-    (println status)
-    (println c)
-    (println result)
-    result))
 
 (defn handle-date [date]
   {:today date
@@ -80,18 +60,13 @@
 
   (GET "/email/:email" [email]
     (let [fruits (handle-email email)]
-    ;(prn fruits)
       (render-html "fruitsbyemail"
-                   (merge fruits {:today (u/today) :email email}))))
+                   (merge fruits {:month false :email email}))))
   (GET "/month" []
     (let [fruits (p/get-fruits-by-month)]
-    ;(prn fruits)
       (render-html "fruitsbyemail"
-                   {:today (u/today) :email (u/today) :fruits fruits})))
-    ;; (GET "/net" []
-    ;;     (if (is-imap-listening)
-    ;;         {:status 200}
-    ;;         {:status 404}))
+                   {:month true :email (.getMonth (java.time.YearMonth/now)) :fruits fruits})))
+
   (GET "/" []
     (render-html "index"
                  {:email (-> env :store :user)
@@ -102,19 +77,18 @@
 
   (GET "/abs" []
     (render-html "fruits" (handle-date (u/today))))
-
+  (GET "/abs/:date" [date]
+    (render-html "fruits" (handle-date date)))
+  
   (GET "/debug/:date" [date]
     {:body
      (apply
       str
       {:data (p/get-fruits2 date) :config env})})
 
-  (GET "/abs/:date" [date]
-    (render-html "fruits" (handle-date date)))
 
   (route/resources "/")
   (route/not-found "<h1>Page not found</h1>"))
 
 (defn init []
   (println "Starting..." (u/now)))
-

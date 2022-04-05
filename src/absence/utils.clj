@@ -59,12 +59,8 @@
 (defn last-day-of-month []
   (.with (java.time.LocalDate/now) (java.time.temporal.TemporalAdjusters/lastDayOfMonth)))
 
-(defn month-day-range[m] ; "2022-03"
-  (let [
-    ; m (java.time.YearMonth/parse yearMonth)
-        one  1
-        _last (inc (.getDayOfMonth (.atEndOfMonth m)))]
-(range one _last)))
+(defn month-day-range [ym] 
+  (range 1 (inc (.getDayOfMonth (.atEndOfMonth ym)))))
 
 (defn today[]
    (fmt
@@ -80,3 +76,13 @@
   (with-open [w (FileWriter. (File. file-name))]
     (binding [*out* w *print-dup* true] 
         (clojure.pprint/pprint msg))))
+
+
+(defn to-local
+  "convert string to local date"
+  [d]
+  (LocalDate/parse d (DateTimeFormatter/ofPattern "yyyy-MM-dd")))
+
+
+(defn month-range-as-localdates [ym]
+  (map #(.atDay ym %) (month-day-range ym)))
