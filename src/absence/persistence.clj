@@ -2,7 +2,9 @@
     (:require
       [absence.utils :as u]
       [config.core :refer [env]]
-      [clojure.java.jdbc :refer :all]))
+      ;[next.jdbc :refer :all]
+      [clojure.java.jdbc :refer :all]
+     ))
 
 (def db
   {:classname   "org.sqlite.JDBC"
@@ -37,6 +39,70 @@
   (if (empty? (:name fruit))
     (merge fruit {:name (get (:people env) (:email fruit))} )
     fruit))
+
+; MOVE ME
+;; (defn holidays-for [month user]
+;;   ; (println "Holiday for:" user)
+;;   {:days (map #(hash-map :h %) (map {0 false 1 true} (take 31 (repeatedly #(rand-int 2)))))})
+
+
+(defn- to-local 
+  "convert string to local date" 
+  [d]
+  (java.time.LocalDate/parse d (java.time.format.DateTimeFormatter/ofPattern "yyyy-MM-dd")))
+
+(defn- is-between-one [day vec_]
+  (let [
+        ;n (to-local day)
+        n day
+        ]
+    (and 
+     (or (.isEqual n (first vec_)) (.isAfter n (first vec_)))
+     (or (.isEqual n (second vec_)) (.isBefore n (second vec_))))))
+
+(defn- is-between-any [day lse]
+  (if (some true? (map #(is-between-one day %) lse)) 1 0))
+
+(defn is-between [entries days]
+  (let [
+        lse (map #(vector (to-local (:holidaystart %)) (to-local (:holidayend %))) entries)
+        ]
+    ;(map (fn [_] 1) days)
+
+    (map #(is-between-any % lse) days)
+    ))
+
+(defn real-days [ym email]
+  (let [
+      days (range 1 (inc (.getDayOfMonth (.atEndOfMonth ym))))
+      days_ (map #(.atDay ym %) days)
+      
+      s (str (.atDay ym 1))
+      e (str (.atEndOfMonth ym))
+      
+      h (query db [(str
+                    "select * from fruit where
+      email = '" email "'
+      and holidaystart >= '" s "'
+      and holidayend >= '" s "'
+      and holidaystart <= '" e "'
+      order by holidaystart desc")])
+        
+      user-days-off (is-between h days_)]
+    (println email ym user-days-off)
+    user-days-off))
+
+(defn query-holidays[ym email]
+  (let [
+      user-days-off (real-days ym email)
+      return-value {:days (map #(hash-map :h %) (map {0 false 1 true} user-days-off))}
+  ]
+    return-value
+  ))
+
+(defn get-fruits-by-month-and-email [ym email]
+      (->> 
+       query ym email))
 
 (defn get-fruits-by-month
   []

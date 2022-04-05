@@ -59,6 +59,13 @@
 (defn last-day-of-month []
   (.with (java.time.LocalDate/now) (java.time.temporal.TemporalAdjusters/lastDayOfMonth)))
 
+(defn month-day-range[m] ; "2022-03"
+  (let [
+    ; m (java.time.YearMonth/parse yearMonth)
+        one  1
+        _last (inc (.getDayOfMonth (.atEndOfMonth m)))]
+(range one _last)))
+
 (defn today[]
    (fmt
     (java.util.Date.)))
