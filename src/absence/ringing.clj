@@ -1,5 +1,6 @@
 (ns absence.ringing
   (:require
+   [ring.util.codec]
    [absence.persistence :as p]
    [absence.receive :as r]
    [absence.utils :as u]
@@ -11,14 +12,14 @@
    [compojure.route :as route]
    [clostache.parser :as m]))
 
-(defn handle-date [date]
+(defn- handle-date [date]
   {:today date
    :today-str (u/date-to-dayoftheweek date)
    :daybefore (u/day-before date)
    :dayafter (u/day-after date)
    :fruits (p/get-fruits2 date)})
 
-(defn handle-email [email]
+(defn- handle-email [email]
   {:fruits (p/get-fruits-by-email email)})
 
 (defn render-html [_template _map]
@@ -42,13 +43,18 @@
                (map #(merge % (p/query-holidays ymmonth (:email %)))))]
 
       (render-html "holidays"
-                   {:month (.getMonth ymmonth) :next (.plusMonths ymmonth 1) :prev (.minusMonths ymmonth 1) :users users :days (u/month-day-range ymmonth)})))
+                   {:month (.getMonth ymmonth) 
+                    :next (.plusMonths ymmonth 1) 
+                    :prev (.minusMonths ymmonth 1) 
+                    :users users 
+                    :days (map #(hash-map :l (.getDayOfMonth %) :klass (get-klass %)) (u/month-range-as-localdates ymmonth))})))
 
   (POST "/form/post" {raw :body}
     (let [body  (ring.util.codec/form-decode (slurp raw))
-          msg {:from [{:name (body "name") :address (body "email")}] :subject (str (body "dates") ",," (body "reason")) :date-sent (java.util.Date.)}
+          msg {:from [{:name (body "name") :address (body "email")}] 
+               :subject (str (body "dates") ",," (body "reason")) 
+               :date-sent (java.util.Date.)}
           entry (r/parse-msg msg)]
-      (prn  entry)
       (p/insert-one entry)
       (render-html "holiday" entry)))
 

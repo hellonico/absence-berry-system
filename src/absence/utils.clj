@@ -86,3 +86,11 @@
 
 (defn month-range-as-localdates [ym]
   (map #(.atDay ym %) (month-day-range ym)))
+
+(defn get-klass 
+  "get a css class depending on day of week"
+  [ldate]
+  (cond
+    (= ldate (java.time.LocalDate/now)) "today"
+    (or (= 6 (.getValue (.getDayOfWeek ldate))) (= 7 (.getValue (.getDayOfWeek ldate)))) "weekend"
+    :else ""))
