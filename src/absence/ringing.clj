@@ -1,4 +1,5 @@
 (ns absence.ringing
+  (:gen-class)
   (:require
    [ring.adapter.jetty :as jetty]
    [ring.util.codec]
