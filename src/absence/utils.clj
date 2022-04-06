@@ -77,12 +77,13 @@
     (binding [*out* w *print-dup* true] 
         (clojure.pprint/pprint msg))))
 
+(defn to-yearmonth [date-as-string]
+  (try (java.time.YearMonth/parse date-as-string) (catch Exception _ (java.time.YearMonth/now))))
 
 (defn to-local
   "convert string to local date"
   [d]
   (LocalDate/parse d (DateTimeFormatter/ofPattern "yyyy-MM-dd")))
-
 
 (defn month-range-as-localdates [ym]
   (map #(.atDay ym %) (month-day-range ym)))

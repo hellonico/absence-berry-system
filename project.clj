@@ -1,7 +1,9 @@
 (defproject absence "0.1.0-SNAPSHOT"
   :plugins [[lein-ring "0.12.6"]]
+  :main absence.ringing
   :jvm-opts ["-Duser.timezone=Asia/Tokyo -Dfile.encoding=UTF-8"]
-  :profiles {:dev {:plugins [[com.jakemccrary/lein-test-refresh "0.25.0"]]}}
+  :profiles {:uberjar {:aot :all :uberjar-name "abs.jar"}
+             :dev {:plugins [[com.jakemccrary/lein-test-refresh "0.25.0"]]}}
   :ring {:handler absence.ringing/handler :init absence.ringing/init}
   :dependencies [[org.clojure/clojure "1.10.0"]
 
