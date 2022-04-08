@@ -105,10 +105,14 @@
     
     switch(e.which) {
         
+        case 40: // down
+        window.location.href =  window.location.origin + "/holidays/now";
+        break;
+
         case 37: // left
         case 38: // up
         case 39: // right
-        case 40: // down
+        
         window.location.href =  window.location.origin + "/abs";
         break;
 
