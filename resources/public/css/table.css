@@ -1,0 +1,11 @@
+
+
+.tableFixHead          { overflow: auto; height: 600px ; width: 160% !important;}
+.tableFixHead thead th { position: sticky; top: 0; z-index: 1; }
+
+/* Just common table stuff. Really. */
+.tableFixHead table  { border-collapse: collapse; }
+
+.tableFixHead th, td { 
+    max-width: 20px !important;
+}
