@@ -42,6 +42,7 @@
       ( holidaystart IS NOT NULL and holidayend >= '" (u/first-day-of-month) "')
       order by holidaystart desc") ]   )))
 
+
 (defn delete-by-id [id]
     (delete! db :fruit ["id = ?" id]))
 
@@ -113,9 +114,8 @@
     (query db [(str
                 "select * from fruit where
       email = '" email "'
-      and holidaystart >= '" s "'
-      and holidayend >= '" s "'
-      and holidaystart <= '" e "'
+      and (holidaystart >= '" s "'
+      or holidayend >= '" s "')
       order by holidaystart desc")])))
 
 (defn- real-days [ym email]
