@@ -39,8 +39,8 @@
      (query db [
       (str
       "select id,name,email,reason,holidaystart,holidayend from fruit where
-      ( holidaystart IS NOT NULL and holidayend >= '" (u/first-day-of-month) "')
-      order by holidaystart desc") ]   )))
+      ( holidaystart IS NOT NULL and holidayend >= '" (u/first-day-of-month) "' and holidayend <= '" (u/last-day-of-month) "') "
+      " order by holidaystart desc") ]   )))
 
 
 (defn delete-by-id [id]

@@ -27,7 +27,8 @@
 (defn- handle-email [email]
   {:fruits (p/get-fruits-by-email email)
    :month false 
-   :email (str email " / " (.getMonth (java.time.YearMonth/now)))
+  ;;  :email (str email " / " (.getMonth (java.time.YearMonth/now)))
+   :email (str email)
    })
 
 (defn- list-of-days[ymmonth]
@@ -65,12 +66,19 @@
 ;
 ; ROUTES
 ;
+(defn process-one-entry[_name _email _dates _reason]
+  (let [msg {:from [{:name _name :address _email}]
+             :subject (str _dates ",," _reason)
+             :date-sent (java.util.Date.)}
+        entry (r/parse-msg msg)]
+    (p/insert-one entry)
+    entry))
 
 (defroutes handler
   (GET "/delete/:id" [id]
     (prn "delete " id)
     (p/delete-by-id id)
-    (ring/redirect "/month"))
+    (ring/redirect "/holidays/now"))
 
   (GET "/holidays/:month" [month]
     (let [ymmonth (u/to-yearmonth month)
@@ -84,11 +92,7 @@
 
   (POST "/form/post" {raw :body}
     (let [body  (ring.util.codec/form-decode (slurp raw))
-          msg {:from [{:name (body "name") :address (body "email")}] 
-               :subject (str (body "dates") ",," (body "reason")) 
-               :date-sent (java.util.Date.)}
-          entry (r/parse-msg msg)]
-      (p/insert-one entry)
+          entry (process-one-entry (body "name") (body "email") (body "dates") (body "reason"))]
       (render-html "holiday" entry)))
 
   (GET "/excel/abs.xlsx"  []
@@ -115,6 +119,15 @@
     (render-html "fruits" (handle-date (u/today))))
   (GET "/abs/:date" [date]
     (render-html "fruits" (handle-date date)))
+  
+  ; fetch request
+  (GET "/hello/:user/:email/:month/:d1/:d2" [user email month d1 d2]
+    (let [_month (format "%02d" (.getValue (java.time.Month/valueOf month))) 
+          dates (str _month d1 "-" _month d2)
+          entry (process-one-entry user email dates "Scheduled Vacation")]
+      (println entry)
+      ;(process-one-entry entry
+      entry))
   
   (GET "/debug/:date" [date]
     {:body
