@@ -60,18 +60,24 @@
   const zeroPad = (num, places) => String(num).padStart(places, '0')
 
 document.addEventListener("DOMContentLoaded", function (e) {
-  console.log('example');
+  // console.log('example');
   var table = document.getElementById("mytable");
   var current = []
   var currentUser = ""
   
   var options = {
-    changeTracking: true,
+    changeTracking: false,
     deselectOutTableClick: true,
     enableChanging: true,
     onStartSelect: function (event, cell) {
       // console.log("start select");
-      current = []
+      
+      var row = cell.closest('tr');
+      var rowIndex = row.rowIndex;
+      current = [cell.cellIndex];
+      // console.log(cell.cellIndex);
+      currentUser = rowIndex
+
     },
     onSelect: function (prevState, cell, coord) {
       // console.log('select', prevState, coord);
@@ -81,12 +87,17 @@ document.addEventListener("DOMContentLoaded", function (e) {
     onDeselect: function (cell, coord) {
       // console.log('deselect', coord);
       current = []
+      currentUser = ""
     },
     onFinishSelect: function (event) {
       // console.log("finish select");
+      if(event.target.cellIndex==0 || event.target.tagName.toLowerCase() === "a")
+        return true;
+
+
       var tr = table.getElementsByTagName('tr')[parseInt(currentUser)];
       var a = tr.getElementsByTagName('th')[0].getElementsByTagName('a')[0];
-      console.log(a); 
+      // console.log(a); 
       var user = a.innerHTML;
       var email = a.getAttribute("data-id")
 
