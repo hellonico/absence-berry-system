@@ -3,7 +3,6 @@
    [clojure.string :as str]
    [absence.utils :as u]))
 
-
 (def fullday
   (set ["fullday" "allday"]))
 
@@ -53,6 +52,5 @@
     :telework (= (str/lower-case (:reason drt)) "telework")}))
 
 (defn parse-msg [msg]
-  ;raw (select-keys msg [:date-sent :from :subject] )
   (let [drt (day-reason-times msg)]
     (notification msg drt)))

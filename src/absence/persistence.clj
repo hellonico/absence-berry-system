@@ -92,6 +92,9 @@
       (map add-reason-icon))
      :holiday (filter #(not (nil? (:holidaystart %))) f)})))
 
+(defn get-last-fruits [n]
+  (query db [(str "select * from fruit order by id desc limit " n ";")]))
+
 (defn insert-one [ abs ]
   (insert! db :fruit abs) abs)
 

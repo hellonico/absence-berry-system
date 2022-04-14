@@ -16,69 +16,79 @@
 
 
 (defroutes handler
-  (GET "/delete/:id" [id]
-    (prn "delete " id)
-    (p/delete-by-id id)
-    (ring/redirect "/holidays/now"))
+           (GET "/delete/:id" [id]
+             (prn "delete " id)
+             (p/delete-by-id id)
+             (ring/redirect "/holidays/now"))
 
-  (GET "/holidays/:month" [month]
-    (let [ymmonth (u/to-yearmonth month)
-          users
-          (->> (ldap/get-users)
-               (map #(set/rename-keys % {:mail :email}))
-               (map #(merge % (p/query-holidays ymmonth (:email %)))))]
+           (GET "/holidays/:month" [month]
+             (let [ymmonth (u/to-yearmonth month)
+                   users
+                   (->> (ldap/get-users)
+                        (map #(set/rename-keys % {:mail :email}))
+                        (map #(merge % (p/query-holidays ymmonth (:email %)))))]
 
-      (h/render-html "holidays"
-                   (h/handle-month users ymmonth))))
+               (h/render-html "holidays"
+                              (h/handle-month users ymmonth))))
 
-  (POST "/form/post" {raw :body}
-    (let [body  (ring.util.codec/form-decode (slurp raw))
-          entry (h/process-one-entry (body "name") (body "email") (body "dates") (body "reason"))]
-      (h/render-html "holiday" entry)))
+           (POST "/form/post" {raw :body}
+             (let [body (ring.util.codec/form-decode (slurp raw))
+                   entry (h/process-one-entry (body "name") (body "email") (body "dates") (body "reason"))]
+               (h/render-html "holiday" entry)))
 
-  (GET "/excel/abs.xlsx"  []
-    (h/handle-excel))
+           (GET "/excel/abs.xlsx" []
+             (h/handle-excel))
 
-  (GET "/email/:email" [email]
-      (h/render-html
-       "fruitsbyemail"
-       (h/handle-email email)))
-  
-  (GET "/month" []
-      (h/render-html 
-       "fruitsbyemail"
-       {:month true 
-        :email (.getMonth (java.time.YearMonth/now)) 
-        :fruits (p/get-fruits-by-month)}))
+           (GET "/email/:email" [email]
+             (h/render-html
+               "fruitsbyemail"
+               (h/handle-email email)))
 
-  (GET "/" []
-    (h/render-html 
-     "index" 
-     (h/handle-home)))
+           (GET "/month" []
+             (h/render-html
+               "fruitsbyemail"
+               {:month  true
+                :email  (.getMonth (java.time.YearMonth/now))
+                :fruits (p/get-fruits-by-month)}))
 
-  (GET "/abs" []
-    (h/render-html "fruits" (h/handle-date (u/today))))
-  (GET "/abs/:date" [date]
-    (h/render-html "fruits" (h/handle-date date)))
-  
-  ; js fetch request
-  (GET "/hello/:user/:email/:month/:d1/:d2" [user email month d1 d2]
-    (let [_month (format "%02d" (.getValue (Month/valueOf month)))
-          dates (str _month d1 "-" _month d2)
-          entry (h/process-one-entry user email dates "Scheduled Vacation")]
-      (println entry)
-      entry))
-  
-  ; debug
-  (GET "/debug/:date" [date]
-    {:body
-     (apply
-      str
-      {:data (p/get-fruits2 date) 
-       :config env})})
+           (GET "/" []
+             (h/render-html
+               "index"
+               (h/handle-home)))
 
-  (route/resources "/")
-  (route/not-found "<h1>Page not found</h1>"))
+           (GET "/abs" []
+             (h/render-html "fruits" (h/handle-date (u/today))))
+           (GET "/abs/:date" [date]
+             (h/render-html "fruits" (h/handle-date date)))
+
+           ; js fetch request
+           (GET "/hello/:user/:email/:month/:d1/:d2" [user email month d1 d2]
+             (let [_month (format "%02d" (.getValue (Month/valueOf month)))
+                   dates (str _month d1 "-" _month d2)
+                   entry (h/process-one-entry user email dates "Scheduled Vacation")]
+               (println entry)
+               entry))
+
+           (GET "/last/:n" [n]
+             (let [_n (try (Integer/parseInt n) (catch Exception e 10))
+                   fruits (p/get-last-fruits _n)]
+               (h/render-html
+                 "fruitsbyemail"
+                 {:month  true
+                  :email  (str "all, last " _n " entries")
+                  :fruits fruits}))
+               )
+
+           ; debug
+           (GET "/debug/:date" [date]
+             {:body
+              (apply
+                str
+                {:data   (p/get-fruits2 date)
+                 :config env})})
+
+           (route/resources "/")
+           (route/not-found "<h1>Page not found</h1>"))
 
 (defn init []
   (println "Starting..." (u/now)))
