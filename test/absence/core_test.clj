@@ -1,6 +1,6 @@
 (ns absence.core-test
   (:require [clojure.test :refer :all]
-            [absence.receive :as r]
+            [absence.notification :as r]
             [absence.utils :as u]))
 
 (deftest a-test

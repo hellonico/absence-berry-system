@@ -5,7 +5,7 @@
    [config.core :refer [env]]
    [clojure.java.jdbc :refer [delete! insert! query]]))
 
-(def db {:classname "org.sqlite.JDBC" :subprotocol "sqlite" :subname (-> env :database-file)})
+(def db (-> env :database))
 
 (defn findme [target objects _default]
   (let [ks  (keys objects)]
@@ -15,7 +15,8 @@
       (objects k)
       (recur (first ks) (rest ks)))))))
 
-(defn add-icon [fruit src target _default]
+(defn add-icon "enhance entry with icons as defined in the environment"
+  [fruit src target _default]
   (let [
     tt (s/lower-case (src fruit))
     icon  (findme tt (-> env :icons src) _default)

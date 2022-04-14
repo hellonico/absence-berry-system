@@ -30,7 +30,6 @@
     (map s/abs-ack-send)))
     (catch Exception e (.printStackTrace e))))
 
-
 (defn start-manager [store]
   (let [s (mail/get-session "imaps")
         folder (mail/open-folder store "inbox" :readonly)
