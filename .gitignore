@@ -14,3 +14,4 @@ INBOX/1*
 db/*.db
 .clj-kondo/
 .lsp/
+.idea
