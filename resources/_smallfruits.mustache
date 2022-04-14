@@ -13,7 +13,7 @@
 
 
     {{#holiday}}
-        <tr title="sent: {{timesent}}" class="holiday">
+        <tr title="sent: {{timesent}}" class="type{{telework}} holiday ">
             <td><img src="/images/beach.svg"/></td>
             <td>{{name}}</td>
             <td><a href="/email/{{email}}">{{email}}</a></td>
@@ -23,7 +23,7 @@
     {{/holiday}}
 
     {{#fruits}}
-        <tr title="sent: {{timesent}}" class="absence {{times_icon}} {{reason_icon}}">
+        <tr title="sent: {{timesent}}" class="absence type{{telework}} {{times_icon}} {{reason_icon}}">
             <td><img src="/images/beach.svg"/></td>
             <td>{{name}}</td>
             <td><a href="/email/{{email}}">{{email}}</a></td>
