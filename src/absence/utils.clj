@@ -1,70 +1,76 @@
 (ns absence.utils
-    (:import 
-        [java.time LocalDate]
-        [java.time.format DateTimeFormatter]
-        [java.io File FileWriter])
+  (:import
+    [java.time LocalDate YearMonth]
+    [java.time.format DateTimeFormatter]
+    [java.io File FileWriter]
+    (java.text SimpleDateFormat)
+    (java.util Calendar Date)
+    (java.time.temporal TemporalAdjusters))
     (:require [clojure.pprint]))
 
 (defn fmt [java-date]
     (.format
-    (java.text.SimpleDateFormat. "yyyy-MM-dd")
+    (SimpleDateFormat. "yyyy-MM-dd")
     java-date))
 
 (defn short-date-to-date [ short-date ]
      (let[
-        cal (java.util.Calendar/getInstance)
+        cal (Calendar/getInstance)
         day  (Integer/parseInt (apply str (drop 2 short-date)))
         month (dec (Integer/parseInt (apply str (take 2 short-date))) )
         ]
-        (.set cal java.util.Calendar/DAY_OF_MONTH day)
-        (.set cal java.util.Calendar/MONTH month)
+        (.set cal Calendar/DAY_OF_MONTH day)
+        (.set cal Calendar/MONTH month)
         (fmt (.getTime cal))))
+
+(def date-format "yyyy-MM-dd")
 
 (defn string-date-to-cal [short-date]
     (let[
-        cal (java.util.Calendar/getInstance)]
+        cal (Calendar/getInstance)]
     (.setTime cal
     (.parse
-        (java.text.SimpleDateFormat. "yyyy-MM-dd")
+        (SimpleDateFormat.  date-format)
         short-date))
         cal))
 
 (defn date-to-dayoftheweek [date]
     (-> date
-    (LocalDate/parse (DateTimeFormatter/ofPattern "yyyy-MM-dd"))
+    (LocalDate/parse (DateTimeFormatter/ofPattern date-format))
     (.getDayOfWeek)
     (str) 
     (clojure.string/lower-case)))
 
 (defn fmt-date-time [java-date]
     (.format
-    (java.text.SimpleDateFormat. "yyyy-MM-dd HH:mm")
+    (SimpleDateFormat. "yyyy-MM-dd HH:mm")
     java-date))
 
 (defn now []
-    (fmt-date-time (java.util.Date.)))
+    (fmt-date-time (Date.)))
 
 (defn day-before [ string-date ] 
     (let [cal (string-date-to-cal string-date)]
-    (.add cal java.util.Calendar/DATE -1)
+    (.add cal Calendar/DATE -1)
     (fmt (.getTime cal))))
+
 (defn day-after [string-date]
     (let [cal (string-date-to-cal string-date)]
-    (.add cal java.util.Calendar/DATE 1)
+    (.add cal Calendar/DATE 1)
     (fmt (.getTime cal))))
 
 (defn first-day-of-month []
-   (.with (java.time.LocalDate/now) (java.time.temporal.TemporalAdjusters/firstDayOfMonth)))
+   (.with (LocalDate/now) (TemporalAdjusters/firstDayOfMonth)))
 
 (defn last-day-of-month []
-  (.with (java.time.LocalDate/now) (java.time.temporal.TemporalAdjusters/lastDayOfMonth)))
+  (.with (LocalDate/now) (TemporalAdjusters/lastDayOfMonth)))
 
 (defn month-day-range [ym] 
   (range 1 (inc (.getDayOfMonth (.atEndOfMonth ym)))))
 
 (defn today[]
    (fmt
-    (java.util.Date.)))
+     (Date.)))
 
 (defn yesterday[]
     (day-before (today)))
@@ -78,12 +84,12 @@
         (clojure.pprint/pprint msg))))
 
 (defn to-yearmonth [date-as-string]
-  (try (java.time.YearMonth/parse date-as-string) (catch Exception _ (java.time.YearMonth/now))))
+  (try (YearMonth/parse date-as-string) (catch Exception _ (YearMonth/now))))
 
 (defn to-local
   "convert string to local date"
   [d]
-  (LocalDate/parse d (DateTimeFormatter/ofPattern "yyyy-MM-dd")))
+  (LocalDate/parse d (DateTimeFormatter/ofPattern  date-format )))
 
 (defn month-range-as-localdates [ym]
   (map #(.atDay ym %) (month-day-range ym)))
@@ -92,6 +98,6 @@
   "get a css class depending on day of week"
   [ldate]
   (cond
-    (= ldate (java.time.LocalDate/now)) "today"
+    (= ldate (LocalDate/now)) "today"
     (or (= 6 (.getValue (.getDayOfWeek ldate))) (= 7 (.getValue (.getDayOfWeek ldate)))) "weekend"
     :else ""))

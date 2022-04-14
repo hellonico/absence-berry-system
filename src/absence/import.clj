@@ -1,7 +1,7 @@
 (ns absence.import
   (:import [java.util Date])
   (:require
-    [absence.receive :as r]
+    [absence.notification :as r]
     [absence.persistence :as p]
     ))
 

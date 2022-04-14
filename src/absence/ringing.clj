@@ -1,17 +1,18 @@
 (ns absence.ringing
   (:gen-class)
   (:require
-   [ring.adapter.jetty :as jetty]
-   [ring.util.codec]
-   [absence.persistence :as p]
-   [absence.utils :as u]
-   [absence.routehelpers :as h]
-   [absence.ldap :as ldap]
-   [clojure.set :as set]
-   [config.core :refer [env]]
-   [ring.util.response :as ring]
-   [compojure.core :refer [GET POST defroutes]]
-   [compojure.route :as route]))
+    [ring.adapter.jetty :as jetty]
+    [ring.util.codec]
+    [absence.persistence :as p]
+    [absence.utils :as u]
+    [absence.routehelpers :as h]
+    [absence.ldap :as ldap]
+    [clojure.set :as set]
+    [config.core :refer [env]]
+    [ring.util.response :as ring]
+    [compojure.core :refer [GET POST defroutes]]
+    [compojure.route :as route])
+  (:import (java.time Month)))
 
 
 (defroutes handler
@@ -62,7 +63,7 @@
   
   ; js fetch request
   (GET "/hello/:user/:email/:month/:d1/:d2" [user email month d1 d2]
-    (let [_month (format "%02d" (.getValue (java.time.Month/valueOf month))) 
+    (let [_month (format "%02d" (.getValue (Month/valueOf month)))
           dates (str _month d1 "-" _month d2)
           entry (h/process-one-entry user email dates "Scheduled Vacation")]
       (println entry)
