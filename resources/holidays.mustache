@@ -13,8 +13,10 @@
     <div class="row ">
         <div class="twelve columns" style="margin-top: 3%">
             <h4>
-                <a href="/holidays/{{prev}}">
-                    << </a>&nbsp; <a href="/holidays/{{next}}">>></a>&nbsp;Holidays {{month}}
+                <a href="/holidays/{{prev}}"><img style="width: 32px; height: 32px;" src="/images/leftbutton.png"/></a>&nbsp;
+                <a href="/holidays/now"><img style="width: 32px; height: 32px;" src="/images/current.png"/></a>&nbsp;
+                <a href="/holidays/{{next}}"><img style="width: 32px; height: 32px;" src="/images/rightbutton.png"/></a>&nbsp;
+                &nbsp;Holidays {{month}}
             </h4>
 
             <span class="instruction">Insert Mode, press shift to switch mode:</span> <button id="mode" class="insertMode1">Holidays</button>
