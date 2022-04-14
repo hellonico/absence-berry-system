@@ -133,6 +133,9 @@
         h (query-db-days ym email)]
     (is-between h days)))
 
+(defn last-for-email [email]
+  (first (query db [(str "select * from fruit where email = '" email "' order by id desc limit 1")])))
+
 (defn query-holidays [ym email]
   (let [user-days-off (real-days ym email)]
     {:days (map #(hash-map :h %) (map {0 false 1 true} user-days-off))}))

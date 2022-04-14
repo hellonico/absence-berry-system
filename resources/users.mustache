@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+{{> header}}
+<body>
+
+<div class="container">
+    <div class="row u-full-width">
+        {{> submenu }}
+        <h2>Users</h2>
+    </div>
+
+
+    <div class="row u-full-width">
+        <div class="twelve columns tableFixHead" style="margin-top: 3%">
+
+            <table id="mytable" class="u-full-width">
+                <thead>
+                <tr>
+                    <th style="min-width: 170px; width:100px">Name</th>
+                    <th style="min-width: 170px; width:100px">Last Sent</th>
+                    <th>Last Entry</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{#users}}
+                    <tr>
+                        <th style="width:100px"><a data-id="{{email}}" href="/email/{{email}}">{{name}}</a></th>
+                        <td>{{timesent}}</td>
+                        <td>{{reason}} {{holidaystart}} {{date}}</td>
+                    </tr>
+                {{/#users}}
+                </tbody>
+            </table>
+
+        </div>
+
+</div>
+</body>
+</html>

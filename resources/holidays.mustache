@@ -21,21 +21,21 @@
     </div>
 
     <div class="row u-full-width">
-      <div class="twelve columns tableFixHead" style="margin-top: 3%">
+                <div class="twelve columns tableFixHead" style="margin-top: 3%">
 
-        <table id="mytable" class="u-full-width">
-          <thead>
-            <tr>
-              <th style="min-width: 170px; width:100px">Name</th>
-              {{#days}}
-              <th class="{{klass}}">{{l}}</th>
-              {{/#days}}
-            </tr>
-          </thead>
-          <tbody>
-            {{#users}}
-            <tr>
-              <th style="width:100px"><a data-id="{{email}}" href="/email/{{email}}">{{name}}</a></th>
+                    <table id="mytable" class="u-full-width">
+                        <thead>
+                        <tr>
+                            <th style="min-width: 170px; width:100px">Name</th>
+                            {{#days}}
+                                <th class="{{klass}}">{{l}}</th>
+                            {{/#days}}
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{#users}}
+                            <tr>
+                                <th style="width:100px"><a data-id="{{email}}" href="/email/{{email}}">{{name}}</a></th>
               {{#days}}
               {{#h}}
               <td style="padding: 2px; background-color: orange" class="holiday"></td>

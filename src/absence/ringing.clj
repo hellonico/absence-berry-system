@@ -1,5 +1,5 @@
 (ns absence.ringing
-  (:gen-class)
+  ;(:gen-class)
   (:require
     [ring.adapter.jetty :as jetty]
     [ring.util.codec]
@@ -20,6 +20,15 @@
              (prn "delete " id)
              (p/delete-by-id id)
              (ring/redirect "/holidays/now"))
+
+           (GET "/users" []
+             (let [users
+                   (->> (ldap/get-users)
+                        (map #(set/rename-keys % {:mail :email}))
+                        (map #(select-keys % [:displayName :email]))
+                        (map #(p/last-for-email (str (:email %)))))
+                         ]
+               (h/render-html "users" {:users users})))
 
            (GET "/holidays/:month" [month]
              (let [ymmonth (u/to-yearmonth month)

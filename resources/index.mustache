@@ -1,149 +1,159 @@
 <!DOCTYPE html>
 <html lang="en">
 {{>header}}
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 
 <body>
 
-  <div class="container">
+<div class="container">
     <div class="row">
-      <div class="twelve column">
-        <a href="/"><img src="/images/berry.png" width="64" height="64"/></a>
-        <h4>Absence Berry System ABS {{today}}</h4>
-        <table>
-        <tbody>
-          <tr>
-            <td>
-              <a title="scheduled vacation" class="button" href="/holidays/now"><img height="32" width="32" src="/images/beach.png"/></a>    
-            </td>
-          <td>
-          <a title="planned holidays this month" class="button" href="/month"><img height="32" width="32" src="/images/month.png"/></a>
-          </td>
-          <td>
-          <a title="planned holidays this month (excel)" class="button" href="/excel/abs.xlsx"><img height="32" width="32" src="/images/excel.png"/></a>
-          </td>
-            <td>
-          <a class="button" href="/abs">Today</a><br/>
-            </td>
-            <td>
-        <a class="button" href="/abs/{{yesterday}}">Yesterday</a><br/>
-      </td>
-      <td>
-        <a class="button" href="/abs/{{tomorrow}}">Tomorrow</a>
-      </td>
-      <td>
-              <a class="button" href="/last/10"><img height="32" width="32"  src="/images/lastn.png"/></a>
-        </td>
-      <td>
-        <input type="text" placeholder="Pick a date..." id="myID"></input>
-      </td>
-    </tr>
-  </tbody>
-</table>
-    </div>
+        <div class="twelve column">
+            <a href="/"><img src="/images/berry.png" width="64" height="64"/></a>
+            <h4>Absence Berry System ABS {{today}}</h4>
+            <table>
+                <tbody>
+                <tr>
+                    <td>
+                        <a title="scheduled vacation" class="button" href="/holidays/now"><img height="32" width="32"
+                                                                                               src="/images/beach.png"/></a>
+                    </td>
+                    <td>
+                        <a title="planned holidays this month" class="button" href="/month"><img height="32" width="32"
+                                                                                                 src="/images/month.png"/></a>
+                    </td>
+                    <td>
+                        <a title="planned holidays this month (excel)" class="button" href="/excel/abs.xlsx"><img
+                                height="32" width="32" src="/images/excel.png"/></a>
+                    </td>
+
+                    <td>
+                        <a class="button" href="/last/10"><img height="32" width="32" src="/images/lastn.png"/></a>
+                    </td>
+                    <td>
+                        <a class="button" href="/users"><img height="32" width="32" src="/images/users.png"/></a>
+                    </td>
+
+                    <td>
+                        <a class="button" href="/abs">Today</a><br/>
+                    </td>
+                    <td>
+                        <a class="button" href="/abs/{{yesterday}}">Yesterday</a><br/>
+                    </td>
+                    <td>
+                        <a class="button" href="/abs/{{tomorrow}}">Tomorrow</a>
+                    </td>
+                    <td>
+                        <input type="text" placeholder="Pick a date..." id="myID"></input>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <div class="row">
 
-    <div class="seven columns">
-      <h4>Holiday Form</h4>
-      <form enctype="application/x-www-form-urlencoded" action="/form/post" method="POST">
-      <label for="name">Name</label>
-      <input name="name" class="u-full-width" type="text" placeholder="Nicolas"></input> 
-      <label for="email">Email</label>
-      <input name="email" class="u-full-width" type="email" placeholder="nico@karabiner-software.com"></input> 
-      <label for="dates">Dates</label>
-      <input class="u-full-width" name="dates" type="text" placeholder="0323-0324"></input>
-      <label for="reason">Reason</label>
-      <input class="u-full-width" name="reason" type="text" placeholder="France"></input>
-      <button class="button button-primary">Submit</button>
-      </form>
+        <div class="seven columns">
+            <h4>Holiday Form</h4>
+            <form enctype="application/x-www-form-urlencoded" action="/form/post" method="POST">
+                <label for="name">Name</label>
+                <input name="name" class="u-full-width" type="text" placeholder="Nicolas"></input>
+                <label for="email">Email</label>
+                <input name="email" class="u-full-width" type="email" placeholder="nico@karabiner-software.com"></input>
+                <label for="dates">Dates</label>
+                <input class="u-full-width" name="dates" type="text" placeholder="0323-0324"></input>
+                <label for="reason">Reason</label>
+                <input class="u-full-width" name="reason" type="text" placeholder="France"></input>
+                <button class="button button-primary">Submit</button>
+            </form>
 
-      </div>
+        </div>
 
-      <div class="five columns">
+        <div class="five columns">
 
 
-      <h4>Via Email</h4>
-      <p class="help">
-        To use the system, send an email to <a href="mailto:{{email}}?subject=0320,~10am,train delay">{{email}}</a>
-        <br/>
-        with the subject in one of the following form: <br/>
+            <h4>Via Email</h4>
+            <p class="help">
+                To use the system, send an email to <a
+                    href="mailto:{{email}}?subject=0320,~10am,train delay">{{email}}</a>
+                <br/>
+                with the subject in one of the following form: <br/>
 
-        - for an absence today:<b>TIMES, REASON</b><br/>
-        - for an absence on a given day: <b>MMDD, TIMES, REASON</b><br/>
-        - for a long holiday: <b>MMDD-MMDD, , REASON</b> <br/>
+                - for an absence today:<b>TIMES, REASON</b><br/>
+                - for an absence on a given day: <b>MMDD, TIMES, REASON</b><br/>
+                - for a long holiday: <b>MMDD-MMDD, , REASON</b> <br/>
 
-        where TIMES should be the time <u>not</u> attending during normal hours. 
-        <br/>
-        Examples:<br/>
-  
-        <ul class="help">
-          <li><a href="mailto:{{email}}?subject=~10am, train delay">~10am, train delay</a></li>
-          <li><a href="mailto:{{email}}?subject=10am~11am,meeting">~10am~11am,meeting</a></li>
-          <li><a href="mailto:{{email}}?subject=0320,5pm~,帰社">0320,5pm~,帰社</a></li>
-          <li><a href="mailto:{{email}}?subject=0320-0330,,ホリデー">0320-0330,,ホリデー</a></li>
-        </ul>
-        <br/>
+                where TIMES should be the time <u>not</u> attending during normal hours.
+                <br/>
+                Examples:<br/>
 
-      </p>
-        
+            <ul class="help">
+                <li><a href="mailto:{{email}}?subject=~10am, train delay">~10am, train delay</a></li>
+                <li><a href="mailto:{{email}}?subject=10am~11am,meeting">~10am~11am,meeting</a></li>
+                <li><a href="mailto:{{email}}?subject=0320,5pm~,帰社">0320,5pm~,帰社</a></li>
+                <li><a href="mailto:{{email}}?subject=0320-0330,,ホリデー">0320-0330,,ホリデー</a></li>
+            </ul>
+            <br/>
+
+            </p>
+
+        </div>
+
     </div>
-    
-    </div>
 
-    
-  </div>
 
-  <script type="application/javascript">
-  const fromInput = event => event.srcElement instanceof HTMLInputElement;
+</div>
 
-  document.onkeyup = function(e) {
-    
-    // ignore when adding entry
-    if(fromInput(e))
-      return;
-    
-    switch(e.which) {
-        
-        case 40: // down
-        window.location.href =  window.location.origin + "/holidays/now";
-        break;
+<script type="application/javascript">
+    const fromInput = event => event.srcElement instanceof HTMLInputElement;
 
-        case 37: // left
-        case 38: // up
-        case 39: // right
-        
-        window.location.href =  window.location.origin + "/abs";
-        break;
+    document.onkeyup = function (e) {
 
-        default: return; // exit this handler for other keys
+        // ignore when adding entry
+        if (fromInput(e))
+            return;
+
+        switch (e.which) {
+
+            case 40: // down
+                window.location.href = window.location.origin + "/holidays/now";
+                break;
+
+            case 37: // left
+            case 38: // up
+            case 39: // right
+
+                window.location.href = window.location.origin + "/abs";
+                break;
+
+            default:
+                return; // exit this handler for other keys
+        }
+
+
     }
-    
+</script>
 
-  }
-  </script>
-  
-  <script type="application/javascript">
-  // https://flatpickr.js.org/events/
-  window.onload = (event) => {
-  
-  flatpickr("#myID", {
+<script type="application/javascript">
+    // https://flatpickr.js.org/events/
+    window.onload = (event) => {
 
-    onChange: function(selectedDates, dateStr, instance) {
-        console.log('selected date'+dateStr);
-        
-        window.location = '/abs/'+dateStr; 
-    }
+        flatpickr("#myID", {
 
-  });
-  
-  };
-  
-  </script>
+            onChange: function (selectedDates, dateStr, instance) {
+                console.log('selected date' + dateStr);
 
-  {{>footer}}
+                window.location = '/abs/' + dateStr;
+            }
+
+        });
+
+    };
+
+</script>
+
+{{>footer}}
 </body>
 </html>
