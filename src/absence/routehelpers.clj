@@ -15,6 +15,7 @@
    (str _template ".mustache")
    _map
    {:header (m/render-resource "_header.mustache")
+    :smallfruits (m/render-resource "_smallfruits.mustache")
     :footer (m/render-resource "_footer.mustache")}))
 
 (defn handle-date [date]

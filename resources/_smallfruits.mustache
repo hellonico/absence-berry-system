@@ -1,0 +1,40 @@
+<table class="mytable u-full-width">
+    <thead>
+    <tr>
+        <th></th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Dates</th>
+        <th>Reason</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+
+
+    {{#holiday}}
+        <tr title="sent: {{timesent}}" class="holiday">
+            <td><img src="/images/beach.svg"/></td>
+            <td>{{name}}</td>
+            <td><a href="/email/{{email}}">{{email}}</a></td>
+            <td>{{holidaystart}}~{{holidayend}}</td>
+            <td>{{reason}}</td>
+        </tr>
+    {{/holiday}}
+
+    {{#fruits}}
+        <tr title="sent: {{timesent}}" class="absence {{times_icon}} {{reason_icon}}">
+            <td><img src="/images/beach.svg"/></td>
+            <td>{{name}}</td>
+            <td><a href="/email/{{email}}">{{email}}</a></td>
+            <td>{{holidaystart}}~{{holidayend}}</td>
+            <td>{{reason}}</td>
+            <td>
+                <a onclick="if (confirm('Delete selected item?')){return true;}else{event.stopPropagation(); event.preventDefault();};"
+                   href="/delete/{{id}}"><img width="32" height="32" src="/images/delete.jpg"/></a></td>
+        </tr>
+    {{/fruits}}
+
+
+    </tbody>
+</table>
