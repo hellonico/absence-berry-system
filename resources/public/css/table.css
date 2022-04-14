@@ -29,7 +29,7 @@ Select cells in table
 */
 
 .tcs-select {
-    background-color: #A6DCED;
+    background-color: lightpink;
 }
 
 .tcs-ignore {
@@ -39,4 +39,24 @@ Select cells in table
 .tcs-select.tcs-ignore,
 .tcs-ignore .tcs-select {
     background-color: #7AAAB9;
+}
+
+
+.day0 {
+    /*background-color: white;*/
+}
+.day1 {
+    background-color: lightseagreen;
+}
+.day2 {
+    background-color: lightpink;
+}
+.insertMode1 {
+    background-color: lightseagreen;
+}
+.insertMode2 {
+    background-color: lightpink;
+}
+.instruction {
+    font-style: italic;
 }

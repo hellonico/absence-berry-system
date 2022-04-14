@@ -3,247 +3,268 @@
 {{>header}}
 
 <link rel="stylesheet" href="/css/table.css">
-<link rel="stylesheet" href="https://www.cssscript.com/demo/alert-confirm-toast-cute/style.css" />
-
+<link rel="stylesheet" href="https://www.cssscript.com/demo/alert-confirm-toast-cute/style.css"/>
 <body>
 
-  <div style="margin-left:10%;" class="container u-full-width">
+<div style="margin-left:10%;" class="container u-full-width">
 
-        {{> submenu }}
+    {{> submenu }}
 
-      <div class="row ">
-          <div class="twelve columns" style="margin-top: 3%">
-          <h4>
-              <a href="/holidays/{{prev}}">
-            << </a>&nbsp; <a href="/holidays/{{next}}">>></a>&nbsp;Holidays {{month}}
-        </h4>
-      </div>
+    <div class="row ">
+        <div class="twelve columns" style="margin-top: 3%">
+            <h4>
+                <a href="/holidays/{{prev}}">
+                    << </a>&nbsp; <a href="/holidays/{{next}}">>></a>&nbsp;Holidays {{month}}
+            </h4>
+
+            <span class="instruction">Insert Mode, press shift to switch mode:</span> <button id="mode" class="insertMode1">Holidays</button>
+        </div>
     </div>
 
     <div class="row u-full-width">
-                <div class="twelve columns tableFixHead" style="margin-top: 3%">
+        <div class="twelve columns tableFixHead" style="margin-top: 3%">
 
-                    <table id="mytable" class="u-full-width">
-                        <thead>
-                        <tr>
-                            <th style="min-width: 170px; width:100px">Name</th>
-                            {{#days}}
-                                <th class="{{klass}}">{{l}}</th>
-                            {{/#days}}
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {{#users}}
-                            <tr>
-                                <th style="width:100px"><a data-id="{{email}}" href="/email/{{email}}">{{name}}</a></th>
-              {{#days}}
-              {{#h}}
-              <td style="padding: 2px; background-color: orange" class="holiday"></td>
-              {{/h}}
-              {{^h}}
-              <td style="padding: 2px;" class="work"></td>
-              {{/h}}
-              {{/#days}}
-            </tr>
-            {{/#users}}
-          </tbody>
-          <tfoot></tfoot>
-        </table>
+            <table id="mytable" class="u-full-width">
+                <thead>
+                <tr>
+                    <th style="min-width: 170px; width:100px">Name</th>
+                    {{#days}}
+                        <th class="{{klass}}">{{l}}</th>
+                    {{/days}}
+                </tr>
+                </thead>
+                <tbody>
+                {{#users}}
+                    <tr>
+                        <th style="width:100px"><a data-id="{{email}}" href="/email/{{email}}">{{name}}</a></th>
+                        {{#days}}
+                                <td style="padding: 2px;" class="day{{h}}"></td>
+                        {{/days}}
+                    </tr>
+                {{/users}}
+                </tbody>
+                <tfoot></tfoot>
+            </table>
 
-      </div>
+        </div>
     </div>
+</div>
 
     {{>footer}}
 </body>
 <script src="https://cdn.jsdelivr.net/npm/js-table-cell-selector/dist/tcs.bundle.js"></script>
 <script src="https://www.cssscript.com/demo/alert-confirm-toast-cute/cute-alert.js"></script>
 <script>
-  const zeroPad = (num, places) => String(num).padStart(places, '0')
+    const zeroPad = (num, places) => String(num).padStart(places, '0')
 
-document.addEventListener("DOMContentLoaded", function (e) {
-  // console.log('example');
-  var table = document.getElementById("mytable");
-  var current = []
-  var currentUser = ""
-  
-  var options = {
-    changeTracking: false,
-    deselectOutTableClick: true,
-    enableChanging: true,
-    onStartSelect: function (event, cell) {
-      // console.log("start select");
-      
-      var row = cell.closest('tr');
-      var rowIndex = row.rowIndex;
-      current = [cell.cellIndex];
-      // console.log(cell.cellIndex);
-      currentUser = rowIndex
-
-    },
-    onSelect: function (prevState, cell, coord) {
-      // console.log('select', prevState, coord);
-      current.push(coord[1]);
-      currentUser = coord[0];
-    },
-    onDeselect: function (cell, coord) {
-      // console.log('deselect', coord);
-      current = []
-      currentUser = ""
-    },
-    onFinishSelect: function (event) {
-      // console.log("finish select");
-      if(event.target.cellIndex==0 || event.target.tagName.toLowerCase() === "a")
-        return true;
-
-
-      var tr = table.getElementsByTagName('tr')[parseInt(currentUser)];
-      var a = tr.getElementsByTagName('th')[0].getElementsByTagName('a')[0];
-      // console.log(a); 
-      var user = a.innerHTML;
-      var email = a.getAttribute("data-id")
-
-      var min = Math.min(...current);
-      var max = Math.max(...current);
-      cuteAlert({
-        type: "question",
-        title: "Holiday from:" + min + " to:" + max,
-        message: user,
-        confirmText: "Okay",
-        cancelText: "Cancel"
-      }).then((e) => {
-        
-        if (e == ("confirm")) {
-          var url = '/hello/' + user + '/' + email + '/{{month}}/' + zeroPad(min, 2) + "/" + zeroPad(max, 2)
-          console.log(url)
-          fetch(url).then((response) => {
-            location.reload();
-            //if (!response.ok) {
-            //throw new Error(`HTTP error! Status: ${ response.status }`);
-            //}
-            // } else {
-            // alert("Cancelled");
-            // }
-          });
-          current = []
+    let modeButton = document.getElementById("mode");
+    var insertMode = 1
+    function detectspecialkeys(evtobj){
+        //alert("you pressed one of the 'Alt', 'Ctrl', or 'Shift' keys")
+        if (evtobj.altKey || evtobj.ctrlKey || evtobj.shiftKey) {
+            modeButton.classList = ["insertMode2"]
+            modeButton.innerText = "Telework"
         }
-      })
-  }}
+        insertMode = 2
+    }
+    function resetKeys(e) {
+        document.getElementById("mode").classList = ["insertMode1"]
+        modeButton.innerText = "Holidays"
+        insertMode = 1
+    }
 
-      var buffer = new TableCellSelector.Buffer();
-      var tcs = new TableCellSelector(table, options, buffer);
+    document.onkeydown=detectspecialkeys
+    document.onkeyup=resetKeys
 
-      // out size matrix
-      // var sizeTable = document.getElementById("size-matrix").getElementsByTagName("table")[0];
-      // tcs.obSelector.matrix.forEach(function(rowData) {
-      //     var row = document.createElement('tr');
-      //     rowData.forEach(function (cellData) {
-      //         var cell = document.createElement('td');
-      //         cell.appendChild(document.createTextNode(cellData));
-      //         row.appendChild(cell);
-      //     });
-      //     sizeTable.appendChild(row);
-      // });
+    document.addEventListener("DOMContentLoaded", function (e) {
 
-      // function getCoord() {
-      //     return [
-      //         [
-      //             document.getElementsByName("coord1-y")[0].value,
-      //             document.getElementsByName("coord1-x")[0].value
-      //         ],
-      //         [
-      //             document.getElementsByName("coord2-y")[0].value,
-      //             document.getElementsByName("coord2-x")[0].value
-      //         ]
-      //     ]
-      // }
+        var table = document.getElementById("mytable");
+        var current = []
+        var currentUser = ""
 
-      // // options
-      // document.getElementsByName("deselectOutTableClick")[0].onclick = function (e) {
-      //     tcs.destroy();
-      //     options["deselectOutTableClick"] = this.checked;
-      //     tcs = new TableCellSelector(table, options, buffer);
-      // };
-      // document.getElementsByName("enableChanging")[0].onclick = function (e) {
-      //     tcs.destroy();
-      //     options["enableChanging"] = this.checked;
-      //     tcs = new TableCellSelector(table, options, buffer);
-      // };
-      // document.getElementsByName("selectIgnoreClass")[0].onclick = function (e) {
-      //     options["selectIgnoreClass"] = this.checked;
-      //     tcs.destroy();
-      //     tcs = new TableCellSelector(table, options, buffer);
-      // };
-      // document.getElementsByName("ignoreThead")[0].onclick = function (e) {
-      //     options["ignoreThead"] = this.checked;
-      //     tcs.destroy();
-      //     tcs = new TableCellSelector(table, options, buffer);
-      // };
-      // document.getElementsByName("ignoreTfoot")[0].onclick = function (e) {
-      //     options["ignoreTfoot"] = this.checked;
-      //     tcs.destroy();
-      //     tcs = new TableCellSelector(table, options, buffer);
-      // };
+        var options = {
+            changeTracking: false,
+            deselectOutTableClick: true,
+            enableChanging: false,
+            onStartSelect: function (event, cell) {
 
-      // // btns
-      // document.getElementById("select").onclick = function (e) {
-      //     e.preventDefault();
-      //     var coords = getCoord();
-      //     var res = tcs.select(coords[0], coords[1]);
-      //     console.log("select = " + res);
-      // };
-      // document.getElementById("select-all").onclick = function (e) {
-      //     e.preventDefault();
-      //     var res = tcs.selectAll();
-      //     console.log("selectAll = " + res);
-      // };
-      // document.getElementById("deselect").onclick = function (e) {
-      //     e.preventDefault();
-      //     var res = tcs.deselect();
-      //     console.log("deselect = " + res);
-      // };
-      // document.getElementById("coords").onclick = function (e) {
-      //     e.preventDefault();
-      //     var res = tcs.getCoords();
-      //     console.log("coords = " + (res ? "[["+res[0]+"],["+res[1]+"]]" : res));
-      // };
+                var row = cell.closest('tr');
+                var rowIndex = row.rowIndex;
+                current = [cell.cellIndex];
+                currentUser = rowIndex
 
-      // document.getElementById("clear").onclick = function (e) {
-      //     e.preventDefault();
-      //     console.log("clear");
-      //     tcs.clear();
-      // };
-      // document.getElementById("copy").onclick = function (e) {
-      //     e.preventDefault();
-      //     console.log("copy");
-      //     console.log(tcs.copy());
-      // };
-      // document.getElementById("cut").onclick = function (e) {
-      //     e.preventDefault();
-      //     console.log("cut");
-      //     console.log(tcs.cut());
-      // };
-      // document.getElementById("paste").onclick = function (e) {
-      //     e.preventDefault();
-      //     console.log("paste");
-      //     console.log(tcs.paste(
-      //         [
-      //             ["a", "b", "c"],
-      //             ["d", "e", "f"],
-      //             ["g", "h", "i"]
-      //         ]
-      //     ));
-      // };
+            },
+            onSelect: function (prevState, cell, coord) {
+                // console.log('select', prevState, coord);
+                current.push(coord[1]);
+                currentUser = coord[0];
+            },
+            onDeselect: function (cell, coord) {
+                // console.log('deselect', coord);
+                current = []
+                currentUser = ""
+            },
+            onFinishSelect: function (event) {
+                // console.log("finish select");
+                if (event.target.cellIndex == 0 || event.target.tagName.toLowerCase() === "a")
+                    return true;
 
-      // document.getElementById("init").onclick = function (e) {
-      //     e.preventDefault();
-      //     tcs = new TableCellSelector(table, options);
-      //     console.log("init");
-      // };
-      // document.getElementById("destroy").onclick = function (e) {
-      //     e.preventDefault();
-      //     tcs.destroy();
-      //     console.log("destroy");
-      // };
+
+                var tr = table.getElementsByTagName('tr')[parseInt(currentUser)];
+                var a = tr.getElementsByTagName('th')[0].getElementsByTagName('a')[0];
+                // console.log(a);
+                var user = a.innerHTML;
+                var email = a.getAttribute("data-id")
+
+                var min = Math.min(...current);
+                var max = Math.max(...current);
+
+                let localInseretMode = insertMode
+                var title = localInseretMode==1 ? title = "Holiday from:" + min + " to:" + max : title = "Telework from:" + min + " to:" + max;
+
+                cuteAlert({
+                    type: "question",
+                    title: title,
+                    message: user,
+                    confirmText: "Okay",
+                    cancelText: "Cancel"
+                }).then((e) => {
+
+                    if (e == ("confirm")) {
+
+                        let url = '/hello/' + localInseretMode + "/"+user + '/' + email + '/{{month}}/' + zeroPad(min, 2) + "/" + zeroPad(max, 2)
+                        console.log(url)
+                        // return true;
+                        fetch(url).then((response) => {
+                            location.reload();
+                            //if (!response.ok) {
+                            //throw new Error(`HTTP error! Status: ${ response.status }`);
+                            //}
+                            // } else {
+                            // alert("Cancelled");
+                            // }
+                        });
+                        current = []
+                    }
+                })
+            }
+        }
+
+        var buffer = new TableCellSelector.Buffer();
+        var tcs = new TableCellSelector(table, options, buffer);
+
+        // out size matrix
+        // var sizeTable = document.getElementById("size-matrix").getElementsByTagName("table")[0];
+        // tcs.obSelector.matrix.forEach(function(rowData) {
+        //     var row = document.createElement('tr');
+        //     rowData.forEach(function (cellData) {
+        //         var cell = document.createElement('td');
+        //         cell.appendChild(document.createTextNode(cellData));
+        //         row.appendChild(cell);
+        //     });
+        //     sizeTable.appendChild(row);
+        // });
+
+        // function getCoord() {
+        //     return [
+        //         [
+        //             document.getElementsByName("coord1-y")[0].value,
+        //             document.getElementsByName("coord1-x")[0].value
+        //         ],
+        //         [
+        //             document.getElementsByName("coord2-y")[0].value,
+        //             document.getElementsByName("coord2-x")[0].value
+        //         ]
+        //     ]
+        // }
+
+        // // options
+        // document.getElementsByName("deselectOutTableClick")[0].onclick = function (e) {
+        //     tcs.destroy();
+        //     options["deselectOutTableClick"] = this.checked;
+        //     tcs = new TableCellSelector(table, options, buffer);
+        // };
+        // document.getElementsByName("enableChanging")[0].onclick = function (e) {
+        //     tcs.destroy();
+        //     options["enableChanging"] = this.checked;
+        //     tcs = new TableCellSelector(table, options, buffer);
+        // };
+        // document.getElementsByName("selectIgnoreClass")[0].onclick = function (e) {
+        //     options["selectIgnoreClass"] = this.checked;
+        //     tcs.destroy();
+        //     tcs = new TableCellSelector(table, options, buffer);
+        // };
+        // document.getElementsByName("ignoreThead")[0].onclick = function (e) {
+        //     options["ignoreThead"] = this.checked;
+        //     tcs.destroy();
+        //     tcs = new TableCellSelector(table, options, buffer);
+        // };
+        // document.getElementsByName("ignoreTfoot")[0].onclick = function (e) {
+        //     options["ignoreTfoot"] = this.checked;
+        //     tcs.destroy();
+        //     tcs = new TableCellSelector(table, options, buffer);
+        // };
+
+        // // btns
+        // document.getElementById("select").onclick = function (e) {
+        //     e.preventDefault();
+        //     var coords = getCoord();
+        //     var res = tcs.select(coords[0], coords[1]);
+        //     console.log("select = " + res);
+        // };
+        // document.getElementById("select-all").onclick = function (e) {
+        //     e.preventDefault();
+        //     var res = tcs.selectAll();
+        //     console.log("selectAll = " + res);
+        // };
+        // document.getElementById("deselect").onclick = function (e) {
+        //     e.preventDefault();
+        //     var res = tcs.deselect();
+        //     console.log("deselect = " + res);
+        // };
+        // document.getElementById("coords").onclick = function (e) {
+        //     e.preventDefault();
+        //     var res = tcs.getCoords();
+        //     console.log("coords = " + (res ? "[["+res[0]+"],["+res[1]+"]]" : res));
+        // };
+
+        // document.getElementById("clear").onclick = function (e) {
+        //     e.preventDefault();
+        //     console.log("clear");
+        //     tcs.clear();
+        // };
+        // document.getElementById("copy").onclick = function (e) {
+        //     e.preventDefault();
+        //     console.log("copy");
+        //     console.log(tcs.copy());
+        // };
+        // document.getElementById("cut").onclick = function (e) {
+        //     e.preventDefault();
+        //     console.log("cut");
+        //     console.log(tcs.cut());
+        // };
+        // document.getElementById("paste").onclick = function (e) {
+        //     e.preventDefault();
+        //     console.log("paste");
+        //     console.log(tcs.paste(
+        //         [
+        //             ["a", "b", "c"],
+        //             ["d", "e", "f"],
+        //             ["g", "h", "i"]
+        //         ]
+        //     ));
+        // };
+
+        // document.getElementById("init").onclick = function (e) {
+        //     e.preventDefault();
+        //     tcs = new TableCellSelector(table, options);
+        //     console.log("init");
+        // };
+        // document.getElementById("destroy").onclick = function (e) {
+        //     e.preventDefault();
+        //     tcs.destroy();
+        //     console.log("destroy");
+        // };
     });
 </script>
 

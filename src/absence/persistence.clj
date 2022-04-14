@@ -50,13 +50,12 @@
 
 (defn get-fruits-by-email
   [email]
-  
+      ; telework = false and
       (->> 
      
      (query db [
       (str
       "select * from fruit where
-      telework = false and
       email = '" email "'
       and
       holidayend >= '" (u/today) "'
@@ -98,31 +97,42 @@
 (defn insert-one [ abs ]
   (insert! db :fruit abs) abs)
 
+(defn last-for-email [email]
+  (first (query db [(str "select * from fruit where email = '" email "' order by id desc limit 1")])))
+
+
 ;
 ; HOLIDAYS
 ;
 
 (defn- is-between-one [day vec_]
-  (let [n day]
+  (if
     (and
-     (or (.isEqual n (first vec_)) (.isAfter n (first vec_)))
-     (or (.isEqual n (second vec_)) (.isBefore n (second vec_))))))
+     (or (.isEqual day (vec_ :d1)) (.isAfter day (vec_ :d1)))
+     (or (.isEqual day (vec_ :d2)) (.isBefore day (vec_ :d2))))
+    (inc (vec_ :telework))
+    0
+    ))
 
 (defn- is-between-any [day lse]
-  (if (some true? (map #(is-between-one day %) lse)) 1 0))
+  (let [one (map #(is-between-one day %) lse)
+        ret (if (empty? one) 0 (apply max one) )
+        ]
+    ret))
 
 (defn- is-between [entries days]
-  (let [lse (map #(vector (u/to-local (:holidaystart %)) (u/to-local (:holidayend %))) entries)]
+  (let [lse (map #(merge % {:d1 (u/to-local (:holidaystart %)) :d2 (u/to-local (:holidayend %))}) entries)]
     (map #(is-between-any % lse) days)))
 
-(defn- query-db-days 
+(defn query-db-days
   ([ym email] (query-db-days ym email false))
   ([ym email telework]
   (let [s (str (.atDay ym 1))
         e (str (.atEndOfMonth ym))]
+    ; telework = " telework " and
+
     (query db [(str
       "select * from fruit where
-      telework = " telework " and
       email = '" email "'
       and (holidaystart >= '" s "'
       or holidayend >= '" s "')
@@ -130,12 +140,13 @@
 
 (defn- real-days [ym email]
   (let [days (u/month-range-as-localdates ym)
-        h (query-db-days ym email)]
-    (is-between h days)))
-
-(defn last-for-email [email]
-  (first (query db [(str "select * from fruit where email = '" email "' order by id desc limit 1")])))
+        h (query-db-days ym email)
+        ret (is-between h days)
+        ]
+    ;(println ret)
+    ret
+    ))
 
 (defn query-holidays [ym email]
   (let [user-days-off (real-days ym email)]
-    {:days (map #(hash-map :h %) (map {0 false 1 true} user-days-off))}))
+    {:days (map #(hash-map :h %) user-days-off) }))

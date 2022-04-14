@@ -14,7 +14,6 @@
     [compojure.route :as route])
   (:import (java.time Month)))
 
-
 (defroutes handler
            (GET "/delete/:id" [id]
              (prn "delete " id)
@@ -71,10 +70,11 @@
              (h/render-html "fruits" (h/handle-date date)))
 
            ; js fetch request
-           (GET "/hello/:user/:email/:month/:d1/:d2" [user email month d1 d2]
+           (GET "/hello/:type/:user/:email/:month/:d1/:d2" [type user email month d1 d2]
              (let [_month (format "%02d" (.getValue (Month/valueOf month)))
                    dates (str _month d1 "-" _month d2)
-                   entry (h/process-one-entry user email dates "Scheduled Vacation")]
+                   reason (if (= type "2") "telework" "Scheduled Vacation")
+                   entry (h/process-one-entry user email dates reason)]
                (println entry)
                entry))
 
