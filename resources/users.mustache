@@ -36,4 +36,15 @@
 
 </div>
 </body>
+<script type="application/javascript">
+    document.onkeyup = function(e) {
+        switch (e.which) {
+            case 27: // esc
+                window.location.href = window.location.origin;
+                break;
+            default:
+                return;
+        }
+    }
+</script>
 </html>

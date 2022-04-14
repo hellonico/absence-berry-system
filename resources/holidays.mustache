@@ -270,4 +270,33 @@
     });
 </script>
 
+<script type="application/javascript">
+    document.onkeyup = function(e) {
+        switch(e.which) {
+            case 27: // esc
+                window.location.href = window.location.origin;
+                break;
+
+            case 37: // left
+                window.location.href =  window.location.origin + "/holidays/{{prev}}";
+                break;
+
+            case 38: // up
+                window.location.href =  window.location.origin + "/holidays/now";
+                break;
+
+            case 39: // right
+                window.location.href =  window.location.origin + "/holidays/{{next}}";
+                break;
+
+            case 40: // down
+                break;
+
+            default: return; // exit this handler for other keys
+        }
+        //e.preventDefault();
+
+    }
+</script>
+
 </html>
