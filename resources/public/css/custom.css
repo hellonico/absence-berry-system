@@ -3,8 +3,14 @@ body {
   transform-origin: 0 0;
 }
 
+.type0 {
+    background-color: beige;
+}
+.type1 {
+    background-color: lightpink;
+}
 .holiday td {
-  background-color: beige;
+  /*background-color: beige;*/
 }
 
 .holiday td img {
@@ -16,6 +22,9 @@ body {
     padding-left: 30%;
 }
 
+.type0 {
+
+}
 .absence.full td {
   background-color: beige;
 }
