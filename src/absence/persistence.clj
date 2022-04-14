@@ -39,6 +39,7 @@
      (query db [
       (str
       "select id,name,email,reason,holidaystart,holidayend from fruit where
+      telework = false and
       ( holidaystart IS NOT NULL and holidayend >= '" (u/first-day-of-month) "' and holidayend <= '" (u/last-day-of-month) "') "
       " order by holidaystart desc") ]   )))
 
@@ -54,6 +55,7 @@
      (query db [
       (str
       "select * from fruit where
+      telework = false and
       email = '" email "'
       and
       holidayend >= '" (u/today) "'
@@ -69,6 +71,7 @@
     (query db [
       (str
       "select * from fruit where
+      telework = false and
       date = '" today "'
       or
       holidaystart <= '" today "' and holidayend >= '" today "'
@@ -108,15 +111,18 @@
   (let [lse (map #(vector (u/to-local (:holidaystart %)) (u/to-local (:holidayend %))) entries)]
     (map #(is-between-any % lse) days)))
 
-(defn- query-db-days [ym email]
+(defn- query-db-days 
+  ([ym email] (query-db-days ym email false))
+  ([ym email telework]
   (let [s (str (.atDay ym 1))
         e (str (.atEndOfMonth ym))]
     (query db [(str
-                "select * from fruit where
+      "select * from fruit where
+      telework = " telework " and
       email = '" email "'
       and (holidaystart >= '" s "'
       or holidayend >= '" s "')
-      order by holidaystart desc")])))
+      order by holidaystart desc")]))))
 
 (defn- real-days [ym email]
   (let [days (u/month-range-as-localdates ym)
