@@ -76,7 +76,7 @@
     }
 
     document.onkeydown=detectspecialkeys
-    document.onkeyup=resetKeys
+    // document.onkeyup=resetKeys
 
     document.addEventListener("DOMContentLoaded", function (e) {
 
@@ -272,6 +272,7 @@
 
 <script type="application/javascript">
     document.onkeyup = function(e) {
+        resetKeys();
         switch(e.which) {
             case 27: // esc
                 window.location.href = window.location.origin;
