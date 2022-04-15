@@ -15,3 +15,4 @@ db/*.db
 .clj-kondo/
 .lsp/
 .idea
+db/database.db
