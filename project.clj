@@ -1,12 +1,12 @@
 (defproject absence "0.1.0-SNAPSHOT"
   :plugins [[lein-ring "0.12.6"]]
   :main absence.ringing
+  :repositories [["bintray" "https://jcenter.bintray.com/"]]
   :jvm-opts ["-Duser.timezone=Asia/Tokyo -Dfile.encoding=UTF-8"]
   :profiles {:uberjar {:aot [absence.ringing] :uberjar-name "abs.jar"}
              :dev {:plugins [[com.jakemccrary/lein-test-refresh "0.25.0"]]}}
   :ring {:handler absence.ringing/handler :init absence.ringing/init}
   :dependencies [[org.clojure/clojure "1.10.0"]
-
                  [io.forward/clojure-mail "1.0.8"]
                  [com.draines/postal "2.0.5"]
                  [org.clojure/core.async "1.5.648"]
@@ -23,5 +23,7 @@
 
                  [org.clojars.mjdowney/excel-clj "2.1.0"]
                  [org.apache.logging.log4j/log4j-core "2.17.2"]
+
+                 [com.github.holidayjp/holidayjp-jdk8 "2.0.1"]
 
                  [org.clojars.pntblnk/clj-ldap "0.0.17"]])

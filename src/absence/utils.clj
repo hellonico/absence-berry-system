@@ -2,6 +2,7 @@
   (:import
     [java.time LocalDate YearMonth]
     [java.time.format DateTimeFormatter]
+    [com.github.holidayjp.jdk8 HolidayJp]
     [java.io File FileWriter]
     (java.text SimpleDateFormat)
     (java.util Calendar Date)
@@ -95,7 +96,10 @@
   (map #(.atDay ym %) (month-day-range ym)))
 
 (defn is-holiday [ldate]
-  (or (= 6 (.getValue (.getDayOfWeek ldate))) (= 7 (.getValue (.getDayOfWeek ldate)))))
+  (or
+    (HolidayJp/isHoliday ^LocalDate ldate)
+    (= 6 (.getValue (.getDayOfWeek ldate)))
+    (= 7 (.getValue (.getDayOfWeek ldate)))))
 
 (defn get-klass 
   "get a css class depending on day of week"
