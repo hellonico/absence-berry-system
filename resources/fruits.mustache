@@ -3,83 +3,89 @@
 {{>header}}
 <body>
 
-  <div class="container">
+<div class="container">
+    {{> submenu }}
     <div class="row u-full-width">
-      <div class="twelve column">
-        {{> submenu }}
-        <h2><img class="dayoftheweek" src="/images/week/icons8-{{today-str}}-50.png"/> {{today}} </h2>
-          <a href="/abs/{{daybefore}}"><img class="icon" src="/images/leftbutton.png"/></a>&nbsp;
-          <a href="/abs"><img class="icon" src="/images/current.png"/></a>&nbsp;
-          <a href="/abs/{{dayafter}}"><img class="icon" src="/images/rightbutton.png"/></a>&nbsp;
-
-        <table class="mytable u-full-width">
-        <thead>
-          <tr>
-            <th></th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Times</th>
-            <th>Reason</th>
-          </tr>
-        </thead>
-        <tbody>
-        {{#fruits}}
-
-          {{#holiday}}
-          <tr title="sent: {{timesent}}" class="type{{telework}}  holiday">
-            <td><img src="/images/beach.svg"/></td>
-            <td>{{name}}</td>
-            <td><a href="/email/{{email}}">{{email}}</a></td>
-            <td>{{holidaystart}}~{{holidayend}}</td>
-            <td>{{reason}}</td>
-          </tr>
-          {{/holiday}}
-
-          {{#fruits}}
-          <tr title="sent: {{timesent}} / id: {{id}}" class="absence {{times_icon}} {{reason_icon}}">
-            <td><img src="/images/{{times_icon}}.png"/><img src="/images/{{reason_icon}}.png"/></td>
-          <td>{{name}}</td>
-          <td><a href="/email/{{email}}">{{email}}</a></td>
-          <td>{{times}}</td>
-          <td>{{reason}}</td>
-          </tr>
-          {{/fruits}}
-
-        {{/fruits}}
-        </tbody>
-        </table>
-      </div>
+            <h2>
+                <img class="dayoftheweek" src="/images/week/icons8-{{today-str}}-50.png"/> {{today}}
+                <a href="/abs/{{daybefore}}"><img class="icon" src="/images/leftbutton.png"/></a>&nbsp;
+                <a href="/abs"><img class="icon" src="/images/current.png"/></a>&nbsp;
+                <a href="/abs/{{dayafter}}"><img class="icon" src="/images/rightbutton.png"/></a>&nbsp;
+            </h2>
     </div>
-  </div>
 
+    <div class="row u-full-width">
+        <div class="twelve column tableFixHead" style="margin-top: 3%">
 
-  <script type="application/javascript">
-  document.onkeyup = function(e) {
-    switch(e.which) {
-        case 27: // esc
-        window.location.href = document.referrer;
-        break;
+            <table style="width:80%" class="mytable u-full-width">
+                <thead>
+                <tr>
+                    <th>&nbsp;</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Times</th>
+                    <th>Reason</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{#fruits}}
 
-        case 37: // left
-        window.location.href =  window.location.origin + "/abs/{{daybefore}}";
-        break;
+                    {{#holiday}}
+                        <tr title="sent: {{timesent}}" class="type{{telework}} ">
+                            <td><img class="icon" src="/images/beach.svg"/></td>
+                            <td>{{name}}</td>
+                            <td><a href="/email/{{email}}">{{email}}</a></td>
+                            <td>{{holidaystart}}~{{holidayend}}</td>
+                            <td>{{reason}}</td>
+                        </tr>
+                    {{/holiday}}
 
-        case 38: // up
-        window.location.href =  window.location.origin;
-        break;
+                    {{#fruits}}
+                        <tr title="sent: {{timesent}} / id: {{id}}" class="absence {{times_icon}} {{reason_icon}}">
+                            <td><img src="/images/{{times_icon}}.png"/><img src="/images/{{reason_icon}}.png"/></td>
+                            <td>{{name}}</td>
+                            <td><a href="/email/{{email}}">{{email}}</a></td>
+                            <td>{{times}}</td>
+                            <td>{{reason}}</td>
+                        </tr>
+                    {{/fruits}}
 
-        case 39: // right
-        window.location.href =  window.location.origin + "/abs/{{dayafter}}";
-        break;
+                {{/fruits}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
-        case 40: // down
-        break;
+<script type="application/javascript">
+    document.onkeyup = function (e) {
+        switch (e.which) {
+            case 27: // esc
+                window.location.href = document.referrer;
+                break;
 
-        default: return; // exit this handler for other keys
+            case 37: // left
+                window.location.href = window.location.origin + "/abs/{{daybefore}}";
+                break;
+
+            case 38: // up
+                window.location.href = window.location.origin;
+                break;
+
+            case 39: // right
+                window.location.href = window.location.origin + "/abs/{{dayafter}}";
+                break;
+
+            case 40: // down
+                break;
+
+            default:
+                return; // exit this handler for other keys
+        }
+        //e.preventDefault();
+
     }
-    //e.preventDefault(); 
+</script>
 
-  }
-  </script>
 </body>
 </html>
