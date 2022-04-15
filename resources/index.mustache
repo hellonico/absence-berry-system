@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 {{>header}}
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<link rel="stylesheet" href="/css/flatpickr.min.css">
+<script src="/js/flatpickr.js"></script>
 
 
 <body>
@@ -15,10 +15,10 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row u-full-width">
 
-        <div class="seven columns">
-            <h4>Holiday Form</h4>
+        <div class="five columns">
+            <h4>Schedule Form</h4>
             <form enctype="application/x-www-form-urlencoded" action="/form/post" method="POST">
                 <label for="name">Name</label>
                 <input name="name" class="u-full-width" type="text" placeholder="Nicolas"></input>
@@ -33,10 +33,10 @@
 
         </div>
 
-        <div class="five columns">
+        <div class="four columns">
 
 
-            <h4>Via Email</h4>
+            <h4>Schedule Via Email</h4>
             <p class="help">
                 To use the system, send an email to <a
                     href="mailto:{{email}}?subject=0320,~10am,train delay">{{email}}</a>
@@ -57,9 +57,13 @@
                 <li><a href="mailto:{{email}}?subject=0320,5pm~,帰社">0320,5pm~,帰社</a></li>
                 <li><a href="mailto:{{email}}?subject=0320-0330,,ホリデー">0320-0330,,ホリデー</a></li>
             </ul>
-            <br/>
+        </div>
+        <div class="three columns">
+            <h4>Useful Links</h4>
+            {{#links}}
+                <a href="{{href}}">{{a}}</a>
+            {{/links}}
 
-            </p>
 
         </div>
 
