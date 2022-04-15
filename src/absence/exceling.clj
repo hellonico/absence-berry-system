@@ -4,17 +4,16 @@
    [absence.persistence :as p]
    [excel-clj.core :as excel]))
 
-;; (def table-data
-;;   [{"Date" #inst"2018-01-01" "% Return" 0.05M "USD" 1500.5005M}
-;;    {"Date" #inst"2018-02-01" "% Return" 0.04M "USD" 1300.20M}
-;;    {"Date" #inst"2018-03-01" "% Return" 0.07M "USD" 2100.66666666M}])
+(def empty-table-data
+  [{:id	"" :name	"" :email ""	:reason "" :holidaystart ""
+   :holidayend ""}])
 
 (defn get-excel[]
 (let [data (p/get-fruits-by-month)
-      ;data table-data
-      workbook {"ABS" (excel/table-grid data )}
+      workbook {"ABS" (try
+                        (excel/table-grid data )
+                        (catch Error e (excel/table-grid empty-table-data)))}
       temp-file (io/file "abs.xlsx")]
-  ;(prn data)
   (excel/write! workbook temp-file)
   (java.io.FileInputStream. temp-file)))
   
