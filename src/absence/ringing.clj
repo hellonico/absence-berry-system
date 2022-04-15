@@ -56,7 +56,7 @@
              (h/render-html
                "fruitsbyemail"
                {:month  true
-                :email  (.getMonth (java.time.YearMonth/now))
+                :email  (u/current-month)
                 :fruits (p/get-fruits-by-month)}))
 
            (GET "/" []
@@ -66,6 +66,7 @@
 
            (GET "/abs" []
              (h/render-html "fruits" (h/handle-date (u/today))))
+
            (GET "/abs/:date" [date]
              (h/render-html "fruits" (h/handle-date date)))
 

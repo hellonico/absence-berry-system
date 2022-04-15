@@ -10,46 +10,8 @@
 <div class="container">
     <div class="row">
         <div class="twelve column">
-            <a href="/"><img src="/images/berry.png" width="64" height="64"/></a>
+            {{> submenu }}
             <h4>Absence Berry System ABS {{today}}</h4>
-            <table>
-                <tbody>
-                <tr>
-                    <td>
-                        <a title="scheduled vacation" class="button" href="/holidays/now"><img height="32" width="32"
-                                                                                               src="/images/beach.png"/></a>
-                    </td>
-                    <td>
-                        <a title="planned holidays this month" class="button" href="/month"><img height="32" width="32"
-                                                                                                 src="/images/month.png"/></a>
-                    </td>
-                    <td>
-                        <a title="planned holidays this month (excel)" class="button" href="/excel/abs.xlsx"><img
-                                height="32" width="32" src="/images/excel.png"/></a>
-                    </td>
-
-                    <td>
-                        <a class="button" href="/last/10"><img height="32" width="32" src="/images/lastn.png"/></a>
-                    </td>
-                    <td>
-                        <a class="button" href="/users"><img height="32" width="32" src="/images/users.png"/></a>
-                    </td>
-
-                    <td>
-                        <a class="button" href="/abs">Today</a><br/>
-                    </td>
-                    <td>
-                        <a class="button" href="/abs/{{yesterday}}">Yesterday</a><br/>
-                    </td>
-                    <td>
-                        <a class="button" href="/abs/{{tomorrow}}">Tomorrow</a>
-                    </td>
-                    <td>
-                        <input type="text" placeholder="Pick a date..." id="myID"></input>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
         </div>
     </div>
 
@@ -110,10 +72,10 @@
     const fromInput = event => event.srcElement instanceof HTMLInputElement;
 
     document.onkeydown = function(e) {
-        console.log(e.key);
+        // console.log(e.key);
         switch (e.key) {
             case "1":
-                window.location.href = window.location.origin + "/holidays/now"
+                window.location.href = "/holidays/now"
                 break;
             case "2":
                 window.location.href = window.location.origin + "/month"
@@ -142,6 +104,7 @@
         switch (e.which) {
 
             case 27: // esc
+                break;
 
             case 40: // down
                 window.location.href = window.location.origin + "/holidays/now";

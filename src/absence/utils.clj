@@ -94,10 +94,16 @@
 (defn month-range-as-localdates [ym]
   (map #(.atDay ym %) (month-day-range ym)))
 
+(defn is-holiday [ldate]
+  (or (= 6 (.getValue (.getDayOfWeek ldate))) (= 7 (.getValue (.getDayOfWeek ldate)))))
+
 (defn get-klass 
   "get a css class depending on day of week"
   [ldate]
   (cond
     (= ldate (LocalDate/now)) "today"
-    (or (= 6 (.getValue (.getDayOfWeek ldate))) (= 7 (.getValue (.getDayOfWeek ldate)))) "weekend"
+    (is-holiday ldate) "weekend"
     :else ""))
+
+(defn current-month []
+  (.getMonth (YearMonth/now)))
