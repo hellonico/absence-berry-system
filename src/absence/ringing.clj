@@ -23,9 +23,9 @@
            (GET "/users" []
              (let [users
                    (->> (ldap/get-users)
-                        (map #(set/rename-keys % {:mail :email}))
-                        (map #(select-keys % [:displayName :email]))
-                        (map #(p/last-for-email (str (:email %)))))
+                        (map #(set/rename-keys % {:mail :email :displayName :name}))
+                        (map #(select-keys % [:displayName :email :name]))
+                        (map #(p/last-for-email %)))
                          ]
                (h/render-html "users" {:users users})))
 
