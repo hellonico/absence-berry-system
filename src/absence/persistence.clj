@@ -39,7 +39,7 @@
     (->> 
      (query db [
       (str
-      "select id,name,email,reason,holidaystart,holidayend from fruit where
+      "select id,name,email,reason,holidaystart,holidayend,telework from fruit where
       telework = false and
       ( holidaystart IS NOT NULL and holidayend >= '" (u/first-day-of-month) "' and holidayend <= '" (u/last-day-of-month) "') "
       " order by holidaystart desc") ]   )))
