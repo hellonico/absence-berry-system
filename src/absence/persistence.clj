@@ -29,7 +29,7 @@
 (defn add-reason-icon [fruit]
   (add-icon fruit :reason :reason_icon "blank"))
 
-(defn check-empty-name-fields [fruit]
+(defn ^:deprecated check-empty-name-fields [fruit]
   (if (empty? (:name fruit))
     (merge fruit {:name (get (:people env) (:email fruit))} )
     fruit))
@@ -87,7 +87,7 @@
       (->> f
       (filter #(nil? (:holidaystart %)))
       (map add-times-icon)
-      (map check-empty-name-fields)
+      ; (map check-empty-name-fields)
       (map add-reason-icon))
      :holiday (filter #(not (nil? (:holidaystart %))) f)})))
 
