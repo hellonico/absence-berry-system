@@ -8,6 +8,20 @@
         <a class="button" title="last entries" href="/last/N"><img class="icon" src="/images/lastn.png"/></a>
         <a class="button" title="users" href="/users"><img class="icon" src="/images/users.png"/></a>
         <a class="button" title="quick" href="/abs"><img class="icon" src="/images/menulate.png"/></a>
+        <div style="float:right;padding-top: 30px"><input style="padding-top: px" id="myID" type="text" placeholder="Pick a date..." >&nbsp;</input></div>
 
     </div>
 </div>
+<link rel="stylesheet" href="/css/flatpickr.min.css">
+<script src="/js/flatpickr.js"></script>
+<script type="application/javascript">
+    // https://flatpickr.js.org/events/
+    window.onload = (_) => {
+        flatpickr("#myID", {
+            onChange: function (selectedDates, dateStr, instance) {
+                // console.log('selected date' + dateStr);
+                window.location = '/abs/' + dateStr;
+            }
+        });
+    };
+</script>
