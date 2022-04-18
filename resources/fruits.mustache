@@ -32,7 +32,14 @@
 
                     {{#holiday}}
                         <tr title="sent: {{timesent}}" class="type{{telework}} ">
-                            <td><img class="icon" src="/images/beach.svg"/></td>
+                            <td>
+                                {{^telework}}
+                                <img class="icon" src="/images/beach.svg"/>
+                                {{/telework}}
+                                {{#telework}}
+                                    <img title="telework" class="icon" src="/images/telework.png"/>
+                                {{/telework}}
+                            </td>
                             <td>{{name}}</td>
                             <td><a href="/email/{{email}}">{{email}}</a></td>
                             <td>{{holidaystart}}~{{holidayend}}</td>
