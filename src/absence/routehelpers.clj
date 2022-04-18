@@ -17,7 +17,7 @@
    {:header (m/render-resource "_header.mustache")
     :smallfruits (m/render-resource "_smallfruits.mustache" _map)
     :submenu (m/render-resource "_submenu.mustache" _map)
-    :footer (m/render-resource "_footer.mustache")}))
+    :footer (m/render-resource "_footer.mustache" {:git (:out (clojure.java.shell/sh "bash" "-c" "git log | head -n 3")) })}))
 
 (defn handle-date [date]
   {:today date
