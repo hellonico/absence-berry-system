@@ -14,7 +14,9 @@
 
     {{#holiday}}
         <tr title="sent: {{timesent}}" class="type{{telework}} holiday ">
-            <td><img src="/images/beach.svg"/></td>
+            <td>
+                    <img class="icon" src="/images/type{{telework}}.png"/>
+            </td>
             <td>{{name}}</td>
             <td><a href="/email/{{email}}">{{email}}</a></td>
             <td>{{holidaystart}}~{{holidayend}}</td>
@@ -24,7 +26,9 @@
 
     {{#fruits}}
         <tr title="sent: {{timesent}}" class="absence type{{telework}} {{times_icon}} {{reason_icon}}">
-            <td><img src="/images/beach.svg"/></td>
+            <td>
+                <img class="icon" src="/images/type{{telework}}.png"/>
+            </td>
             <td>{{name}}</td>
             <td style="min-width: 100px;"><a href="/email/{{email}}">{{email}}</a></td>
             <td>{{holidaystart}}~{{holidayend}}</td>
