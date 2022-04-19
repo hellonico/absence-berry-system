@@ -1,0 +1,42 @@
+{:inbox "INBOX/"
+ :debug true
+ :database
+  {:classname "org.sqlite.JDBC" :subprotocol "sqlite" :subname "db/database.db"}
+ :store {:imap ""
+         :user ""
+         :pwd ""}
+ :ldap {:config {:host "localhost:10389" :bind-dn "uid=admin,ou=system" :password "secret"}
+        :query {:base "ou=people,o=sevenSeas"
+                :params {:filter "(objectclass=person)"}}
+        :mappings {:mail :email :givenname :name}}
+ :postal {:sender {:host "smtp.abs.com" :port 25}}
+ :ack {:sender "Absence Bureau Service <otc-absence@smtp.abs.com>"
+       :subject "Sounds good!"}
+ :front {:links [{:a "Absence Berry Github Repository" :href "https://github.com/hellonico/absence-berry-system"} {:a "Google" :href "https://www.google.com"}]}
+ :icons {:times {"full" "full"
+                 "am" "am"
+                 "pm" "pm"
+                 "朝" "am"
+                 "午後" "pm"}
+         :reason {"電車" "train"
+                  "入館証" "nyukansho"
+                  "train" "train"
+                  "shift" "shift"
+                  "office" "office"
+                  "帰社" "office"
+                  "自社" "office"
+                  "家族" "family"
+                  "family" "family"
+                  "vacation" "beach"
+                  "家事" "family"
+                  "遅れ" "late"
+                  "遅刻" "late"
+                  "late" "late"
+                  "package" "package"
+                  "荷物" "package"
+                  "sick" "sick"
+                  "病気" "sick"
+                  "痛" "sick"
+                  "telework" "telework"
+                  "体調不良" "sick"
+                  "daughter" "daughter"}}}

@@ -11,8 +11,8 @@ pom.xml.asc
 .hg/
 !INBOX/.keep
 INBOX/1*
-db/*.db
 .clj-kondo/
 .lsp/
 .idea
 prod.edn
+*.iml
