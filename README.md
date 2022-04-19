@@ -4,7 +4,8 @@
 View People not coming to work.
 # screenshot
 
-![](./screenshot.png)
+![](doc/screenshot.png)
+![](doc/screenshot2.png)
 
 # Developed with
 
