@@ -74,6 +74,8 @@
     const fromInput = event => event.srcElement instanceof HTMLInputElement;
 
     document.onkeydown = function(e) {
+        if (fromInput(e))
+            return;
         // console.log(e.key);
         switch (e.key) {
             case "1":
