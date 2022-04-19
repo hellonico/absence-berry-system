@@ -71,34 +71,6 @@
 </div>
 
 <script type="application/javascript">
-    const fromInput = event => event.srcElement instanceof HTMLInputElement;
-
-    document.onkeydown = function(e) {
-        if (fromInput(e))
-            return;
-        // console.log(e.key);
-        switch (e.key) {
-            case "1":
-                window.location.href = "/holidays/now"
-                break;
-            case "2":
-                window.location.href = window.location.origin + "/month"
-                break;
-            case "3":
-                window.location.href = window.location.origin + "/excel/abs.xlsx"
-                break;
-            case "4":
-                window.location.href = window.location.origin + "/last/10"
-                break;
-            case "5":
-                window.location.href = window.location.origin + "/users"
-                break;
-            default:
-                return;
-        }
-
-    }
-
     document.onkeyup = function (e) {
 
         // ignore when adding entry

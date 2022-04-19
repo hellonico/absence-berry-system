@@ -2,12 +2,12 @@
     <div class="twelve column" style="margin-top: 3%">
 
         <a href="/"><img src="/images/berry.png" class="mainicon"/></a>
-        <a class="button" title="scheduled vacation" href="/holidays/now"><img class="icon" src="/images/beach.png"/></a>
-        <a class="button" title="planned holidays this month" href="/month"><img class="icon"  src="/images/month.png"/></a>
-        <a class="button" title="planned holidays this month (excel)" href="/excel/abs.xlsx"><img class="icon" src="/images/excel.png"/></a>
-        <a class="button" title="last entries" href="/last/N"><img class="icon" src="/images/lastn.png"/></a>
-        <a class="button" title="users" href="/users"><img class="icon" src="/images/users.png"/></a>
-        <a class="button" title="quick" href="/abs"><img class="icon" src="/images/menulate.png"/></a>
+        <a class="button" title="(1) scheduled vacation" href="/holidays/now"><img class="icon" src="/images/beach.png"/></a>
+        <a class="button" title="(2) planned holidays this month" href="/month"><img class="icon"  src="/images/month.png"/></a>
+        <a class="button" title="(3) planned holidays this month (excel)" href="/excel/abs.xlsx"><img class="icon" src="/images/excel.png"/></a>
+        <a class="button" title="(4) last entries" href="/last/N"><img class="icon" src="/images/lastn.png"/></a>
+        <a class="button" title="(5) users" href="/users"><img class="icon" src="/images/users.png"/></a>
+        <a class="button" title="(6) late " href="/abs"><img class="icon" src="/images/menulate.png"/></a>
         <div style="float:right;padding-top: 30px"><input style="padding-top: px" id="myID" type="text" placeholder="Pick a date..." >&nbsp;</input></div>
 
     </div>
@@ -24,4 +24,36 @@
             }
         });
     };
+</script>
+<script type="application/javascript">
+    const fromInput = event => event.srcElement instanceof HTMLInputElement;
+
+    document.onkeydown = function(e) {
+        if (fromInput(e))
+            return;
+        // console.log(e.key);
+        switch (e.key) {
+            case "1":
+                window.location.href = "/holidays/now"
+                break;
+            case "2":
+                window.location.href = window.location.origin + "/month"
+                break;
+            case "3":
+                window.location.href = window.location.origin + "/excel/abs.xlsx"
+                break;
+            case "4":
+                window.location.href = window.location.origin + "/last/10"
+                break;
+            case "5":
+                window.location.href = window.location.origin + "/users"
+                break;
+            case "6":
+                window.location.href = window.location.origin + "/abs"
+                break;
+            default:
+                return;
+        }
+
+    }
 </script>
