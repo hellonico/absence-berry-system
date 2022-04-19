@@ -75,7 +75,8 @@
         insertMode = 1
     }
 
-    document.addEventListener("onkeydown", detectspecialkeys)
+    document.addEventListener("keydown", detectspecialkeys)
+
     // document.onkeyup=resetKeys
 
     document.addEventListener("DOMContentLoaded", function (e) {
@@ -159,7 +160,7 @@
 </script>
 
 <script type="application/javascript">
-    document.onkeyup = function(e) {
+    document.addEventListener("keyup",function(e) {
         resetKeys();
         switch(e.which) {
             case 27: // esc
@@ -184,7 +185,7 @@
             default: return; // exit this handler for other keys
         }
 
-    }
+    })
 </script>
 
 </html>

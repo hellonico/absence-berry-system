@@ -28,7 +28,7 @@
 <script type="application/javascript">
     const fromInput = event => event.srcElement instanceof HTMLInputElement;
 
-    document.onkeydown = function(e) {
+    document.addEventListener("keydown", function(e) {
         if (fromInput(e))
             return;
         // console.log(e.key);
@@ -55,5 +55,5 @@
                 return;
         }
 
-    }
+    });
 </script>
