@@ -23,8 +23,9 @@
            (GET "/users" []
              (let [users
                    (->> (ldap/get-users)
-                        (map #(set/rename-keys % {:mail :email :displayName :name}))
-                        (map #(select-keys % [:displayName :email :name]))
+                        ;(map #(set/rename-keys % {:mail :email :displayName :name}))
+                        ; to move to ldap ?
+                        (map #(select-keys % [:email :name]))
                         (map #(p/last-for-email %)))
                          ]
                (h/render-html "users" {:users users})))
@@ -90,12 +91,15 @@
                )
 
            ; debug
-           (GET "/debug/:date" [date]
+           (GET "/debug/date/:date" [date]
              {:body
               (apply
                 str
                 {:data   (p/get-fruits2 date)
                  :config env})})
+           (GET "/debug/users" []
+             {:body
+              (ldap/get-users)})
 
            (route/resources "/")
            (route/not-found "<h1>Page not found</h1>"))
