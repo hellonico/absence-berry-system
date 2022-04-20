@@ -106,8 +106,9 @@
            (route/not-found "<h1>Page not found</h1>"))
 
 (defn init []
-  (println "Starting..." (u/now)))
+  (println "Starting..." (u/now) " on port: " (-> env :server :port)))
 
 (defn -main
   [& args]
+  (init)
   (jetty/run-jetty handler {:port (-> env :server :port)}))
