@@ -9,9 +9,11 @@
     (java.time.temporal TemporalAdjusters))
     (:require [clojure.pprint]))
 
+(def date-format "yyyy-MM-dd")
+
 (defn fmt [java-date]
     (.format
-    (SimpleDateFormat. "yyyy-MM-dd")
+    (SimpleDateFormat. date-format)
     java-date))
 
 (defn short-date-to-date [ short-date ]
@@ -24,7 +26,6 @@
         (.set cal Calendar/MONTH month)
         (fmt (.getTime cal))))
 
-(def date-format "yyyy-MM-dd")
 
 (defn string-date-to-cal [short-date]
     (let[
@@ -111,3 +112,5 @@
 
 (defn current-month []
   (.getMonth (YearMonth/now)))
+(defn current-year []
+  (.getYear (YearMonth/now)))
