@@ -1,4 +1,5 @@
 (ns absence.receive
+  (:gen-class)
   (:require [clojure-mail.core :as mail]
             [clojure-mail.events :as events]
             [absence.persistence :as p]
@@ -18,7 +19,7 @@
 (defn- mail-removed [e]
   (prn "removed" e))
 
-(defn- insert-new-mails[e]
+(defn- new-mails[e]
   (try
   (doall
   (->> e
@@ -31,14 +32,9 @@
     (catch Exception e (.printStackTrace e))))
 
 (defn start-manager [store]
-  (let [s (mail/get-session "imaps")
-        folder (mail/open-folder store "inbox" :readonly)
-        im (events/new-idle-manager s)]
-    (events/add-message-count-listener
-      insert-new-mails
-      mail-removed
-      folder
-      im)
+  (let [folder (mail/open-folder store "inbox" :readonly)
+        im (->> "imaps" (mail/get-session) (events/new-idle-manager))]
+    (events/add-message-count-listener new-mails mail-removed folder im)
  (reset! manager im)))
 
 (defn stop-manager []
@@ -52,4 +48,4 @@
            (-> env :store :user)
            (-> env :store :pwd))]
   (start-manager gmail-store)
-  (println "Listener started..." (-> env :user-timezone))))
+  (println "Listener started..." (-> env :user-timezone)  "for: " (-> env :store :user) " user on:"(-> env :store :imap) )))

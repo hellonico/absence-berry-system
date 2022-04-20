@@ -3,7 +3,8 @@
   :main absence.ringing
   :repositories [["bintray" "https://jcenter.bintray.com/"]]
   :jvm-opts ["-Duser.timezone=Asia/Tokyo -Dfile.encoding=UTF-8"]
-  :profiles {:uberjar {:aot [absence.ringing] :uberjar-name "abs.jar"}
+  :profiles {:mail {:aot [absence.receive] :main absence.receive :uberjar-name "abs-mail.jar"}
+             :ring {:aot [absence.ringing] :main absence.ringing :uberjar-name "abs-ring.jar"}
              :dev {:plugins [[com.jakemccrary/lein-test-refresh "0.25.0"]]}}
   :ring {:handler absence.ringing/handler :init absence.ringing/init}
   :dependencies [[org.clojure/clojure "1.10.0"]

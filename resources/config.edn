@@ -3,14 +3,14 @@
  :server {:port 3000}
  :database
   {:classname "org.sqlite.JDBC" :subprotocol "sqlite" :subname "db/database.db"}
- :store {:imap ""
-         :user ""
-         :pwd ""}
+ :store {:imap "imap.gmail.com"
+         :user "otcabsence@gmail.com"
+         :pwd "ivxkdgazyynnopqi"}
  :ldap {:config {:host "localhost:10389" :bind-dn "uid=admin,ou=system" :password "secret"}
         :query {:base "ou=people,o=sevenSeas"
                 :params {:byte-valued [:jpegPhoto] :filter "(objectclass=person)"}}
         :mappings {:mail :email :givenname :name}}
- :postal {:sender {:host "smtp.abs.com" :port 25}}
+ :postal {:sender {:host "smtp.gmail.com"  :user "otcabsence@gmail.com"  :pass "ivxkdgazyynnopqi"  :ssl true}}
  :ack {:sender "Absence Bureau Service <otc-absence@smtp.abs.com>"
        :subject "Sounds good!"}
  :front {:links [{:a "Absence Berry Github Repository" :href "https://github.com/hellonico/absence-berry-system"} {:a "Google" :href "https://www.google.com"}]}
