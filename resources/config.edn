@@ -1,5 +1,6 @@
 {:inbox "INBOX/"
  :debug true
+ :server {:port 3000}
  :database
   {:classname "org.sqlite.JDBC" :subprotocol "sqlite" :subname "db/database.db"}
  :store {:imap ""

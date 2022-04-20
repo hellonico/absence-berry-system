@@ -1,5 +1,5 @@
 (ns absence.ringing
-  ;(:gen-class)
+  (:gen-class)
   (:require
     [ring.adapter.jetty :as jetty]
     [ring.util.codec]
@@ -90,7 +90,8 @@
                   :fruits fruits}))
                )
 
-           ; debug
+           ; debug routes in debug mode
+           (if (-> env :debug)
            (GET "/debug/date/:date" [date]
              {:body
               (apply
@@ -99,7 +100,7 @@
                  :config env})})
            (GET "/debug/users" []
              {:body
-              (ldap/get-users)})
+              (ldap/get-users)}))
 
            (route/resources "/")
            (route/not-found "<h1>Page not found</h1>"))
@@ -109,4 +110,4 @@
 
 (defn -main
   [& args]
-  (jetty/run-jetty handler {:port 3000}))
+  (jetty/run-jetty handler {:port (-> env :server :port)}))

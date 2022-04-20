@@ -4,6 +4,7 @@
    [absence.persistence :as p]
    [absence.notification :as n]
    [absence.utils :as u]
+   [clojure.java.shell :as sh]
    [absence.exceling :as ex]
    [config.core :refer [env]]
    [clostache.parser :as m]))
@@ -17,7 +18,7 @@
    {:header (m/render-resource "_header.mustache")
     :smallfruits (m/render-resource "_smallfruits.mustache" _map)
     :submenu (m/render-resource "_submenu.mustache" _map)
-    :footer (m/render-resource "_footer.mustache" {:git (:out (clojure.java.shell/sh "bash" "-c" "git log | head -n 3")) })}))
+    :footer (m/render-resource "_footer.mustache" {:git (:out (sh/sh "bash" "-c" "git log | head -n 3")) })}))
 
 (defn handle-date [date]
   {:today date
