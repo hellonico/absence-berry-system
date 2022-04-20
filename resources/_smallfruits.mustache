@@ -25,9 +25,20 @@
     {{/holiday}}
 
     {{#fruits}}
+        {{^late}}
         <tr title="sent: {{timesent}}" class="absence type{{telework}} {{times_icon}} {{reason_icon}}">
+        {{/late}}
+        {{#late}}
+        <tr title="sent: {{timesent}}" class="absence {{times_icon}} {{reason_icon}}">
+        {{/late}}
+
             <td>
+                {{^late}}
                 <img class="icon" src="/images/type{{telework}}.png"/>
+                {{/late}}
+                {{#late}}
+                <img class="icon" src="/images/late.png"/>
+                {{/late}}
             </td>
             <td>{{name}}</td>
             <td style="min-width: 100px;"><a href="/email/{{email}}">{{email}}</a></td>

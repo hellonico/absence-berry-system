@@ -87,8 +87,9 @@
                  "fruitsbyemail"
                  {:month  true
                   :email  (str "all, last " _n " entries")
-                  :fruits fruits}))
-               )
+                  :fruits
+                  (map #(merge {:late (nil? (% :holidaystart))} %) fruits)}
+               )))
 
            ; debug routes in debug mode
            (if (-> env :debug)
