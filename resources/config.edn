@@ -7,7 +7,7 @@
          :pwd ""}
  :ldap {:config {:host "localhost:10389" :bind-dn "uid=admin,ou=system" :password "secret"}
         :query {:base "ou=people,o=sevenSeas"
-                :params {:filter "(objectclass=person)"}}
+                :params {:byte-valued [:jpegPhoto] :filter "(objectclass=person)"}}
         :mappings {:mail :email :givenname :name}}
  :postal {:sender {:host "smtp.abs.com" :port 25}}
  :ack {:sender "Absence Bureau Service <otc-absence@smtp.abs.com>"
