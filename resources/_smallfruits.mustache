@@ -5,8 +5,8 @@
         <th>Name</th>
         <th>Email</th>
         <th>Dates</th>
-        <th>Reason</th>
-        <th>Action</th>
+        <th style="width: 25%">Reason</th>
+        <th style="width: 5%">Action</th>
     </tr>
     </thead>
     <tbody>
@@ -29,8 +29,11 @@
             </td>
             <td>{{name}}</td>
             <td style="min-width: 100px;"><a href="/email/{{email}}">{{email}}</a></td>
-            <td>{{times}}</td>
-            <td>{{reason}}</td>
+
+            <td>{{holidaystart}} {{holidayend}} {{date}} </td>
+
+
+            <td>{{times}} {{reason}}</td>
             <td>
                 <a onclick="if (confirm('Delete selected item?')){return true;}else{event.stopPropagation(); event.preventDefault();};"
                    href="/delete/{{id}}"><img class="icon" src="/images/delete.png"/></a></td>
