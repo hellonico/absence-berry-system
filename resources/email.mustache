@@ -17,7 +17,7 @@
 
         .datagrid {
             font: normal 10px;
-            background: #652299;
+            background: lightcoral;
             overflow: hidden;
             border: 1px solid #652299;
         }
@@ -57,7 +57,7 @@
 <body>
 <div class="datagrid">
     <table>
-        <caption>Summary</caption>
+        <caption>Schedule Summary</caption>
         <tbody>
         <tr>
             <td>Name:</td>
@@ -74,6 +74,10 @@
         <tr>
             <td>Date:</td>
             <td>{{date}}</td>
+        </tr>
+        <tr>
+            <td>Start/End:</td>
+            <td>{{holidaystart}}~{{holidayend}}</td>
         </tr>
         <tr>
             <td>Times:</td>

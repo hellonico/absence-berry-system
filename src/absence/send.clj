@@ -30,6 +30,7 @@
   (if (-> env :debug)
     (dump-before-send abs))
 
+  ; (println (m/render-resource "email.mustache" abs))
   (sending
     {:from (-> env :ack :sender)
      :to [(:email abs)]

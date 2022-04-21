@@ -1,6 +1,7 @@
 (ns absence.routehelpers
   (:require
    [ring.util.codec]
+   [absence.send :as send]
    [absence.persistence :as p]
    [absence.notification :as n]
    [absence.utils :as u]
@@ -63,5 +64,9 @@
              :subject (str _dates ",," _reason)
              :date-sent (java.util.Date.)}
         entry (n/parse-msg msg)]
-    (p/insert-one entry)
+    (->>
+      entry
+      send/dump-before-send
+      p/insert-one
+      send/abs-ack-send)
     entry))
