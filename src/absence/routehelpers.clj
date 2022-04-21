@@ -21,11 +21,12 @@
     :footer (m/render-resource "_footer.mustache" {:git (:out (sh/sh "bash" "-c" "git log | head -n 3")) })}))
 
 (defn handle-date [date]
-  {:today date
-   :today-str (u/date-to-dayoftheweek date)
-   :daybefore (u/day-before date)
-   :dayafter (u/day-after date)
-   :fruits (p/get-fruits2 date)})
+  (merge
+    {:today date
+     :today-str (u/date-to-dayoftheweek date)
+     :daybefore (u/day-before date)
+     :dayafter (u/day-after date)}
+     (p/get-fruits2 date)))
 
 (defn handle-email [email]
   {:fruits (p/get-fruits-by-email email)

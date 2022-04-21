@@ -11,52 +11,13 @@
                 <a href="/abs/{{daybefore}}"><img class="icon" src="/images/leftbutton.png"/></a>&nbsp;
                 <a href="/abs"><img class="icon" src="/images/current.png"/></a>&nbsp;
                 <a href="/abs/{{dayafter}}"><img class="icon" src="/images/rightbutton.png"/></a>&nbsp;
+                <p style="font-style: italic;">Not Showing telework on this page</p>
             </h2>
     </div>
 
     <div class="row u-full-width">
         <div class="twelve column tableFixHead" style="margin-top: 3%">
-
-            <table style="width:80%" class="mytable u-full-width">
-                <thead>
-                <tr>
-                    <th>&nbsp;</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Times</th>
-                    <th>Reason</th>
-                </tr>
-                </thead>
-                <tbody>
-                {{#fruits}}
-
-                    {{#holiday}}
-                        <tr title="sent: {{timesent}}" class="type{{telework}} ">
-                            <td>
-
-                                    <img title="{{telework}}" class="icon" src="/images/type{{telework}}.png"/>
-
-                            </td>
-                            <td>{{name}}</td>
-                            <td><a href="/email/{{email}}">{{email}}</a></td>
-                            <td>{{holidaystart}}~{{holidayend}}</td>
-                            <td>{{reason}}</td>
-                        </tr>
-                    {{/holiday}}
-
-                    {{#fruits}}
-                        <tr title="sent: {{timesent}} / id: {{id}}" class="absence {{times_icon}} {{reason_icon}}">
-                            <td><img src="/images/{{times_icon}}.png"/><img src="/images/{{reason_icon}}.png"/></td>
-                            <td>{{name}}</td>
-                            <td><a href="/email/{{email}}">{{email}}</a></td>
-                            <td>{{times}}</td>
-                            <td>{{reason}}</td>
-                        </tr>
-                    {{/fruits}}
-
-                {{/fruits}}
-                </tbody>
-            </table>
+            {{> smallfruits}}
         </div>
     </div>
 </div>

@@ -1,4 +1,4 @@
-<table class="mytable u-full-width">
+<table style="width:80%" class="mytable u-full-width">
     <thead>
     <tr>
         <th></th>
@@ -10,19 +10,6 @@
     </tr>
     </thead>
     <tbody>
-
-
-    {{#holiday}}
-        <tr title="sent: {{timesent}}" class="type{{telework}} holiday ">
-            <td>
-                    <img class="icon" src="/images/type{{telework}}.png"/>
-            </td>
-            <td>{{name}}</td>
-            <td><a href="/email/{{email}}">{{email}}</a></td>
-            <td>{{holidaystart}}~{{holidayend}}</td>
-            <td>{{reason}}</td>
-        </tr>
-    {{/holiday}}
 
     {{#fruits}}
         {{^late}}
@@ -42,7 +29,7 @@
             </td>
             <td>{{name}}</td>
             <td style="min-width: 100px;"><a href="/email/{{email}}">{{email}}</a></td>
-            <td>{{holidaystart}}~{{holidayend}}</td>
+            <td>{{times}}</td>
             <td>{{reason}}</td>
             <td>
                 <a onclick="if (confirm('Delete selected item?')){return true;}else{event.stopPropagation(); event.preventDefault();};"

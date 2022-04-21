@@ -97,7 +97,7 @@
              {:body
               (apply
                 str
-                {:data   (p/get-fruits2 date)
+                {:data   (p/get-fruits date)
                  :config env})})
            (GET "/debug/users" []
              {:body

@@ -64,32 +64,36 @@
       (map add-reason-icon))
       )
     
-(defn- get-fruits
+(defn get-fruits
   "get fruits internal method ; raw from database"
   ([] (get-fruits (u/today)))
   ([today]
     (query db [
       (str
       "select * from fruit where
-      telework = false and
-      date = '" today "'
+      telework = false
+      and
+      (date = '" today "'
       or
-      holidaystart <= '" today "' and holidayend >= '" today "'
+      holidaystart <= '" today "' and holidayend >= '" today "')
       order by timesent desc")])))
 
 
 (defn get-fruits2
-  "get fruits but enhance the values from get-fruits"
+  "get fruits but enhance the values from get-fruits: add times and reason icons, add late"
   ([] (get-fruits2 (u/today)))
   ([today]
     (let [f  (get-fruits today)]
     {:fruits 
       (->> f
-      (filter #(nil? (:holidaystart %)))
+      ;(filter #(nil? (:holidaystart %)))
       (map add-times-icon)
       ; (map check-empty-name-fields)
-      (map add-reason-icon))
-     :holiday (filter #(not (nil? (:holidaystart %))) f)})))
+      (map add-reason-icon)
+      (map #(merge {:late (nil? (% :holidaystart))} %)))
+     ;:holiday
+     ;(filter #(not (nil? (:holidaystart %))) f)
+     })))
 
 (defn get-last-fruits [n]
   (query db [(str "select * from fruit order by id desc limit " n ";")]))
