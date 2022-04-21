@@ -6,24 +6,31 @@
 <div class="container">
     <div class="row u-full-width">
         {{> submenu }}
+        <div class="row u-full-width">
         <h2>Users</h2>
+        </div>
     </div>
 
 
     <div class="row u-full-width">
-        <div class="twelve columns tableFixHead" style="margin-top: 3%">
+        <div class="twelve column tableFixHead" style="margin-top: 3%">
 
-            <table id="mytable" class="u-full-width">
+            <table style="width:80%" class="mytable u-full-width">
                 <thead>
                 <tr>
-                    <th style="min-width: 170px; width:100px">Name</th>
-                    <th style="min-width: 170px; width:100px">Last Sent</th>
+                    <th style="min-width: 30%">Name</th>
+                    <th>Last Sent</th>
                     <th>Last Entry</th>
                 </tr>
                 </thead>
                 <tbody>
                 {{#users}}
-                    <tr class="type{{telework}}" >
+                    {{^late}}
+                        <tr title="sent: {{timesent}}" class="absence type{{telework}}">
+                    {{/late}}
+                    {{#late}}
+                        <tr title="sent: {{timesent}}" class="absence">
+                    {{/late}}
                         <th style="width:100px"><a data-id="{{email}}" href="/email/{{email}}">{{name}}</a></th>
                         <td>{{timesent}}</td>
                         <td>{{reason}} {{holidaystart}} {{date}}</td>

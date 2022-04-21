@@ -102,8 +102,7 @@
   (insert! db :fruit abs) abs)
 
 (defn last-for-email [_map]
-  (let [email (str (:email _map))
-        ]
+  (let [email (str (:email _map))]
   (merge _map
          (first (query db [(str "select * from fruit where email = '" email "' order by id desc limit 1")])))))
 

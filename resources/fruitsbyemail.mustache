@@ -4,8 +4,8 @@
 <body>
 
   <div class="container">
-    <div class="row u-full-width">
       {{> submenu }}
+      <div class="row u-full-width">
         <h2>Schedule for {{email}}</h2>
         {{#month}}
             <p style="font-style: italic;">Reminder: Showing all items (even past ones)</p>
@@ -13,7 +13,7 @@
         {{^month}}
             <p style="font-style: italic;">Reminder: Not showing past items for single user</p>
         {{/month}}
-    </div>
+        </div>
 
       <div class="row u-full-width">
           <div class="twelve column tableFixHead" style="margin-top: 3%">

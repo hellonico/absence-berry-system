@@ -26,8 +26,10 @@
                         ;(map #(set/rename-keys % {:mail :email :displayName :name}))
                         ; to move to ldap ?
                         (map #(select-keys % [:email :name]))
-                        (map #(p/last-for-email %)))
-                         ]
+                        (map #(p/last-for-email %))
+                        (map #(p/last-for-email %))
+                        (map #(merge {:late (nil? (% :holidaystart))} %))
+                        )]
                (h/render-html "users" {:users users})))
 
            (GET "/holidays/:month" [month]
