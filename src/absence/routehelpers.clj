@@ -3,6 +3,7 @@
    [ring.util.codec]
    [absence.send :as send]
    [absence.persistence :as p]
+   [absence.calendars :as cals]
    [absence.notification :as n]
    [absence.utils :as u]
    [clojure.java.shell :as sh]
@@ -34,17 +35,14 @@
    :month false
    :email (str email)})
 
-(defn list-of-days [ymmonth]
-  (map
-   #(hash-map :l (.getDayOfMonth %) :klass (u/get-klass %))
-   (u/month-range-as-localdates ymmonth)))
-
 (defn handle-month [users ymmonth]
-  {:month (.getMonth ymmonth)
-   :next (.plusMonths ymmonth 1)
-   :prev (.minusMonths ymmonth 1)
-   :users users
-   :days (list-of-days ymmonth)})
+  {:month     (.getMonth ymmonth)
+   :next      (.plusMonths ymmonth 1)
+   :prev      (.minusMonths ymmonth 1)
+   :users     users
+   :calendars (cals/make-calendars ymmonth)
+   }
+  )
 
 (defn handle-home []
   {:email (-> env :store :user)

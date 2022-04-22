@@ -106,7 +106,6 @@
   (merge _map
          (first (query db [(str "select * from fruit where email = '" email "' order by id desc limit 1")])))))
 
-
 ;
 ; HOLIDAYS
 ;
@@ -153,6 +152,9 @@
     ret
     ))
 
-(defn query-holidays [ym email]
+(defn query-holidays
+  "Returns a list of days
+  {:days ({:h 0} {:h 0} {:h 0} {:h 0} {:h 0} {:h 0} {:h 0} {:h 0} {:h 0} {:h 0} {:h 0} {:h 0} {:h 0} {:h 0} {:h 0} {:h 0} {:h 0} {:h 0} {:h 0} {:h 0} {:h 0} {:h 0} {:h 1} {:h 1} {:h 0} {:h 0} {:h 0} {:h 0} {:h 0} {:h 0})}"
+  [ym email]
   (let [user-days-off (real-days ym email)]
     {:days (map #(hash-map :h %) user-days-off) }))

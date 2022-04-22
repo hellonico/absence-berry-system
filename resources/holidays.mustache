@@ -27,12 +27,14 @@
 
             <table id="mytable" class="u-full-width">
                 <thead>
+                {{#calendars}}
                 <tr>
-                    <th style="min-width: 170px; width:100px">Name</th>
+                    <th style="min-width: 170px; width:100px">{{name}}</th>
                     {{#days}}
-                        <th class="{{klass}}">{{l}}</th>
+                        <th title="{{title}}" class="{{klass}}">{{label}}</th>
                     {{/days}}
                 </tr>
+                {{/calendars}}
                 </thead>
                 <tbody>
                 {{#users}}

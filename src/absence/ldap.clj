@@ -8,10 +8,13 @@
   (ldap/connect  
    (-> env :ldap :config)))
 
-(defn get-users []
+(defn get-users_ []
   (->>
   (ldap/search
    ldap-server
    (-> env :ldap :query :base)
    (-> env :ldap :query :params))
   (map #(set/rename-keys % (-> env :ldap :mappings)))))
+
+(def get-users
+  (memoize get-users_))

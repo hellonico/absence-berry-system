@@ -2,10 +2,11 @@
   :plugins [[lein-ring "0.12.6"]]
   :main absence.ringing
   :repositories [["bintray" "https://jcenter.bintray.com/"]]
-  :jvm-opts ["-Duser.timezone=Asia/Tokyo -Dfile.encoding=UTF-8"]
+  :jvm-opts ["-Duser.timezone=Asia/Tokyo" "-Dfile.encoding=UTF-8"]
   :profiles {:mail {:aot [absence.receive] :main absence.receive :uberjar-name "abs-mail.jar"}
              :ring {:aot [absence.ringing] :main absence.ringing :uberjar-name "abs-ring.jar"}
-             :dev {:plugins [[com.jakemccrary/lein-test-refresh "0.25.0"]]}}
+             :dev {:jvm-opts ["-DsocksProxyHost=localhost" "-DsocksProxyPort=10090" ]
+                   :plugins [[com.jakemccrary/lein-test-refresh "0.25.0"]]}}
   :ring {:handler absence.ringing/handler :init absence.ringing/init}
   :dependencies [[org.clojure/clojure "1.10.0"]
                  [io.forward/clojure-mail "1.0.8"]
@@ -26,5 +27,6 @@
                  [org.apache.logging.log4j/log4j-core "2.17.2"]
 
                  [com.github.holidayjp/holidayjp-jdk8 "2.0.1"]
+                 [org.clojure/data.json "2.4.0"]
 
                  [org.clojars.pntblnk/clj-ldap "0.0.17"]])
