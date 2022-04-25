@@ -44,7 +44,6 @@
       ( holidaystart IS NOT NULL and holidayend >= '" (u/first-day-of-month) "' and holidayend <= '" (u/last-day-of-month) "') "
       " order by holidaystart desc") ]   )))
 
-
 (defn delete-by-id [id]
     (delete! db :fruit ["id = ?" id]))
 
@@ -125,8 +124,17 @@
         ]
     ret))
 
+(defn add-date-to-entry [entry]
+  (merge entry
+  (if (not (empty? (entry :holidaystart)))
+    {:d1 (u/to-local (:holidaystart entry)) :d2 (u/to-local (:holidayend entry))}
+    {:d1 (u/to-local (:date entry)) :d2 (u/to-local (:date entry))})))
+
+
 (defn- is-between [entries days]
-  (let [lse (map #(merge % {:d1 (u/to-local (:holidaystart %)) :d2 (u/to-local (:holidayend %))}) entries)]
+  ;(println entries)
+  (let [lse (map add-date-to-entry entries)]
+    (println lse)
     (map #(is-between-any % lse) days)))
 
 (defn query-db-days
@@ -139,14 +147,15 @@
     (query db [(str
       "select * from fruit where
       email = '" email "'
-      and (holidaystart >= '" s "'
-      or holidayend >= '" s "')
+      and
+      ((holidaystart >= '" s "' or holidayend >= '" s "') or (date >= '" s "' and date <= '" e "'))
       order by holidaystart desc")]))))
 
 (defn- real-days [ym email]
   (let [days (u/month-range-as-localdates ym)
         h (query-db-days ym email)
-        ret (is-between h days)
+        ; _ (println ">" h)
+        ret (is-between (filter #(not (empty? %)) h) days)
         ]
     ;(println ret)
     ret

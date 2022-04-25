@@ -52,7 +52,7 @@
         (map #(hash-map :date (u/to-local (% date-field) date-format) :event (event-format-fn %)) cal)]
     (group-by :date days))))
 
-(defn from-config [ymmonth file]
+(defn from-config_ [ymmonth file]
   (let [cal-map (load-file file)
         ;_ (clojure.pprint/pprint cal-map)
         days (load-calendar cal-map)
@@ -63,9 +63,12 @@
                 (partial (cal-map :label-fn) days)
                 (partial (cal-map :klass-fn) days))))
 
+(def from-config
+  (memoize from-config_))
+
 (defn make-calendars [ymmonth]
   (conj
     (map #(hash-map
             :name (first (str/split  (.getName (io/as-file %)) #"\."))
             :days (from-config ymmonth %)) (-> env :calendars))
-    {:name "Days" :days (list-of-days ymmonth)}))e
+    {:name "Days" :days (list-of-days ymmonth)}))
