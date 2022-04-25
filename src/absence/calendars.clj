@@ -3,24 +3,34 @@
     [java.time LocalDate]
     [com.github.holidayjp.jdk8 HolidayJp])
   (:require [clojure.data.json :as json]
-            [absence.utils :as u]))
+            [config.core :refer [env]]
+            [clojure.java.io :as io]
+            [absence.utils :as u]
+            [clojure.string :as str]))
 
+;
+;
+;
 (defn is-holiday [ldate]
   (or
     (HolidayJp/isHoliday ^LocalDate ldate)
     (= 6 (.getValue (.getDayOfWeek ldate)))
     (= 7 (.getValue (.getDayOfWeek ldate)))))
 
-(defn- calendar [ymmonth fn_]
+;
+;
+;
+(defn calendar [ymmonth title-fn label-fn klass-fn]
   (map
-    fn_
+    (fn [d]
+      (hash-map :title (title-fn d) :label (label-fn d) :klass (klass-fn d)))
     (u/month-range-as-localdates ymmonth)))
 
-(defn- calendar-2 [ymmonth fn1 fn2 fn3 ]
+(defn calendar-2
+  ([ymmonth title-fn label-fn klass-fn]
   (calendar
     ymmonth
-    (fn[d]
-      (hash-map :title (fn1 d) :label (fn2 d) :klass (fn3 d)))))
+    title-fn label-fn klass-fn)))
 
 (defn list-of-days [ymmonth]
   (calendar-2
@@ -29,21 +39,33 @@
     #(.getDayOfMonth %)
     #(cond (= % (LocalDate/now)) "today" (is-holiday %) "weekend" :else "")))
 
-(defn get-days_ []
-      (let [cal (-> "https://usgen-api.tw.otc/api/all_schedule" slurp (json/read-str :key-fn keyword))
-            days (map #(hash-map :date (u/to-local (:release_date %) "yyy/MM/dd") :event (str (:env %) " - " (:version %))) cal)]
-        (group-by :date days)))
+;
+;
+;
 
-(def get-days
-  (memoize get-days_))
+(defn load-calendar
+  ([_map] (load-calendar (_map :url) (_map :date-field) (_map :date-format) (_map :event-format-fn) ))
+  ([ url date-field date-format event-format-fn]
+  (let [cal (-> url slurp (json/read-str :key-fn keyword))
+        ;_ (println cal)
+        days
+        (map #(hash-map :date (u/to-local (% date-field) date-format) :event (event-format-fn %)) cal)]
+    (group-by :date days))))
 
-(defn releases [ymmonth]
-  (let [days (get-days)]
-  (calendar-2 ymmonth
-              (fn[d] (apply str (interpose "\n" (map :event (days d)))))
-              (fn[d] "")
-              #(cond (contains? days %) "today" :else ""))))
+(defn from-config [ymmonth file]
+  (let [cal-map (load-file file)
+        ;_ (clojure.pprint/pprint cal-map)
+        days (load-calendar cal-map)
+        ;_ (println days)
+        ]
+    (calendar-2 ymmonth
+                (partial (cal-map :title-fn) days)
+                (partial (cal-map :label-fn) days)
+                (partial (cal-map :klass-fn) days))))
 
 (defn make-calendars [ymmonth]
-  [{:name "Days" :days (list-of-days ymmonth)}
-   {:name "Releases" :days (releases ymmonth)}])
+  (conj
+    (map #(hash-map
+            :name (first (str/split  (.getName (io/as-file %)) #"\."))
+            :days (from-config ymmonth %)) (-> env :calendars))
+    {:name "Days" :days (list-of-days ymmonth)}))e
