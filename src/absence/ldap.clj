@@ -1,6 +1,7 @@
 (ns absence.ldap
    (:require
      [clojure.set :as set]
+     [clojure.core.memoize :as memo]
     [config.core :refer [env]]
     [clj-ldap.client :as ldap]))
 
@@ -16,5 +17,8 @@
    (-> env :ldap :query :params))
   (map #(set/rename-keys % (-> env :ldap :mappings)))))
 
+;(def get-users
+;  (memoize get-users_))
+
 (def get-users
-  (memoize get-users_))
+  (memo/ttl get-users_ {} :ttl/threshold 3600))

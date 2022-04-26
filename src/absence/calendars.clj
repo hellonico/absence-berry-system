@@ -4,6 +4,7 @@
     [com.github.holidayjp.jdk8 HolidayJp])
   (:require [clojure.data.json :as json]
             [config.core :refer [env]]
+            [clojure.core.memoize :as memo]
             [clojure.java.io :as io]
             [absence.utils :as u]
             [clojure.string :as str]))
@@ -66,9 +67,12 @@
 (def from-config
   (memoize from-config_))
 
-(defn make-calendars [ymmonth]
+(defn make-calendars_ [ymmonth]
   (conj
     (map #(hash-map
             :name (first (str/split  (.getName (io/as-file %)) #"\."))
             :days (from-config ymmonth %)) (-> env :calendars))
     {:name "Days" :days (list-of-days ymmonth)}))
+
+(def make-calendars
+  (memo/ttl make-calendars_ {} :ttl/threshold 3600))
