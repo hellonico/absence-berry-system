@@ -3,6 +3,8 @@
 {{>header}}
 
 <link rel="stylesheet" href="/css/cute-alert.css"/>
+<link rel="stylesheet" href="/css/cute-alert.css"/>
+
 <body>
 
 <div class="container u-full-width">
@@ -41,7 +43,14 @@
                     <tr>
                         <th style="width:100px"><a data-id="{{email}}" href="/email/{{email}}">{{name}}</a></th>
                         {{#days}}
-                                <td style="padding: 2px;" class="day{{h}}"></td>
+                                <td style="text-align: center"  title="{{reason}} {{times}}" style="padding: 2px;" class="{{class}}">
+                                    {{#id}}
+<!--                                    <a onclick="if (confirm('Delete schedule: {{id}} on day}?')){return true;}else{event.stopPropagation(); event.preventDefault();};"-->
+<!--                                       href="/delete/{{id}}">X</a>-->
+                                        <a onclick="onClickDelete({{id}})">X</a>
+
+                                    {{/id}}
+                                </td>
                         {{/days}}
                     </tr>
                 {{/users}}
@@ -59,7 +68,22 @@
 <!-- images cannot be resolved if local -->
 <script src="https://www.cssscript.com/demo/alert-confirm-toast-cute/cute-alert.js"></script>
 <script>
+
     const zeroPad = (num, places) => String(num).padStart(places, '0')
+
+    function onClickDelete(id) {
+
+        cuteAlert({
+            type: "error",
+            title: 'Delete',
+            message: '<h4><img class=\"icon\" src=\"/images/delete.png\"/>Delete schedule '+id+'</h4>',
+            confirmText: "Okay",
+            cancelText: "Cancel"
+        }).then((e) => {
+            window.location = "/delete/"+id;
+        });
+
+    }
 
     let modeButton = document.getElementById("mode");
     var insertMode = 1
@@ -125,12 +149,14 @@
                 var max = Math.max(...current);
 
                 let localInseretMode = insertMode
-                var title = localInseretMode==1 ? title = "Holiday from:" + min + " to:" + max : title = "Telework from:" + min + " to:" + max;
+                var title = localInseretMode==1 ? "Holiday from {{month}} " + min + " to {{month}}" + max : "Telework from {{month}}" + min + " to {{month}}" + max;
+
+                var message = localInseretMode==1 ? "<label for=\"dtimes\">Times</label><input id=\"dtimes\" type=\"text\"/></br/><label for=\"dreason\">Reason</label><input id=\"dreason\" type=\"text\"/>" : "Telework"
 
                 cuteAlert({
                     type: "question",
                     title: title,
-                    message: user,
+                    message: message ,
                     confirmText: "Okay",
                     cancelText: "Cancel"
                 }).then((e) => {

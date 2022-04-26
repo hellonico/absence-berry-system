@@ -125,10 +125,13 @@ Select cells in table
     /*background-color: white;*/
 }
 .day1 {
-    background-color: beige;
+    background-color: lightgreen;
 }
 .day2 {
     background-color: lightpink;
+}
+.day3 {
+    background-color: wheat;
 }
 .insertMode1 {
     background-color: beige;
