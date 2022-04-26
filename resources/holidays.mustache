@@ -45,10 +45,7 @@
                         {{#days}}
                                 <td style="text-align: center"  title="{{reason}} {{times}}" style="padding: 2px;" class="{{class}}">
                                     {{#id}}
-<!--                                    <a onclick="if (confirm('Delete schedule: {{id}} on day}?')){return true;}else{event.stopPropagation(); event.preventDefault();};"-->
-<!--                                       href="/delete/{{id}}">X</a>-->
                                         <a onclick="onClickDelete({{id}})">X</a>
-
                                     {{/id}}
                                 </td>
                         {{/days}}
@@ -104,6 +101,15 @@
     document.addEventListener("keydown", detectspecialkeys)
 
     // document.onkeyup=resetKeys
+    var dtimes = ""
+    var dreason = ""
+
+    function hello(e) {
+        dtimes = document.getElementById("dtimes").value
+        dreason = document.getElementById("dreason").value
+    }
+
+
 
     document.addEventListener("DOMContentLoaded", function (e) {
 
@@ -141,7 +147,7 @@
 
                 var tr = table.getElementsByTagName('tr')[parseInt(currentUser)];
                 var a = tr.getElementsByTagName('th')[0].getElementsByTagName('a')[0];
-                // console.log(a);
+
                 var user = a.innerHTML;
                 var email = a.getAttribute("data-id")
 
@@ -151,7 +157,7 @@
                 let localInseretMode = insertMode
                 var title = localInseretMode==1 ? "Holiday from {{month}} " + min + " to {{month}}" + max : "Telework from {{month}}" + min + " to {{month}}" + max;
 
-                var message = localInseretMode==1 ? "<label for=\"dtimes\">Times</label><input id=\"dtimes\" type=\"text\"/></br/><label for=\"dreason\">Reason</label><input id=\"dreason\" type=\"text\"/>" : "Telework"
+                var message = localInseretMode==1 ? "<label for=\"dtimes\">Times</label><input onkeyup='hello()' id=\"dtimes\" type=\"text\"/></br/><label for=\"dreason\">Reason</label><input onkeyup='hello()' id=\"dreason\" type=\"text\"/>" : "Telework"
 
                 cuteAlert({
                     type: "question",
@@ -160,11 +166,15 @@
                     confirmText: "Okay",
                     cancelText: "Cancel"
                 }).then((e) => {
+                    console.log(e)
 
                     if (e == ("confirm")) {
 
-                        let url = '/hello/' + localInseretMode + "/"+user + '/' + email + '/{{month}}/' + zeroPad(min, 2) + "/" + zeroPad(max, 2)
-                        console.log(url)
+                        let br = dreason == "" ? "Scheduled Vacation" : dreason
+                        let reason =  localInseretMode==1 ? br : "Telework"
+                        let times = dtimes == "" ? "FullDay" : dtimes
+                        let url = '/hello/' + reason + "/"+user + '/' + email + '/{{month}}/' + zeroPad(min, 2) + "/" + zeroPad(max, 2) +"/" + times
+                         console.log(url)
                         // return true;
                         fetch(url).then((response) => {
                             location.reload();

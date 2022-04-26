@@ -160,5 +160,5 @@
   "Returns a list of days, where each day is a map"
   [ym email]
   (let [user-days-off (real-days ym email)]
-    (println user-days-off)
+    ; (println user-days-off)
     {:days user-days-off}))

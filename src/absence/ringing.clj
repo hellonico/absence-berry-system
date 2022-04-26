@@ -76,11 +76,10 @@
              (h/render-html "fruits" (h/handle-date date)))
 
            ; js fetch request
-           (GET "/hello/:type/:user/:email/:month/:d1/:d2" [type user email month d1 d2]
+           (GET "/hello/:reason/:user/:email/:month/:d1/:d2/:times" [reason user email month d1 d2 times]
              (let [_month (format "%02d" (.getValue (Month/valueOf month)))
-                   dates (str _month d1 "-" _month d2)
-                   reason (if (= type "2") "telework" "Scheduled Vacation")
-                   entry (h/process-one-entry user email dates reason)]
+                   dates (if (= d1 d2) (str _month d1) (str _month d1 "-" _month d2))
+                   entry (h/process-one-entry user email dates reason times)]
                (println entry)
                entry))
 

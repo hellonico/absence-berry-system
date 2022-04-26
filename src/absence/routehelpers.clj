@@ -57,9 +57,9 @@
    :filename "abs.xlsx"
    :body (ex/get-excel)})
 
-(defn process-one-entry [_name _email _dates _reason]
+(defn process-one-entry [_name _email _dates _reason _times]
   (let [msg {:from [{:name _name :address _email}]
-             :subject (str _dates ",," _reason)
+             :subject (str _dates "," _times "," _reason)
              :date-sent (java.util.Date.)}
         entry (n/parse-msg msg)]
     (->>
