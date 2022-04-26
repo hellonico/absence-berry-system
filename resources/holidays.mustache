@@ -43,9 +43,9 @@
                     <tr>
                         <th style="width:100px"><a data-id="{{email}}" href="/email/{{email}}">{{name}}</a></th>
                         {{#days}}
-                                <td style="text-align: center"  title="{{reason}} {{times}}" style="padding: 2px;" class="{{class}}">
+                                <td style="text-align: center;"  title="{{reason}} {{times}}" style="padding: 2px;" class="{{class}}">
                                     {{#id}}
-                                        <a onclick="onClickDelete({{id}})">X</a>
+                                        <a onclick="onClickDelete({{id}}); return false;">X</a>
                                     {{/id}}
                                 </td>
                         {{/days}}
@@ -71,13 +71,17 @@
     function onClickDelete(id) {
 
         cuteAlert({
-            type: "error",
-            title: 'Delete',
+            // type: "error",
+            type: "question",
+            title: 'Delete?',
             message: '<h4><img class=\"icon\" src=\"/images/delete.png\"/>Delete schedule '+id+'</h4>',
-            confirmText: "Okay",
+            confirmText: "Yes",
             cancelText: "Cancel"
         }).then((e) => {
-            window.location = "/delete/"+id;
+            console.log(e);
+            if(e == "Yes") {
+                window.location = "/delete/"+id;
+            }
         });
 
     }

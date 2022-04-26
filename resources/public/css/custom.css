@@ -124,13 +124,14 @@ Select cells in table
 .day0 {
     /*background-color: white;*/
 }
-.day1 {
+
+.day1 { /*telework*/
     background-color: lightgreen;
 }
-.day2 {
-    background-color: lightpink;
+.day2 { /*holidays*/
+    background-color: lightcoral;
 }
-.day3 {
+.day3 { /* late */
     background-color: wheat;
 }
 .insertMode1 {
