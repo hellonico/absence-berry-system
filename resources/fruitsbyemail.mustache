@@ -6,7 +6,19 @@
   <div class="container">
       {{> submenu }}
       <div class="row u-full-width">
-        <h2>Schedule for {{email}}</h2>
+          <div class="ten columns">
+          <h2>Schedule for {{email}}</h2>
+          </div>
+          <div class="two columns">
+              <object width=300 height=200  data="/picture/{{email}}" type="image/jpg">
+                  <img width=150 height=150 src="/images/default_pic.jpg" />
+              </object>
+
+<!--              <img alt="{{email}}" width=300 height=200 src="/picture/{{email}}" onerror="this.src=`data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'></svg>`;"/>-->
+          </div>
+      </div>
+      <div class="row u-full-width">
+
         {{#month}}
             <p style="font-style: italic;">Reminder: Showing all full day items (even past ones)</p>
         {{/month}}

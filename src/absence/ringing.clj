@@ -83,6 +83,11 @@
                (println entry)
                entry))
 
+           ;(GET "/picture/:user.jpg" [user]
+           (GET "/picture/:user" [user]
+               (ring.util.response/file-response
+                 (ldap/get-user-pic user)))
+
            (GET "/last/:n" [n]
              (let [_n (try (Integer/parseInt n) (catch Exception e 10))
                    fruits (p/get-last-fruits _n)]
@@ -101,7 +106,9 @@
               (apply
                 str
                 {:data   (p/get-fruits date)
-                 :config env})})
+                 :config env})}))
+
+           (if (-> env :debug)
            (GET "/debug/users" []
              {:body
               (ldap/get-users)}))
