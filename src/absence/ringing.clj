@@ -38,7 +38,7 @@
                    users
                    (->> (ldap/get-users)
                         (map #(set/rename-keys % {:mail :email}))
-                        (map #(merge % (p/query-holidays ymmonth (:email %))))
+                        (pmap #(merge % (p/query-holidays ymmonth (:email %))))
                         (map #(merge {:late (nil? (% :holidaystart))} %))
                         )]
 
