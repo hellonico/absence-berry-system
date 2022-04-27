@@ -162,3 +162,17 @@
   (let [user-days-off (real-days ym email)]
     ; (println user-days-off)
     {:days user-days-off}))
+
+(defn items-today [email]
+  (let [today (u/today)
+        tomorrow (u/tomorrow)]
+    (query db [(str
+      "select * from fruit where
+       email = '" email "'
+       and
+       holidaystart >= '" today "' and holidayend >= '" today "'
+       order by holidaystart desc")])))
+
+(defn telework-today[email]
+  (let [items (items-today email) f (filter #(= 1 (% :telework)) items)]
+    (>= (count f ) 1)))

@@ -9,6 +9,7 @@
     [absence.ldap :as ldap]
     [clojure.set :as set]
     [config.core :refer [env]]
+    [clojure.data.json :as json]
     [ring.util.response :as ring]
     [compojure.core :refer [GET POST defroutes]]
     [compojure.route :as route])
@@ -98,6 +99,10 @@
                   :fruits
                   (map #(merge {:late (nil? (% :holidaystart))} %) fruits)}
                )))
+
+           ; http://localhost:3000/json/teleworktoday/cbuckley@royalnavy.mod.uk
+           (GET "/json/teleworktoday/:email" [email]
+             {:body (json/write-str {:email email :telework (p/telework-today email)})})
 
            ; debug routes in debug mode
            (if (-> env :debug)
