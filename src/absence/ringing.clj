@@ -47,7 +47,7 @@
 
            (POST "/form/post" {raw :body}
              (let [body (ring.util.codec/form-decode (slurp raw))
-                   entry (h/process-one-entry (body "name") (body "email") (body "dates") (body "reason"))]
+                   entry (h/process-one-entry (body "name") (body "email") (body "dates") (body "reason") (body "times"))]
                (h/render-html "new" entry)))
 
            (GET "/excel/abs.xlsx" []
