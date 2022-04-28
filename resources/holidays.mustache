@@ -33,7 +33,9 @@
                 <tr>
                     <th style="min-width: 170px; width:100px">{{name}}</th>
                     {{#days}}
-                        <th title="{{title}}" class="{{klass}}">{{label}}</th>
+                        <th name="{{title}}" class="{{klass}}">
+                            <a style="font-weight: bold; color: black" data-tooltip="{{title}}" class="tooltip-bottom"> {{label}}</a>
+                        </th>
                     {{/days}}
                 </tr>
                 {{/calendars}}
@@ -41,12 +43,12 @@
                 <tbody>
                 {{#users}}
                     <tr>
-                        <th style="width:100px"><a data-id="{{email}}" href="/email/{{email}}">{{name}}</a></th>
+                        <th style="min-width: 170px; width:100px"><a data-id="{{email}}" href="/email/{{email}}">{{name}}</a></th>
                         {{#days}}
                                 <td
                                     {{#id}}onclick="onClickDelete({{id}});" data-tooltip="{{name}} : {{reason}} {{times}}"{{/id}}
                                         class="{{#id}}hello{{/id}} {{class}}"
-                                        style="padding: 2px; text-align: center;">
+                                        style="padding: 0px; text-align: center;">
                                 {{#id}}
                                     <img class="circle" height=32px" width="32px" src="/images/circle.png"/>
                                 {{/id}}
@@ -72,12 +74,6 @@
     const zeroPad = (num, places) => String(num).padStart(places, '0')
 
     function onClickDelete(id) {
-        // if (event.preventDefault && event.stopImmediatePropagation) {
-        //     event.preventDefault();
-        //     event.stopImmediatePropagation();
-        // } else {
-        //     event.returnValue = false;
-        // }
 
         cuteAlert({
             // type: "error",
