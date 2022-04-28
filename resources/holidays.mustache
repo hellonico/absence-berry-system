@@ -34,7 +34,7 @@
                     <th style="min-width: 170px; width:100px">{{name}}</th>
                     {{#days}}
                         <th name="{{title}}" class="{{klass}}">
-                            <a style="font-weight: bold; color: black" data-tooltip="{{title}}" class="tooltip-bottom"> {{label}}</a>
+                            <a style="font-weight: bold; color: black" data-tooltip="{{label}}" class="tooltip-bottom">{{label}}</a>
                         </th>
                     {{/days}}
                 </tr>
@@ -46,7 +46,7 @@
                         <th style="min-width: 170px; width:100px"><a data-id="{{email}}" href="/email/{{email}}">{{name}}</a></th>
                         {{#days}}
                                 <td
-                                    {{#id}}onclick="onClickDelete({{id}});" data-tooltip="{{name}} : {{reason}} {{times}}"{{/id}}
+                                    {{#id}}onclick="onClickDelete({{id}}, '{{name}}', '{{reason}} <br/> {{times}}' );" data-tooltip="{{name}} : {{reason}} {{times}}"{{/id}}
                                         class="{{#id}}hello{{/id}} {{class}}"
                                         style="padding: 0px; text-align: center;">
                                 {{#id}}
@@ -73,15 +73,15 @@
 
     const zeroPad = (num, places) => String(num).padStart(places, '0')
 
-    function onClickDelete(id) {
+    function onClickDelete(id, user, msg) {
 
         cuteAlert({
             // type: "error",
             type: "question",
-            title: 'Delete?',
-            message: '<h4><img class=\"icon\" src=\"/images/delete.png\"/>Delete schedule '+id+'</h4>',
-            confirmText: "Yes",
-            cancelText: "Cancel"
+            title: user,
+            message: '<h4>'+msg+'</h4>',
+            confirmText: "<img style=\"height:16px;width:16px\" src=\"/images/delete.png\"/> "+"Delete?",
+            cancelText: "Close"
         }).then((e) => {
             console.log(e);
             if(e == "confirm") {
