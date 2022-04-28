@@ -3,7 +3,7 @@
 {{>header}}
 
 <link rel="stylesheet" href="/css/cute-alert.css"/>
-<link rel="stylesheet" href="/css/cute-alert.css"/>
+<link rel="stylesheet" href="/css/tooltip.css"/>
 
 <body>
 
@@ -43,10 +43,13 @@
                     <tr>
                         <th style="width:100px"><a data-id="{{email}}" href="/email/{{email}}">{{name}}</a></th>
                         {{#days}}
-                                <td style="text-align: center;"  title="{{reason}} {{times}}" style="padding: 2px;" class="{{class}}">
-                                    {{#id}}
-                                        <a onclick="onClickDelete({{id}}); return false;">X</a>
-                                    {{/id}}
+                                <td
+                                    {{#id}}onclick="onClickDelete({{id}});" data-tooltip="{{name}} : {{reason}} {{times}}"{{/id}}
+                                        class="{{#id}}hello{{/id}} {{class}}"
+                                        style="padding: 2px; text-align: center;">
+                                {{#id}}
+                                    <img class="circle" height=32px" width="32px" src="/images/circle.png"/>
+                                {{/id}}
                                 </td>
                         {{/days}}
                     </tr>
@@ -69,6 +72,12 @@
     const zeroPad = (num, places) => String(num).padStart(places, '0')
 
     function onClickDelete(id) {
+        // if (event.preventDefault && event.stopImmediatePropagation) {
+        //     event.preventDefault();
+        //     event.stopImmediatePropagation();
+        // } else {
+        //     event.returnValue = false;
+        // }
 
         cuteAlert({
             // type: "error",
@@ -145,7 +154,9 @@
             },
             onFinishSelect: function (event) {
                 // console.log("finish select");
-                if (event.target.cellIndex == 0 || event.target.tagName.toLowerCase() === "a")
+                if (event.target.cellIndex == 0 || event.target.tagName.toLowerCase() === "a" || event.target.tagName.toLowerCase() === "img")
+                    return true;
+                if(event.target.classList.contains("hello"))
                     return true;
 
 

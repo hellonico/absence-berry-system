@@ -135,10 +135,10 @@ Select cells in table
     background-color: wheat;
 }
 .insertMode1 {
-    background-color: beige;
+    background-color: lightcoral;
 }
 .insertMode2 {
-    background-color: lightpink;
+    background-color: lightgreen;
 }
 .instruction {
     font-style: italic;
