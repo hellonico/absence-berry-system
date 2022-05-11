@@ -2,7 +2,8 @@
    (:require
      [clojure.set :as set]
      [clojure.core.memoize :as memo]
-    [config.core :refer [env]]
+     [config.core :refer [env]]
+     [opencv4.core :as cv]
      [clojure.java.io :as io]
     [clj-ldap.client :as ldap]))
 
@@ -44,5 +45,17 @@
     (with-open [w (io/output-stream fp)] (.write w (:jpegPhoto ld))
     fp)))
 
+(defn get-user-pic__ [user]
+  (let [pic  (get-user-pic_ user)]
+    (-> pic
+      cv/imread
+      ;(cv/edge-preserving-filter! 1 60 0.7)
+      (cv/detail-enhance! 10 0.15)
+      (cv/imwrite pic)
+    )
+    pic
+    ))
+
 (def get-user-pic
-  (memo/ttl get-user-pic_ {} :ttl/threshold (* 24 3600)))
+  (memo/ttl get-user-pic__ {} :ttl/threshold (* 24 3600)))
+
