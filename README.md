@@ -1,7 +1,8 @@
 
 # absence
 
-View People not coming to work.
+Open Source User, Holiday and Schedule, management in clojure based on the Origami/OpenCV library
+
 # screenshot
 
 ![](doc/screenshot.png)
