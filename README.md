@@ -11,17 +11,18 @@ Open Source User, Holiday and Schedule, management in clojure based on the [Orig
 # Developed with
 
 <a href="https://www.jetbrains.com/idea/">
-<img width="64" height="64" src="doc/idea.png"/>
+<img alt="idea" width="64" height="64" src="doc/idea.png"/>
 </a>
 
 <a href="https://www.jetbrains.com/datagrip/">
-<img width="64" height="64" src="doc/datagrip.png"/>
+<img alt="datagrip" width="64" height="64" src="doc/datagrip.png"/>
 </a>
 
 <a href="https://cursive-ide.com/">
-<img width="64" height="64" src="doc/cursive.png"/>
+<img alt="cursive" width="64" height="64" src="doc/cursive.png"/>
 </a>
 
-
-
+<a href="http://origamidocs.hellonico.info">
+<img alt="origami" width="64" height="64" src="http://origamidocs.hellonico.info/doc/origami.jpg"/>
+</a>
 
