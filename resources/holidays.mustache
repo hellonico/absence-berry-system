@@ -33,8 +33,8 @@
                 <tr>
                     <th style="min-width: 170px; width:100px">{{name}}</th>
                     {{#days}}
-                        <th name="{{title}}" class="{{klass}}">
-                            <a style="font-weight: bold; color: black" data-tooltip="{{label}}" class="tooltip-bottom">{{label}}</a>
+                        <th class="{{klass}}">
+                            <a style="font-weight: bold; color: black" data-tooltip="{{title}}" class="tooltip-bottom">{{label}}</a>
                         </th>
                     {{/days}}
                 </tr>
@@ -80,11 +80,11 @@
             type: "question",
             title: user,
             message: '<h4>'+msg+'</h4>',
-            confirmText: "<img style=\"height:16px;width:16px\" src=\"/images/delete.png\"/> "+"Delete?",
-            cancelText: "Close"
+            cancelText: "<img style=\"height:16px;width:16px\" src=\"/images/delete.png\"/> "+"&nbsp;Delete",
+            confirmText: "Close"
         }).then((e) => {
             console.log(e);
-            if(e == "confirm") {
+            if(e != "confirm") {
                 window.location = "/delete/"+id;
             }
         });
