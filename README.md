@@ -1,7 +1,7 @@
 
 # absence
 
-Open Source User, Holiday and Schedule, management in clojure based on the [Origami](http://origamidocs.hellonico.info)/OpenCV library
+Open Source User, Holiday and Schedule, management in clojure based on the [Origami](http://origamidocs.hellonico.info) library
 
 # screenshot
 
