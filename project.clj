@@ -30,4 +30,7 @@
                  [org.clojure/data.json "2.4.0"]
                  [org.clojure/core.memoize "1.0.257"]
 
-                 [org.clojars.pntblnk/clj-ldap "0.0.17"]])
+                 [org.clojars.pntblnk/clj-ldap "0.0.17"]
+
+                 [origami/origami "4.5.1-0"]
+                 ])
