@@ -146,6 +146,20 @@
       (wrap-report-exceptions {})
       ))
 
+(defn wrap-fallback-exception
+  [handler]
+  (fn [request]
+    (try
+      (handler request)
+      (catch Exception e
+        (sentry/send-event
+          {:message (.getMessage e)
+           :throwable e})
+        {:status 500 :body "Something isn't quite right..."}))))
+
+(def handler
+  (-> my-routes wrap-fallback-exception))
+
 (defn init []
   (sentry/init! (-> env :sentry :project) (-> env :sentry :options))
 
