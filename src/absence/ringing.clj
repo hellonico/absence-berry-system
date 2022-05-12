@@ -9,6 +9,7 @@
     [absence.ldap :as ldap]
     [clojure.set :as set]
     [config.core :refer [env]]
+    [sentry-clj.ring :refer [wrap-report-exceptions wrap-sentry-tracing]]
     [clojure.data.json :as json]
     [sentry-clj.core :as sentry]
     [ring.util.response :as ring]
@@ -127,20 +128,23 @@
 
            (route/resources "/")
            (route/not-found "<h1>Page not found</h1>"))
-
-(defn wrap-fallback-exception
-  [handler]
-  (fn [request]
-    (try
-      (handler request)
-      (catch Exception e
-        (sentry/send-event
-          {:message (.getMessage e)
-           :throwable e})
-        {:status 500 :body "Something isn't quite right..."}))))
+;
+;(defn wrap-fallback-exception
+;  [handler]
+;  (fn [request]
+;    (try
+;      (handler request)
+;      (catch Exception e
+;        (sentry/send-event
+;          {:message (.getMessage e)
+;           :throwable e})
+;        {:status 500 :body "Something isn't quite right..."}))))
 
 (def handler
-  (-> my-routes wrap-fallback-exception))
+  (-> my-routes
+      wrap-sentry-tracing
+      (wrap-report-exceptions {})
+      ))
 
 (defn init []
   (sentry/init! (-> env :sentry :project) (-> env :sentry :options))
