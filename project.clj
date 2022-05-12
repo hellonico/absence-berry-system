@@ -32,5 +32,7 @@
 
                  [org.clojars.pntblnk/clj-ldap "0.0.17"]
 
+                 ; NEW FEATURES
                  [origami/origami "4.5.1-0"]
+                 [io.sentry/sentry-clj "5.7.178"]
                  ])
