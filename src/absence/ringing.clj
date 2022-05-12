@@ -10,12 +10,14 @@
     [clojure.set :as set]
     [config.core :refer [env]]
     [clojure.data.json :as json]
+    [sentry-clj.core :as sentry]
     [ring.util.response :as ring]
     [compojure.core :refer [GET POST defroutes]]
+    ; [compojure.handler :as handler]
     [compojure.route :as route])
   (:import (java.time Month)))
 
-(defroutes handler
+(defroutes my-routes
            (GET "/delete/:id" [id]
              (prn "delete " id)
              (p/delete-by-id id)
@@ -118,10 +120,31 @@
              {:body
               (ldap/get-users)}))
 
+           (if (-> env :debug)
+             (GET "/error" []
+               (throw (Exception. "Hello"))
+               ))
+
            (route/resources "/")
            (route/not-found "<h1>Page not found</h1>"))
 
+(defn wrap-fallback-exception
+  [handler]
+  (fn [request]
+    (try
+      (handler request)
+      (catch Exception e
+        (sentry/send-event
+          {:message (.getMessage e)
+           :throwable e})
+        {:status 500 :body "Something isn't quite right..."}))))
+
+(def handler
+  (-> my-routes wrap-fallback-exception))
+
 (defn init []
+  (sentry/init! (-> env :sentry :project) (-> env :sentry :options))
+
   (println "Starting..." (u/now) " on port: " (-> env :server :port)))
 
 (defn -main
