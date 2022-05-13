@@ -89,8 +89,12 @@
 
            ;(GET "/picture/:user.jpg" [user]
            (GET "/picture/:user" [user]
+             (try
                (ring.util.response/file-response
-                 (ldap/get-user-pic user)))
+                 (ldap/get-user-pic user))
+             (catch Exception e
+               (ring.util.response/file-response
+                 "resources/public/images/default_pic.jpg"))))
 
            (GET "/last/:n" [n]
              (let [_n (try (Integer/parseInt n) (catch Exception e 10))

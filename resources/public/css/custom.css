@@ -6,6 +6,13 @@ body {
   transform-origin: 0 0;
 }
 
+
+.profilepic {
+    height:128px;
+    width:128px;
+    max-width:100%;
+}
+
 .type0 {
     background-color: lightcoral;
 }
@@ -31,12 +38,12 @@ body {
 .absence.full td {
   background-color: beige;
 }
-.absence td img {
-  display: block;
-  float:left;
-  height: 30px;
-  width: 30px;
-}
+/*.absence td img {*/
+/*  display: block;*/
+/*  float:left;*/
+/*  height: 30px;*/
+/*  width: 30px;*/
+/*}*/
 
 .mytable {
   width:120%;

@@ -19,6 +19,7 @@
                 <thead>
                 <tr>
                     <th style="min-width: 30%">Name</th>
+                    <th>Picture</th>
                     <th>Last Sent</th>
                     <th>Last Entry</th>
                 </tr>
@@ -32,6 +33,7 @@
                         <tr title="sent: {{timesent}}" class="absence">
                     {{/late}}
                         <th style="width:100px"><a data-id="{{email}}" href="/email/{{email}}">{{name}}</a></th>
+                        <td><a data-id="{{email}}" href="/email/{{email}}"><img class="profilepic" src="/picture/{{email}}"/></a></td>
                         <td>{{timesent}}</td>
                         <td>{{reason}} {{holidaystart}} {{date}}</td>
                     </tr>
@@ -43,15 +45,4 @@
 
 </div>
 </body>
-<script type="application/javascript">
-    document.onkeyup = function(e) {
-        switch (e.which) {
-            case 27: // esc
-                window.location.href = window.location.origin;
-                break;
-            default:
-                return;
-        }
-    }
-</script>
 </html>

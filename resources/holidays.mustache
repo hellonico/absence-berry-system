@@ -43,7 +43,11 @@
                 <tbody>
                 {{#users}}
                     <tr>
-                        <th style="min-width: 170px; width:100px"><a data-id="{{email}}" href="/email/{{email}}">{{name}}</a></th>
+                        <th style="min-width: 170px; width:100px"><a data-id="{{email}}" href="/email/{{email}}">
+<!--                            <img class="circle" height=64px" width="64px" src="/picture/{{email}}"/>-->
+                            {{name}}</a>
+
+                        </th>
                         {{#days}}
                                 <td
                                     {{#id}}onclick="onClickDelete({{id}}, '{{name}}', '{{reason}} <br/> {{times}}' );" data-tooltip="{{name}} : {{reason}} {{times}}"{{/id}}
