@@ -13,12 +13,12 @@
     [clojure.data.json :as json]
     [sentry-clj.core :as sentry]
     [ring.util.response :as ring]
-    [compojure.core :refer [GET POST defroutes]]
+    [compojure.core :refer [GET POST context routes defroutes]]
     ; [compojure.handler :as handler]
     [compojure.route :as route])
   (:import (java.time Month)))
 
-(defroutes my-routes
+(defroutes base-routes
            (GET "/delete/:id" [id]
              (prn "delete " id)
              (p/delete-by-id id)
@@ -92,46 +92,64 @@
              (try
                (ring.util.response/file-response
                  (ldap/get-user-pic user))
-             (catch Exception e
-               (ring.util.response/file-response
-                 "resources/public/images/default_pic.jpg"))))
+               (catch Exception e
+                 (ring.util.response/file-response
+                   "resources/public/images/default_pic.jpg"))))
 
            (GET "/last/:n" [n]
              (let [_n (try (Integer/parseInt n) (catch Exception e 10))
                    fruits (p/get-last-fruits _n)]
                (h/render-html
                  "fruitsbyemail"
-                 {:month  true
-                  :email  (str "all, last " _n " entries")
+                 {:month true
+                  :email (str "all, last " _n " entries")
                   :fruits
                   (map #(merge {:late (nil? (% :holidaystart))} %) fruits)}
-               )))
+                 )))
 
            ; http://localhost:3000/json/teleworktoday/cbuckley@royalnavy.mod.uk
            (GET "/json/teleworktoday/:email" [email]
              {:body (json/write-str {:email email :telework (p/telework-today email)})})
 
-           ; debug routes in debug mode
-           (if (-> env :debug)
-           (GET "/debug/date/:date" [date]
-             {:body
-              (apply
-                str
-                {:data   (p/get-fruits date)
-                 :config env})}))
-
-           (if (-> env :debug)
-           (GET "/debug/users" []
-             {:body
-              (ldap/get-users)}))
-
-           (if (-> env :debug)
-             (GET "/error" []
-               (throw (Exception. "Hello"))
-               ))
 
            (route/resources "/")
            (route/not-found "<h1>Page not found</h1>"))
+
+(defroutes debug-routes
+           (context "/debug" []
+
+             (GET "/refresh-config" []
+               (println "config refreshed")
+               (config.core/reload-env)
+               "config refreshed")
+
+             (GET "/date/:date" [date]
+               {:body
+                (apply
+                  str
+                  {:data   (p/get-fruits date)
+                   :config env})})
+             ;
+             ;(GET "/hello" []
+             ;  "hello")
+             ;
+
+             (GET "/users" []
+               {:body
+                (ldap/get-users)})
+             (GET "/error" []
+               (throw (Exception. "Hello")))))
+
+(def my-routes
+    (if (-> env :debug)
+      (routes debug-routes base-routes)
+      base-routes))
+
+(def handler
+  (-> my-routes
+      wrap-sentry-tracing
+      (wrap-report-exceptions {})
+      ))
 ;
 ;(defn wrap-fallback-exception
 ;  [handler]
@@ -140,33 +158,16 @@
 ;      (handler request)
 ;      (catch Exception e
 ;        (sentry/send-event
-;          {:message (.getMessage e)
+;          {:message   (.getMessage e)
 ;           :throwable e})
 ;        {:status 500 :body "Something isn't quite right..."}))))
 
-(def handler
-  (-> my-routes
-      wrap-sentry-tracing
-      (wrap-report-exceptions {})
-      ))
-
-(defn wrap-fallback-exception
-  [handler]
-  (fn [request]
-    (try
-      (handler request)
-      (catch Exception e
-        (sentry/send-event
-          {:message (.getMessage e)
-           :throwable e})
-        {:status 500 :body "Something isn't quite right..."}))))
-
-(def handler
-  (-> my-routes wrap-fallback-exception))
+;(def handler
+;  (-> my-routes wrap-fallback-exception))
 
 (defn init []
   (sentry/init! (-> env :sentry :project) (-> env :sentry :options))
-
+  (println "Debug mode is on:" (-> env :debug))
   (println "Starting..." (u/now) " on port: " (-> env :server :port)))
 
 (defn -main
