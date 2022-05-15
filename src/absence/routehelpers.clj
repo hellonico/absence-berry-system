@@ -3,6 +3,7 @@
    [ring.util.codec]
    [absence.send :as send]
    [absence.persistence :as p]
+   [absence.ldap :as ldap]
    [absence.calendars :as cals]
    [absence.notification :as n]
    [absence.utils :as u]
@@ -56,6 +57,18 @@
    :headers {"Content-Type" "application/vnd.ms-excel"}
    :filename "abs.xlsx"
    :body (ex/get-excel)})
+
+(defn handle-users [template]
+  (let [users
+        (->> (ldap/get-users)
+             ;(map #(set/rename-keys % {:mail :email :displayName :name}))
+             ; to move to ldap ?
+             (map #(select-keys % [:email :name]))
+             (map #(p/last-for-email %))
+             (map #(p/last-for-email %))
+             (map #(merge {:late (nil? (% :holidaystart))} %))
+             )]
+    (render-html template {:users users})))
 
 (defn process-one-entry [_name _email _dates _reason _times]
   (let [msg {:from [{:name _name :address _email}]

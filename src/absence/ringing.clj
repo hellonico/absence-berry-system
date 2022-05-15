@@ -18,23 +18,18 @@
     [compojure.route :as route])
   (:import (java.time Month)))
 
+
 (defroutes base-routes
            (GET "/delete/:id" [id]
              (prn "delete " id)
              (p/delete-by-id id)
              (ring/redirect "/holidays/now"))
 
+           (GET "/faces" []
+                (h/handle-users "faces"))
+
            (GET "/users" []
-             (let [users
-                   (->> (ldap/get-users)
-                        ;(map #(set/rename-keys % {:mail :email :displayName :name}))
-                        ; to move to ldap ?
-                        (map #(select-keys % [:email :name]))
-                        (map #(p/last-for-email %))
-                        (map #(p/last-for-email %))
-                        (map #(merge {:late (nil? (% :holidaystart))} %))
-                        )]
-               (h/render-html "users" {:users users})))
+             (h/handle-users "users"))
 
            (GET "/holidays/:month" [month]
              (let [ymmonth (u/to-yearmonth month)
