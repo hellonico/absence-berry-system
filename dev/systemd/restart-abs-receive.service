@@ -1,0 +1,9 @@
+[Unit]
+Description=Restart abs email receiver
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/systemctl try-restart abs-receive.service
+
+[Install]
+WantedBy=multi-user.target

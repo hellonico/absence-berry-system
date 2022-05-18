@@ -1,0 +1,11 @@
+[Unit]
+Description=abs-ring
+
+[Service]
+ExecStart=/bin/bash -c /home/centos/absence/scripts/prod-ring.sh 
+User=centos
+Group=centos
+WorkingDirectory=/home/centos/absence
+
+[Install]
+WantedBy=multi-user.target

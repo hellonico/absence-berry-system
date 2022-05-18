@@ -1,0 +1,13 @@
+[Unit]
+Description=Restart abs email receiver
+
+[Timer]
+# OnBootSec=1min
+Persistent=true
+#OnCalendar=*-*-* *:00:00
+#Every two hours at 30 minutes
+OnCalendar=00/2:30
+Unit=restart-abs-receive.service
+
+[Install]
+WantedBy=timers.target

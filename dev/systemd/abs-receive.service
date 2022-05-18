@@ -1,0 +1,16 @@
+[Unit]
+Description=abs-receive
+
+[Service]
+ExecStart=/bin/bash -c /home/centos/absence/scripts/prod-rec.sh 
+User=centos
+Group=centos
+WorkingDirectory=/home/centos/absence
+Restart=always
+RestartSec=10
+StartLimitBurst=10
+# Type=notify
+# WatchdogSec=10
+
+[Install]
+WantedBy=multi-user.target

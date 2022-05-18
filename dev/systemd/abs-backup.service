@@ -1,0 +1,9 @@
+[Unit]
+Description=Backup ABS database
+
+[Service]
+Type=simple
+ExecStart=/bin/bash -c 'cp /home/centos/absence/prod.db /tmp/prod_$$(date +%%Y-%%m-%%d).db'
+
+[Install]
+WantedBy=multi-user.target
