@@ -8,6 +8,11 @@
       <div class="row u-full-width">
           <div class="ten columns">
           <h2>Schedule for {{email}}</h2>
+              {{^month}}
+                  <a href="/faces"><img class="icon" src="/images/board_view.png"/></a>
+                  <a href="/users"><img class="icon" src="/images/list_view.webp"/></a>
+                  <a href="/faces2"><img class="icon" src="/images/coverflow.png"/></a>
+              {{/month}}
           </div>
           <div class="two columns">
               <object style="  border-radius: 50%;" width=150 height=150  data="/picture/{{email}}" type="image/jpg">

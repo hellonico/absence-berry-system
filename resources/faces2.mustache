@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+{{> header}}
+<link rel="stylesheet" href="/css/coverflow.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+<style>
+    .hello {
+        padding-top: 10%;
+        height: 600px;
+        position: relative;
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+
+        background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, #333), color-stop(100%, #87CEFA));
+        background: -webkit-radial-gradient(center, ellipse cover, white 0%, #87CEFA 100%);
+
+        height: 100%;
+        width: 100%;
+
+        text-align: center;
+
+        font-family: sans-serif;
+    }
+</style>
+<body>
+
+<div class="container">
+    <div class="row u-full-width">
+        {{> submenu }}
+        <div class="row u-full-width">
+            <h2>Coverflow &nbsp;
+                <a href="/users"><img class="icon" src="/images/list_view.webp"/></a>
+                <a href="/faces"><img class="icon" src="/images/board_view.png"/></a>
+            </h2>
+        </div>
+    </div>
+    <div class="row u-full-width">
+
+        <div style="height: 600px" class="hello twelve columns">
+            <div id="coverflow">
+                {{#users}}
+                        <section onclick="window.location='/email/{{email}}';" data-cover="/picture/{{email}}">
+                            <p>{{name}}</p>
+                        </section>
+                {{/users}}
+            </div>
+
+            <nav id="controls">
+                <a id="prev">←</a> <a id="next">→</a>
+            </nav>
+        </div>
+
+    </div>
+</div>
+
+</body>
+
+<script type="text/javascript" src="/js/coverflow.js"></script>
+
+</html>

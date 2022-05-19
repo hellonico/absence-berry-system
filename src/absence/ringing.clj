@@ -25,6 +25,9 @@
              (p/delete-by-id id)
              (ring/redirect "/holidays/now"))
 
+           (GET "/faces2" []
+             (h/handle-users "faces2"))
+
            (GET "/faces" []
                 (h/handle-users "faces"))
 
