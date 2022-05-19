@@ -98,6 +98,7 @@
   (query db [(str "select * from fruit order by id desc limit " n ";")]))
 
 (defn insert-one [abs]
+  (println ">> " abs)
   (insert! db :fruit abs) abs)
 
 (defn last-for-email [_map]

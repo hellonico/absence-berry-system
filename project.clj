@@ -5,7 +5,8 @@
   :jvm-opts ["-Duser.timezone=Asia/Tokyo" "-Dfile.encoding=UTF-8"]
   :profiles {:mail {:aot [absence.receive] :main absence.receive :uberjar-name "abs-mail.jar"}
              :ring {:aot [absence.ringing] :main absence.ringing :uberjar-name "abs-ring.jar"}
-             :dev {:jvm-opts ["-DsocksProxyHost=localhost" "-DsocksProxyPort=10090" ]
+             :dev {
+                   ;:jvm-opts ["-DsocksProxyHost=localhost" "-DsocksProxyPort=10090" ]
                    :plugins [[com.jakemccrary/lein-test-refresh "0.25.0"]]}}
   :ring {:handler absence.ringing/handler :init absence.ringing/init}
   :dependencies [[org.clojure/clojure "1.10.0"]

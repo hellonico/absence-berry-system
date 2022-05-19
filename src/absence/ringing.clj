@@ -76,6 +76,7 @@
 
            ; js fetch request
            (GET "/hello/:reason/:user/:email/:month/:d1/:d2/:times" [reason user email month d1 d2 times]
+             (println "fetch:" reason user email month d1 d2 times)
              (let [_month (format "%02d" (.getValue (Month/valueOf month)))
                    dates (if (= d1 d2) (str _month d1) (str _month d1 "-" _month d2))
                    entry (h/process-one-entry user email dates reason times)]
