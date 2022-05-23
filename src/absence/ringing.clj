@@ -6,6 +6,7 @@
     [absence.persistence :as p]
     [absence.utils :as u]
     [absence.routehelpers :as h]
+    [ring.logger :as logger]
     [absence.ldap :as ldap]
     [clojure.set :as set]
     [config.core :refer [env]]
@@ -146,8 +147,10 @@
 
 (def handler
   (-> my-routes
-      wrap-sentry-tracing
+      (wrap-sentry-tracing)
       (wrap-report-exceptions {})
+      (logger/wrap-with-logger)
+      (logger/wrap-log-request-start)
       ))
 ;
 ;(defn wrap-fallback-exception

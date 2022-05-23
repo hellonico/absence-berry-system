@@ -65,7 +65,7 @@
              ; to move to ldap ?
              (map #(select-keys % [:email :name]))
              (map #(p/last-for-email %))
-             (map #(p/last-for-email %))
+             ;(map #(p/last-for-email %))
              (map #(merge {:late (nil? (% :holidaystart))} %))
              )]
     (render-html template {:users users})))

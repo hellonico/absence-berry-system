@@ -2,7 +2,7 @@
   :plugins [[lein-ring "0.12.6"]]
   :main absence.ringing
   :repositories [["bintray" "https://jcenter.bintray.com/"]]
-  :jvm-opts ["-Duser.timezone=Asia/Tokyo" "-Dfile.encoding=UTF-8"]
+  :jvm-opts ["-Duser.timezone=Asia/Tokyo" "-Dfile.encoding=UTF-8" "-Dclojure.tools.logging.factory=clojure.tools.logging.impl/jul-factory"]
   :profiles {:mail {:aot [absence.receive] :main absence.receive :uberjar-name "abs-mail.jar"}
              :ring {:aot [absence.ringing] :main absence.ringing :uberjar-name "abs-ring.jar"}
              :dev {
@@ -21,6 +21,7 @@
                  [org.xerial/sqlite-jdbc "3.36.0.3"]
 
                  [ring/ring "1.9.5"]
+                 [ring-logger "1.1.1"]
                  [compojure "1.6.2"]
                  [yogthos/config "1.2.0"]
 
