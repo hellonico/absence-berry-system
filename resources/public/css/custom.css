@@ -109,6 +109,8 @@ td {
 
 .tableFixHead tbody tr:nth-child(even) {background: #EBF4FA}
 .tableFixHead tbody tr:nth-child(odd) {background: white}
+.tableFixHead tbody img {opacity: 0.2;}
+
 
 /**
 TABLE
