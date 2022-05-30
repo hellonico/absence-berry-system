@@ -85,7 +85,8 @@ Fixed Header for table
 */
 
 .tableFixHead {
-    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
     height: 600px;
     width: 160% !important;
 }
@@ -105,6 +106,9 @@ Fixed Header for table
 td {
     max-width: 20px !important;
 }
+
+.tableFixHead tbody tr:nth-child(even) {background: #EBF4FA}
+.tableFixHead tbody tr:nth-child(odd) {background: white}
 
 /**
 TABLE

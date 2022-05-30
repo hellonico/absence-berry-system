@@ -168,7 +168,8 @@
                 var max = Math.max(...current);
 
                 let localInseretMode = insertMode
-                var title = localInseretMode==1 ? "Holiday from {{month}} " + min + " to {{month}}" + max : "Telework from {{month}}" + min + " to {{month}}" + max;
+                var title = localInseretMode==1 ? "Holiday <br/>from {{month}} " + min + " to {{month}}" + max : "Telework <br/> from {{month}}" + min + " to {{month}}" + max;
+                title = user + "<br/>" + title
 
                 var message = localInseretMode==1 ? "<label for=\"dtimes\">Times</label><input onkeyup='hello()' id=\"dtimes\" type=\"text\"/></br/><label for=\"dreason\">Reason</label><input onkeyup='hello()' id=\"dreason\" type=\"text\"/>" : "Telework"
 
