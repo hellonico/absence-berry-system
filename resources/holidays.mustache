@@ -21,6 +21,12 @@
             </h4>
 
             <span class="instruction">Insert Mode, press shift to switch mode:</span> <button id="mode" class="insertMode1">Holidays</button>
+
+
+            <form action="/upload" method="post" enctype="multipart/form-data">
+                <input type="file" id="file" name="file">
+                <input type="submit" value="upload holidays">
+            </form>
         </div>
     </div>
 
@@ -191,7 +197,17 @@
                          console.log(url)
                         // return true;
                         fetch(url).then((response) => {
-                            location.reload();
+                            const queryString = window.location.search;
+                            if(queryString.indexOf("noreload")>=0) {
+                                console.log("No reload enabled");
+                            } else {
+                                location.reload();
+                            }
+
+
+
+
+
                             //if (!response.ok) {
                             //throw new Error(`HTTP error! Status: ${ response.status }`);
                             //}
@@ -212,6 +228,7 @@
 </script>
 
 <script type="application/javascript">
+
     document.addEventListener("keyup",function(e) {
         resetKeys();
         switch(e.which) {

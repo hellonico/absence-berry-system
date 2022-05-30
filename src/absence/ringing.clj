@@ -3,6 +3,7 @@
   (:require
     [ring.adapter.jetty :as jetty]
     [ring.util.codec]
+    [ring.middleware.multipart-params :refer [wrap-multipart-params]]
     [absence.persistence :as p]
     [absence.utils :as u]
     [absence.routehelpers :as h]
@@ -107,6 +108,26 @@
                   (map #(merge {:late (nil? (% :holidaystart))} %) fruits)}
                  )))
 
+           (POST "/uploadHTML" [:as request]
+
+             )
+
+           (POST "/upload" [:as request]
+             ; https://github.com/ring-clojure/ring/wiki/File-Uploads
+             ; https://medium.com/@dashora.rajnish/how-to-create-apis-in-clojure-supporting-file-upload-and-data-transformation-using-ring-and-ad40fc3ca2d0
+             (println (:params request))
+
+             (let [tmpfilepath (:path (bean (get-in request [:params "file" :tempfile])))
+                   nb (atom 0)]
+
+               (println "reading:" tmpfilepath)
+               (with-open [rdr (clojure.java.io/reader tmpfilepath)]
+                 (doseq [line (line-seq rdr)]
+                   (println line)
+                   (try (h/process-one-entry line) (catch Exception e (println e)))
+                   (swap! nb inc)))
+               (str "Processed: " @nb)))
+
            ; http://localhost:3000/json/teleworktoday/cbuckley@royalnavy.mod.uk
            (GET "/json/teleworktoday/:email" [email]
              {:body (json/write-str {:email email :telework (p/telework-today email)})})
@@ -147,6 +168,7 @@
 
 (def handler
   (-> my-routes
+      (wrap-multipart-params)
       (wrap-sentry-tracing)
       (wrap-report-exceptions {})
       (logger/wrap-with-logger)
