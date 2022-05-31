@@ -156,3 +156,13 @@ Select cells in table
 .instruction {
     font-style: italic;
 }
+
+/**
+ROUNDED
+ */
+a.rounderDigit {
+    color: black;
+    border-radius: 25px;
+    padding: 15px;
+    width: 150px;
+}

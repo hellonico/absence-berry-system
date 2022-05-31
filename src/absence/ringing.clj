@@ -7,6 +7,7 @@
     [absence.persistence :as p]
     [absence.utils :as u]
     [absence.routehelpers :as h]
+    [absence.middleware :as m]
     [ring.logger :as logger]
     [absence.ldap :as ldap]
     [clojure.set :as set]
@@ -169,25 +170,12 @@
 (def handler
   (-> my-routes
       (wrap-multipart-params)
-      (wrap-sentry-tracing)
-      (wrap-report-exceptions {})
+      (m/wrap-nocache)
+      (m/wrap-nocache)
+      ;(wrap-sentry-tracing)
+      ;(wrap-report-exceptions {})
       (logger/wrap-with-logger)
-      (logger/wrap-log-request-start)
-      ))
-;
-;(defn wrap-fallback-exception
-;  [handler]
-;  (fn [request]
-;    (try
-;      (handler request)
-;      (catch Exception e
-;        (sentry/send-event
-;          {:message   (.getMessage e)
-;           :throwable e})
-;        {:status 500 :body "Something isn't quite right..."}))))
-
-;(def handler
-;  (-> my-routes wrap-fallback-exception))
+      (logger/wrap-log-request-start)))
 
 (defn init []
   (sentry/init! (-> env :sentry :project) (-> env :sentry :options))

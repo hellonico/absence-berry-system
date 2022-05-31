@@ -1,0 +1,20 @@
+img.mainicon {
+    background-image: url("/images/berry.png");
+    background-repeat: no-repeat;
+    background-size: 64px;
+    padding-right: 30px;
+    /*
+    Remove background image border
+    https://stackoverflow.com/questions/44785967/how-to-remove-a-border-of-background-image
+    */
+}
+
+a.rounderDigit {
+    background: #e3484a;
+}
+a.rounderDigit:hover {
+    background: #b61d43;
+}
+a.button:hover {
+    background: #b61d43;
+}
