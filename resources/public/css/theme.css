@@ -11,6 +11,10 @@ img.mainicon {
 
 a.rounderDigit {
     background: #e3484a;
+    color:white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size-adjust: 0.5;
 }
 a.rounderDigit:hover {
     background: #b61d43;
