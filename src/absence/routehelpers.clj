@@ -84,5 +84,4 @@
        entry
        send/dump-before-send
        p/insert-one
-       send/abs-ack-send)
-     entry)))
+       send/abs-ack-send))))

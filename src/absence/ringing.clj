@@ -52,7 +52,7 @@
            (POST "/form/post" {raw :body}
              (let [body (ring.util.codec/form-decode (slurp raw))
                    entry (h/process-one-entry (body "name") (body "email") (body "dates") (body "reason") (body "times"))]
-               (h/render-html "new" entry)))
+               (h/render-html "fruitsbyemail" {:email (:email entry) :month true :fruits [entry entry]})))
 
            (GET "/excel/abs.xlsx" []
              (h/handle-excel))
@@ -80,7 +80,7 @@
            (GET "/abs/:date" [date]
              (h/render-html "fruits" (h/handle-date date)))
 
-           ; js fetch request
+           ; js fetch request from board view
            (GET "/hello/:reason/:user/:email/:month/:d1/:d2/:times" [reason user email month d1 d2 times]
              (println "fetch:" reason user email month d1 d2 times)
              (let [_month (format "%02d" (.getValue (Month/valueOf month)))
@@ -89,7 +89,6 @@
                (println entry)
                entry))
 
-           ;(GET "/picture/:user.jpg" [user]
            (GET "/picture/:user" [user]
              (try
                (ring.util.response/file-response

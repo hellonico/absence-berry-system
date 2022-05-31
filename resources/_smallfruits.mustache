@@ -13,18 +13,19 @@
 
     {{#fruits}}
         {{^late}}
-        <tr title="sent: {{timesent}}" class="absence type{{telework}} {{times_icon}} {{reason_icon}}">
+            <tr title="sent: {{timesent}}" class="absence type{{telework}} {{times_icon}} {{reason_icon}}">
         {{/late}}
         {{#late}}
-        <tr title="sent: {{timesent}}" class="absence {{times_icon}} {{reason_icon}}">
+            <tr title="sent: {{timesent}}" class="absence {{times_icon}} {{reason_icon}}">
         {{/late}}
-
             <td>
                 {{^late}}
-                <img class="icon" src="/images/type{{telework}}.png"/>
+                    {{#id}}
+                    <img class="icon" src="/images/type{{telework}}.png"/>
+                    {{/id}}
                 {{/late}}
                 {{#late}}
-                <img class="icon" src="/images/late.png"/>
+                    <img class="icon" src="/images/late.png"/>
                 {{/late}}
             </td>
             <td>{{name}}</td>
@@ -33,12 +34,13 @@
             <td>{{holidaystart}} {{holidayend}} {{date}} </td>
 
             <td>{{times}} {{reason}}</td>
-            <td>
+        <td>
+        {{#id}}
                 <a onclick="if (confirm('Delete selected item?')){return true;}else{event.stopPropagation(); event.preventDefault();};"
-                   href="/delete/{{id}}"><img class="icon" src="/images/delete.png"/></a></td>
+                   href="/delete/{{.}}"><img class="icon" src="/images/delete.png"/></a></td>
+        {{/id}}
         </tr>
     {{/fruits}}
-
 
     </tbody>
 </table>

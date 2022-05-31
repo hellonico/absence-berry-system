@@ -37,7 +37,7 @@
   (inner-drt (u/fmt (:date-sent msg)) (:subject msg)))
 
 (defrecord entry
-           [name timesent email reason times date telework])
+           [name timesent email reason times date telework holidaystart holidayend])
 
 (defn notification [msg drt]
   (map->entry

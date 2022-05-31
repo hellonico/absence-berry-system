@@ -36,4 +36,6 @@
      :to [(:email abs)]
      :subject (-> env :ack :subject)
      :body [{:type "text/html; charset=utf-8"
-             :content (m/render-resource "email.mustache" abs)}]}))
+             :content (m/render-resource "email.mustache" abs)}]})
+  abs
+  )
