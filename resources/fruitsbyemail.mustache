@@ -39,34 +39,5 @@
       </div>
 
   </div>
-
-  <script type="application/javascript">
-  document.onkeyup = function(e) {
-    switch(e.which) {
-        case 27: // esc
-        window.location.href = document.referrer;
-        break;
-
-        case 37: // left
-        // window.location.href =  window.location.origin + "/abs/{{today}}";
-        break;
-
-        case 38: // up
-        window.location.href =  window.location.origin;
-        break;
-
-        case 39: // right
-        // window.location.href =  window.location.origin + "/abs/{{dayafter}}";
-        break;
-
-        case 40: // down
-        window.location.href =  window.location.origin + "/abs/{{today}}";
-        break;
-
-        default: return; // exit this handler for other keys
-    }
-
-  }
-  </script>
 </body>
 </html>
