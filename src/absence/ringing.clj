@@ -29,13 +29,13 @@
              (ring/redirect "/holidays/now"))
 
            (GET "/faces2" []
-             (h/handle-users "faces2"))
+             (h/handle-users "users/faces2"))
 
            (GET "/faces" []
-                (h/handle-users "faces"))
+                (h/handle-users "users/faces"))
 
            (GET "/users" []
-             (h/handle-users "users"))
+             (h/handle-users "users/users"))
 
            (GET "/holidays/:month" [month]
              (let [ymmonth (u/to-yearmonth month)
@@ -132,7 +132,6 @@
            ; http://localhost:3000/json/teleworktoday/cbuckley@royalnavy.mod.uk
            (GET "/json/teleworktoday/:email" [email]
              {:body (json/write-str {:email email :telework (p/telework-today email)})})
-
 
            (route/resources "/")
            (route/not-found "<h1>Page not found</h1>"))
