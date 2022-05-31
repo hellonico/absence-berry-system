@@ -7,11 +7,11 @@
         line-height: 0;
 
         -webkit-column-count: 8;
-        -webkit-column-gap:   0px;
-        -moz-column-count:    8;
-        -moz-column-gap:      0px;
-        column-count:         8;
-        column-gap:           0px;
+        -webkit-column-gap: 0px;
+        -moz-column-count: 8;
+        -moz-column-gap: 0px;
+        column-count: 8;
+        column-gap: 0px;
     }
 
     #photos img {
@@ -22,30 +22,33 @@
 
     @media (max-width: 1200px) {
         #photos {
-            -moz-column-count:    4;
+            -moz-column-count: 4;
             -webkit-column-count: 4;
-            column-count:         4;
+            column-count: 4;
         }
     }
+
     @media (max-width: 1000px) {
         #photos {
-            -moz-column-count:    3;
+            -moz-column-count: 3;
             -webkit-column-count: 3;
-            column-count:         3;
+            column-count: 3;
         }
     }
+
     @media (max-width: 800px) {
         #photos {
-            -moz-column-count:    2;
+            -moz-column-count: 2;
             -webkit-column-count: 2;
-            column-count:         2;
+            column-count: 2;
         }
     }
+
     @media (max-width: 400px) {
         #photos {
-            -moz-column-count:    1;
+            -moz-column-count: 1;
             -webkit-column-count: 1;
-            column-count:         1;
+            column-count: 1;
         }
     }
 
@@ -56,10 +59,10 @@
     <div class="row u-full-width">
         {{> submenu }}
         <div class="row u-full-width">
-        <h2>Faces &nbsp;
-            <a href="/users"><img class="icon" src="/images/list_view.webp"/></a>
-            <a href="/faces2"><img class="icon" src="/images/coverflow.png"/></a>
-        </h2>
+            <h2>Faces &nbsp;
+                <a href="/users"><img class="icon" src="/images/list_view.webp"/></a>
+                <a href="/faces2"><img class="icon" src="/images/coverflow.png"/></a>
+            </h2>
         </div>
     </div>
 
@@ -69,12 +72,13 @@
 
             <section id="photos">
                 {{#users}}
-                <a data-id="{{email}}" href="/email/{{email}}"><img title="{{name}}" src="/picture/{{email}}"/></a>
+                    <a data-id="{{email}}" href="/email/{{email}}"><img title="{{name}}" src="/picture/{{email}}"/></a>
                 {{/users}}
             </section>
 
         </div>
 
+    </div>
 </div>
 </body>
 </html>
