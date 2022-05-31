@@ -52,7 +52,7 @@
            (POST "/form/post" {raw :body}
              (let [body (ring.util.codec/form-decode (slurp raw))
                    entry (h/process-one-entry (body "name") (body "email") (body "dates") (body "reason") (body "times"))]
-               (h/render-html "fruitsbyemail" {:email (:email entry) :month true :fruits [entry entry]})))
+               (h/render-html "fruitsbyemail" {:email (:email entry) :month true :fruits [entry]})))
 
            (GET "/excel/abs.xlsx" []
              (h/handle-excel))
@@ -109,24 +109,12 @@
                  )))
 
            (POST "/uploadHTML" [:as request]
-
-             )
+             (h/render-html "fruitsbyemail" {:email "BATCH" :month true :fruits (h/upload request)}))
 
            (POST "/upload" [:as request]
              ; https://github.com/ring-clojure/ring/wiki/File-Uploads
              ; https://medium.com/@dashora.rajnish/how-to-create-apis-in-clojure-supporting-file-upload-and-data-transformation-using-ring-and-ad40fc3ca2d0
-             (println (:params request))
-
-             (let [tmpfilepath (:path (bean (get-in request [:params "file" :tempfile])))
-                   nb (atom 0)]
-
-               (println "reading:" tmpfilepath)
-               (with-open [rdr (clojure.java.io/reader tmpfilepath)]
-                 (doseq [line (line-seq rdr)]
-                   (println line)
-                   (try (h/process-one-entry line) (catch Exception e (println e)))
-                   (swap! nb inc)))
-               (str "Processed: " @nb)))
+             (str (count (h/upload request))))
 
            ; http://localhost:3000/json/teleworktoday/cbuckley@royalnavy.mod.uk
            (GET "/json/teleworktoday/:email" [email]

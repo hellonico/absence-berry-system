@@ -85,3 +85,10 @@
        send/dump-before-send
        p/insert-one
        send/abs-ack-send))))
+
+(defn upload [request]
+  (println (:params request))
+  (let [tmpfilepath (:path (bean (get-in request [:params "file" :tempfile])))]
+    (println "reading:" tmpfilepath)
+    (with-open [rdr (clojure.java.io/reader tmpfilepath)]
+      (doall (map #(try (process-one-entry %) (catch Exception e (println e))) (line-seq rdr))))))
