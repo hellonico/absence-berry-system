@@ -88,11 +88,11 @@
             type: "question",
             title: user,
             message: '<h4>'+msg+'</h4>',
-            cancelText: "<img style=\"height:16px;width:16px\" src=\"/images/delete.png\"/> "+"&nbsp;Delete",
-            confirmText: "Close"
+            confirmText: "<img style=\"height:16px;width:16px\" src=\"/images/delete.png\"/> "+"&nbsp;Delete",
+            cancelText: "Close"
         }).then((e) => {
-            console.log(e);
-            if(e != "confirm") {
+            // console.log(e);
+            if(e === "confirm") {
                 window.location = "/delete/"+id;
             }
         });
