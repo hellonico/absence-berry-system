@@ -37,7 +37,7 @@
         <td>
         {{#id}}
                 <a onclick="if (confirm('Delete selected item?')){return true;}else{event.stopPropagation(); event.preventDefault();};"
-                   href="/delete/{{.}}"><img class="icon" src="/images/delete.png"/></a></td>
+                   href="/delete/{{id}}"><img class="icon" src="/images/delete.png"/></a></td>
         {{/id}}
         </tr>
     {{/fruits}}
