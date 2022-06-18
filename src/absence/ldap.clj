@@ -7,14 +7,14 @@
      [clojure.java.io :as io]
     [clj-ldap.client :as ldap]))
 
-(def ldap-server 
-  (ldap/connect  
+(defn ldap-server []
+  (ldap/connect
    (-> env :ldap :config)))
 
 (defn get-users_ []
   (->>
   (ldap/search
-   ldap-server
+    (ldap-server)
    (-> env :ldap :query :base)
    (-> env :ldap :query :params))
   (map #(set/rename-keys % (-> env :ldap :mappings)))))
@@ -28,7 +28,7 @@
 (defn get-user-by-filter [fil]
   (->>
     (ldap/search
-      ldap-server
+      (ldap-server)
       (-> env :ldap :query :base)
       {:byte-valued [:jpegPhoto] :filter fil})
     (first)
