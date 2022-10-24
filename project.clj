@@ -36,5 +36,6 @@
 
                  ; NEW FEATURES
                  [origami/origami "4.5.1-0"]
-                 [io.sentry/sentry-clj "5.7.178"]
+                 ;[io.sentry/sentry-clj "5.7.178"]
+                 [camdez/honeybadger "0.4.1"]
                  ])

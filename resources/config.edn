@@ -14,14 +14,17 @@
  ;:calendars []
  :ack {:sender "Absence Bureau Service <otc-absence@smtp.abs.com>"
        :subject "Sounds good!"}
- :sentry {
-          :project
-          "https://116d0ace1d38477e8e74b598292a3a62@o1241427.ingest.sentry.io/6397980"
-          :options
-          {
-           :environment "staging" :debug false ;:release "foo.bar@1.0.0" :in-app-excludes ["foo.bar"]
-          }
-          }
+ ;:sentry {
+ ;         :project
+ ;         "https://116d0ace1d38477e8e74b598292a3a62@o1241427.ingest.sentry.io/6397980"
+ ;         :options
+ ;         {
+ ;          :environment "staging" :debug false ;:release "foo.bar@1.0.0" :in-app-excludes ["foo.bar"]
+ ;         }
+ ;         }
+ :hb-config
+ {:api-key "hbp_zDsCUC5t9xRSErcQQu254TvfnigSlj24Viht"
+  :env     "dev"}
  :front {:links [{:a "Absence Berry Github Repository" :href "https://github.com/hellonico/absence-berry-system"} {:a "Google" :href "https://www.google.com"}]}
  :icons {:times {"full" "full"
                  "am" "am"

@@ -12,9 +12,10 @@
     [absence.ldap :as ldap]
     [clojure.set :as set]
     [config.core :refer [env]]
-    [sentry-clj.ring :refer [wrap-report-exceptions wrap-sentry-tracing]]
+    [honeybadger.core :as hb]
+    ;[sentry-clj.ring :refer [wrap-report-exceptions wrap-sentry-tracing]]
     [clojure.data.json :as json]
-    [sentry-clj.core :as sentry]
+    ;[sentry-clj.core :as sentry]
     [ring.util.response :as ring]
     [compojure.core :refer [GET POST context routes defroutes]]
     ; [compojure.handler :as handler]
@@ -83,7 +84,9 @@
            ; js fetch request from board view
            (GET "/hello/:reason/:user/:email/:month/:d1/:d2/:times" [reason user email month d1 d2 times]
              (println "fetch:" reason user email month d1 d2 times)
-             (let [_month (format "%02d" (.getValue (Month/valueOf month)))
+             (let [
+                   ; TODO: refactor and move the pre-logic below somewhere else
+                   _month (format "%02d" (.getValue (Month/valueOf month)))
                    dates (if (= d1 d2) (str _month d1) (str _month d1 "-" _month d2))
                    entry (h/process-one-entry user email dates reason times)]
                (println entry)
@@ -107,6 +110,7 @@
                   :fruits
                   (map #(merge {:late (nil? (% :holidaystart))} %) fruits)}
                  )))
+
 
            (POST "/uploadHTML" [:as request]
              (h/render-html "fruitsbyemail" {:email "BATCH" :month true :fruits (h/upload request)}))
@@ -153,18 +157,31 @@
       (routes debug-routes base-routes)
       base-routes))
 
+(defn wrap-honeybadger [handler]
+  (fn [request]
+    (try
+    (let [response (handler request)]  response)
+    (catch Exception e
+    (do
+      (println "Honey badging:" (-> env :hb-config))
+      (hb/notify (-> env :hb-config)  (Exception. (.getMessage e)))
+     {:status 500 :body (.getMessage e)}
+     )))))
+
 (def handler
   (-> my-routes
       (wrap-multipart-params)
       (m/wrap-nocache)
-      (m/wrap-nocache)
+      (wrap-honeybadger)
+      ;(m/wrap-nocache)
       ;(wrap-sentry-tracing)
       ;(wrap-report-exceptions {})
       (logger/wrap-with-logger)
       (logger/wrap-log-request-start)))
 
 (defn init []
-  (sentry/init! (-> env :sentry :project) (-> env :sentry :options))
+  ;(sentry/init! (-> env :sentry :project) (-> env :sentry :options))
+  (hb/notify (-> env :hb-config) "ABS Restarted")
   (println "Debug mode is on:" (-> env :debug))
   (println "Starting..." (u/now) " on port: " (-> env :server :port)))
 

@@ -15,15 +15,22 @@
     (SimpleDateFormat. date-format)
     java-date))
 
-(defn short-date-to-date [ short-date ]
-     (let[
-        cal (Calendar/getInstance)
-        day  (Integer/parseInt (apply str (drop 2 short-date)))
-        month (dec (Integer/parseInt (apply str (take 2 short-date))) )
-        ]
-        (.set cal Calendar/DAY_OF_MONTH day)
-        (.set cal Calendar/MONTH month)
-        (fmt (.getTime cal))))
+
+(defn short-date-to-date [ _short-date ]
+  (let[
+       cal (Calendar/getInstance)
+       this-year (.get cal Calendar/YEAR)
+       short-date (if (= (.length _short-date) 4) (str this-year _short-date) _short-date)
+       year (Integer/parseInt (apply str (take 4 short-date)))
+       day  (Integer/parseInt (apply str (drop 6 short-date)))
+       month (dec (Integer/parseInt (apply str (take 2 (drop 4 short-date))) ))
+
+       ]
+    (.set cal Calendar/DAY_OF_MONTH day)
+    (.set cal Calendar/MONTH month)
+    (.set cal Calendar/YEAR year)
+    (fmt (.getTime cal))))
+
 
 
 (defn string-date-to-cal [short-date]
