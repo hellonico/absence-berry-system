@@ -42,6 +42,7 @@
    :next      (.plusMonths ymmonth 1)
    :prev      (.minusMonths ymmonth 1)
    :users     users
+   :ymmonth   ymmonth
    :calendars (cals/make-calendars ymmonth)
    }
   )

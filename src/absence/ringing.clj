@@ -1,6 +1,7 @@
 (ns absence.ringing
   (:gen-class)
   (:require
+    [clojure.string :as str]
     [ring.adapter.jetty :as jetty]
     [ring.util.codec]
     [ring.middleware.multipart-params :refer [wrap-multipart-params]]
@@ -24,10 +25,10 @@
 
 
 (defroutes base-routes
-           (GET "/delete/:id" [id]
-             (prn "delete " id)
+           (GET "/delete/:id/:ymmonth" [id ymmonth]
+             (prn "delete " id "[" ymmonth "]")
              (p/delete-by-id id)
-             (ring/redirect "/holidays/now"))
+             (ring/redirect (str "/holidays/" ymmonth)))
 
            (GET "/faces2" []
              (h/handle-users "users/faces2"))
@@ -86,7 +87,9 @@
              (println "fetch:" reason user email month d1 d2 times)
              (let [
                    ; TODO: refactor and move the pre-logic below somewhere else
-                   _month (format "%02d" (.getValue (Month/valueOf month)))
+                   ;_month (format "%02d" (.getValue (Month/valueOf month)))
+                   _month (str/replace month "-" "")
+                   _ (println ">> " _month)
                    dates (if (= d1 d2) (str _month d1) (str _month d1 "-" _month d2))
                    entry (h/process-one-entry user email dates reason times)]
                (println entry)
@@ -176,7 +179,7 @@
       ;(m/wrap-nocache)
       ;(wrap-sentry-tracing)
       ;(wrap-report-exceptions {})
-      (logger/wrap-with-logger)
+      ;(logger/wrap-with-logger)
       (logger/wrap-log-request-start)))
 
 (defn init []

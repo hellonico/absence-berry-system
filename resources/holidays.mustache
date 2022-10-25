@@ -72,7 +72,7 @@
     </div>
 </div>
 
-    {{>footer}}
+<!--    {{>footer}}-->
 </body>
 <script src="/js/tcs.bundle.js"></script>
 <!-- images cannot be resolved if local -->
@@ -82,6 +82,7 @@
     const zeroPad = (num, places) => String(num).padStart(places, '0')
 
     function onClickDelete(id, user, msg) {
+        console.log("DELETE:"+id+" >> "+"{{ymmonth}}")
 
         cuteAlert({
             // type: "error",
@@ -93,7 +94,8 @@
         }).then((e) => {
             // console.log(e);
             if(e === "confirm") {
-                window.location = "/delete/"+id;
+                console.log("/delete/"+id+"/{{ymmonth}}")
+                window.location = "/delete/"+id+"/{{ymmonth}}";
             }
         });
 
@@ -193,7 +195,7 @@
                         let br = dreason == "" ? "Scheduled Vacation" : dreason
                         let reason =  localInseretMode==1 ? br : "Telework"
                         let times = dtimes == "" ? "FullDay" : dtimes
-                        let url = '/hello/' + reason + "/"+user + '/' + email + '/{{month}}/' + zeroPad(min, 2) + "/" + zeroPad(max, 2) +"/" + times
+                        let url = '/hello/' + reason + "/"+user + '/' + email + '/{{ymmonth}}/' + zeroPad(min, 2) + "/" + zeroPad(max, 2) +"/" + times
                          console.log(url)
                         // return true;
                         fetch(url).then((response) => {

@@ -92,7 +92,7 @@
         (clojure.pprint/pprint msg))))
 
 (defn to-yearmonth [date-as-string]
-  (try (YearMonth/parse date-as-string) (catch Exception _ (YearMonth/now))))
+  (try (YearMonth/parse date-as-string) (catch Exception e (do (println (.getMessage e)) (YearMonth/now)))))
 
 (defn to-local
   "convert string to local date"

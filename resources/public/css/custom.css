@@ -87,7 +87,8 @@ Fixed Header for table
 .tableFixHead {
     overflow-x: hidden;
     overflow-y: auto;
-    height: 600px;
+    /*height: 600px;*/
+    height: 1000px;
     width: 160% !important;
 }
 
