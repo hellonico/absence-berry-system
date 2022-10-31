@@ -38,4 +38,8 @@
                  [origami/origami "4.5.1-0"]
                  ;[io.sentry/sentry-clj "5.7.178"]
                  [camdez/honeybadger "0.4.1"]
+
+                 ; cron for HB reporting
+                 [jarohen/chime "0.3.3"]
+                 [clj-http "3.12.3"]
                  ])

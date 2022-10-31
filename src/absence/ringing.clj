@@ -4,6 +4,7 @@
     [clojure.string :as str]
     [ring.adapter.jetty :as jetty]
     [ring.util.codec]
+    [absence.jobs :as jobs]
     [ring.middleware.multipart-params :refer [wrap-multipart-params]]
     [absence.persistence :as p]
     [absence.utils :as u]
@@ -186,6 +187,7 @@
   ;(sentry/init! (-> env :sentry :project) (-> env :sentry :options))
   (hb/notify (-> env :hb-config) "ABS Restarted")
   (println "Debug mode is on:" (-> env :debug))
+  (jobs/honey-checks)
   (println "Starting..." (u/now) " on port: " (-> env :server :port)))
 
 (defn -main
