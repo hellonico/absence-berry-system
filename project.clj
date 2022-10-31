@@ -41,5 +41,5 @@
 
                  ; cron for HB reporting
                  [jarohen/chime "0.3.3"]
-                 [clj-http "3.12.3"]
+                 ;[clj-http "3.12.3"]
                  ])
