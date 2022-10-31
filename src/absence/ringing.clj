@@ -167,8 +167,8 @@
     (let [response (handler request)]  response)
     (catch Exception e
     (do
-      (println "Honey badging:" (-> env :hb-config))
-      (hb/notify (-> env :hb-config)  (Exception. (.getMessage e)))
+      (println "Honey badging:" (-> env :honey-b))
+      (hb/notify (-> env :honey-b)  (Exception. (.getMessage e)))
      {:status 500 :body (.getMessage e)}
      )))))
 
