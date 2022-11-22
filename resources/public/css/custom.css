@@ -46,8 +46,10 @@ body {
 /*}*/
 
 .mytable {
-  width:120%;
+  /*width:120%;*/
+  /*  height: 1000px;*/
 }
+
 
 .help {
   font-style: italic;
@@ -88,14 +90,15 @@ Fixed Header for table
     overflow-x: hidden;
     overflow-y: auto;
     /*height: 600px;*/
-    height: 1000px;
-    width: 160% !important;
+    /*height: 1000px;*/
+    width: 140% !important;
 }
 
 .tableFixHead thead th {
     position: sticky;
     top: 0;
     z-index: 1;
+    height: 20px;
 }
 
 /* Just common table stuff. Really. */
@@ -107,6 +110,7 @@ Fixed Header for table
 td {
     max-width: 20px !important;
     padding-right: 10px;
+
 }
 
 .tableFixHead tbody tr:nth-child(even) {background: #EBF4FA}
