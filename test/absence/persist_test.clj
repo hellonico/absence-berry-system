@@ -24,8 +24,8 @@
          :times "all day"
          :date nil
          :telework false
-         :holidaystart "2022-06-03"
-         :holidayend "2022-06-05")
+         :holidaystart (u/current-year-with-md "06-03")
+         :holidayend (u/current-year-with-md "06-05"))
 
         (dissoc
           (record->map

@@ -111,3 +111,5 @@
   (.getMonth (YearMonth/now)))
 (defn current-year []
   (.getYear (YearMonth/now)))
+(defn current-year-with-md [md]
+  (str (current-year) "-" md))
