@@ -21,6 +21,7 @@
                  [org.xerial/sqlite-jdbc "3.36.0.3"]
 
                  [ring/ring "1.9.5"]
+                 [ring-json-response "0.2.0"]
                  [ring-logger "1.1.1"]
                  [compojure "1.6.2"]
                  [yogthos/config "1.2.0"]

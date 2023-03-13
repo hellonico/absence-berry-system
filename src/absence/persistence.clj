@@ -1,5 +1,6 @@
 (ns absence.persistence
   (:require
+    [clojure.string :as str]
     [clojure.string :as s]
     [absence.utils :as u]
     [config.core :refer [env]]
@@ -39,9 +40,9 @@
   (->>
     (query db [
                (str
-                 "select id,name,email,reason,holidaystart,holidayend,telework from fruit where
-                 telework = false and
-                 ( holidaystart IS NOT NULL and holidayend >= '" (u/first-day-of-month) "' and holidayend <= '" (u/last-day-of-month) "') "
+                 "select id,name,email,reason,holidaystart,holidayend,telework from fruit where "
+                 "telework = false and"
+                 "( holidaystart IS NOT NULL and holidayend >= '" (u/first-day-of-month) "' and holidayend <= '" (u/last-day-of-month) "') "
                  " order by holidaystart desc")])))
 
 (defn delete-by-id [id]
@@ -147,10 +148,15 @@
   " return a hash-map for one day {:class day0} or {:class day1}"
   [day lse]
   (let [is-in (filter #(is-between-one day %) lse)
+        ; _ (println day "> " is-in ":" (count is-in))
         take-first (first is-in)]
-    (if (empty? take-first)
-      (hash-map :class "day0")
-      take-first)))
+    (case (count is-in)
+      0 (hash-map :class "day0")
+      1 take-first
+      (merge
+        take-first
+             {:class "day5" :times " " :reason (str/join " " (map #(str (:times %) ":" (:reason %)) is-in))})
+      )))
 
 (defn- real-days [ym email]
   (let [days (u/month-range-as-localdates ym)

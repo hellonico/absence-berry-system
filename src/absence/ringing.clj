@@ -2,6 +2,7 @@
   (:gen-class)
   (:require
     [clojure.string :as str]
+    [ring.util.json-response :as rj]
     [ring.adapter.jetty :as jetty]
     [ring.util.codec]
     [absence.jobs :as jobs]
@@ -143,8 +144,40 @@
                {:body
                 (apply
                   str
-                  {:data   (p/get-fruits date)
-                   :config env})})
+                  {:data   (p/get-fruits date)})})
+
+             (GET "/holidays/:month/:user" [month user]
+               (let [ymmonth (u/to-yearmonth month)
+                     users
+                     (->> (ldap/get-users)
+                          (filter #(str/includes? (:name %) user))
+                          (map #(set/rename-keys % {:mail :email}))
+                          (pmap #(merge % (p/query-holidays ymmonth (:email %))))
+                          (map #(merge {:late (nil? (% :holidaystart))} %))
+                          )]
+                     ;(rj/json-response
+                     {:body  (:users (h/handle-month users ymmonth))}
+                     ;)
+               ))
+
+             (GET "/holidays2/:month/:user" [month user]
+               (let [ymmonth (u/to-yearmonth month)
+                     users
+                     (->> (ldap/get-users)
+                          (filter #(str/includes? (:name %) user))
+                          (map #(set/rename-keys % {:mail :email}))
+                          (pmap #(merge % (p/query-holidays ymmonth (:email %))))
+                          (map #(merge {:late (nil? (% :holidaystart))} %))
+                          )]
+
+                 {:body (apply str users)}))
+
+             (GET "/config" []
+               {:body
+                (apply
+                  str
+                  {:config env})}
+               )
              ;
              ;(GET "/hello" []
              ;  "hello")
@@ -176,7 +209,7 @@
   (-> my-routes
       (wrap-multipart-params)
       (m/wrap-nocache)
-      (wrap-honeybadger)
+      ;(wrap-honeybadger)
       ;(m/wrap-nocache)
       ;(wrap-sentry-tracing)
       ;(wrap-report-exceptions {})
@@ -187,7 +220,7 @@
   ;(sentry/init! (-> env :sentry :project) (-> env :sentry :options))
   (hb/notify (-> env :hb-config) "ABS Restarted")
   (println "Debug mode is on:" (-> env :debug))
-  (jobs/honey-checks)
+  ;(jobs/honey-checks)
   (println "Starting..." (u/now) " on port: " (-> env :server :port)))
 
 (defn -main
