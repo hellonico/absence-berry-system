@@ -144,6 +144,28 @@
       (or (.isEqual day (vec_ :d1)) (.isAfter day (vec_ :d1)))
       (or (.isEqual day (vec_ :d2)) (.isBefore day (vec_ :d2)))))
 
+(defn- check-one-day-klass [is-in]
+  (let [count-telework (count (filter #(= 1 (% :telework)) is-in))
+        count-holidays (count (filter #(not (empty? (% :holidaystart))) is-in))
+        count-yoji (count (filter #(= 0 (% :telework)) is-in))]
+
+  (cond
+    (or
+    (and (< 0 count-telework) (< 0 count-yoji))
+    (and (< 0 count-holidays) (< 0 count-yoji))
+    (and (< 0 count-holidays) (< 0 count-telework)))
+    ; new mixed
+    "day5"
+    (and (< 0 count-telework) (= 0 count-yoji) (= 0 count-holidays))
+    ; telework
+    "day1"
+    (and (= 0 count-holidays) (= 0 count-telework) (< 0 count-yoji))
+    "day3"
+    ; beige
+    :else "day2" ; holidays
+    )
+  ))
+
 (defn- check-one-day
   " return a hash-map for one day {:class day0} or {:class day1}"
   [day lse]
@@ -153,9 +175,9 @@
     (case (count is-in)
       0 (hash-map :class "day0")
       1 take-first
-      (merge
+        (merge
         take-first
-             {:class "day5" :times " " :reason (str/join " " (map #(str (:times %) ":" (:reason %)) is-in))})
+             {:class (check-one-day-klass is-in) :times " " :reason (str/join " " (map #(str (:times %) ":" (:reason %)) is-in))})
       )))
 
 (defn- real-days [ym email]
