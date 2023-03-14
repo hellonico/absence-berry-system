@@ -95,6 +95,8 @@
 
 (defn get-last-fruits [n]
   (query db [(str "select * from fruit order by id desc limit " n ";")]))
+(defn last-id []
+  (:id (first (get-last-fruits 1))))
 
 (defn insert-one [abs]
   (println ">> " abs)
@@ -188,6 +190,10 @@
   (let [user-days-off (real-days ym email)]
     ; (println user-days-off)
     {:days user-days-off}))
+
+(defn query-holidays-test [das email]
+  (query-db-days (u/to-yearmonth das) email))
+
 
 (defn items-today [email]
   (let [today (u/today)

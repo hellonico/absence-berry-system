@@ -22,16 +22,13 @@
       (u/cymd "06-03")
       (u/cymd "06-05"))))
 
-(defn- holidays [das email]
-  (p/query-db-days (u/to-yearmonth das) email))
-
 (deftest insert-delete-test
   (let [
-        h1 (holidays "0603" "hellonico@gmail.com")
+        h1 (p/query-holidays-test "0603" "hellonico@gmail.com")
         entry (h/process-one-entry test-entry-line)
-        h2 (holidays "0603" "hellonico@gmail.com")
+        h2 (p/query-holidays-test "0603" "hellonico@gmail.com")
         res (p/delete-by-id (:id (last h2)))
-        h3 (holidays "0603" "hellonico@gmail.com")
+        h3 (p/query-holidays-test "0603" "hellonico@gmail.com")
         ]
     (is
       (= (+ 1 (count h1) (count h2)))
@@ -41,14 +38,14 @@
 ; TODO: move that to core
 (defn- delete-last[md email]
   (let [
-       h1 (holidays md email)
+       h1 (p/query-holidays-test md email)
        ]
     (p/delete-by-id (:id (last h1)))))
 (deftest query-holidays-test
   (let [
         [md email] ["0603" "hellonico@gmail.com"]
         entry (h/process-one-entry test-entry-line)
-        h1 (holidays md email)
+        h1 (p/query-holidays-test md email)
         q1 (p/query-holidays (u/to-yearmonth "2023-06") "hellonico@gmail.com")
         f1 (filter #(not (= "day0" (:class %))) (:days q1))
         c1 (count f1)

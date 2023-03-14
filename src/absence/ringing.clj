@@ -85,6 +85,7 @@
              (h/render-html "fruits" (h/handle-date date)))
 
            ; js fetch request from board view
+           ; TODO should be a POST
            (GET "/hello/:reason/:user/:email/:month/:d1/:d2/:times" [reason user email month d1 d2 times]
              (println "fetch:" reason user email month d1 d2 times)
              (let [
@@ -141,7 +142,16 @@
                  (config.core/reload-env)))
 
              (GET "/date/:date" [date]
-               (rj/json-response  (p/get-fruits date)))
+               (rj/json-response  (p/get-fruits2 date)))
+
+             (GET "/lastid" []
+               (rj/json-response  (p/last-id)))
+
+             (GET "/last/:n" [n]
+               (rj/json-response  (p/get-last-fruits n)))
+
+             (GET "/delete/:id" [id]
+               (rj/json-response  (p/delete-by-id id)))
 
              (GET "/holidays/:month/:user" [month user]
                (let [ymmonth (u/to-yearmonth month)
@@ -195,7 +205,7 @@
 
 (defn init []
   ;(sentry/init! (-> env :sentry :project) (-> env :sentry :options))
-  (hb/notify (-> env :hb-config) "ABS Restarted")
+  ;(hb/notify (-> env :hb-config) "ABS Restarted")
   (println "Debug mode is on:" (-> env :debug))
   ;(jobs/honey-checks)
   (println "Starting..." (u/now) " on port: " (-> env :server :port)))
