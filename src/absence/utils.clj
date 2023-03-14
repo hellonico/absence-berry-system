@@ -113,3 +113,16 @@
   (.getYear (YearMonth/now)))
 (defn current-year-with-md [md]
   (str (current-year) "-" md))
+(def cymd current-year-with-md)
+
+;
+;
+;
+
+
+(defn record->map
+  [record]
+  (let [f #(if (record? %) (record->map %) %)
+        ks (keys record)
+        vs (map f (vals record))]
+    (zipmap ks vs)))

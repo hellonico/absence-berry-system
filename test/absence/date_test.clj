@@ -7,5 +7,4 @@
   (let [ short-date "0302"]
   (is (=
         (u/short-date-to-date short-date)
-        (str (u/current-year) "-03-02")
-        ))))
+        (str (u/current-year) "-03-02")))))

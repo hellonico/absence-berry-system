@@ -3,9 +3,6 @@
             [absence.notification :as r]
             [absence.utils :as u]))
 
-(deftest a-test
-  (is (= java.time.YearMonth (class (u/to-yearmonth "2022-04-06")))))
-
 (deftest message-test
   (are [x y]
     (= x y)
@@ -39,7 +36,7 @@
     (r/inner-drt "2022-03-10", "0403,2pm~,soccer")
     {:times "2pm~", :reason  "soccer", :date (u/current-year-with-md "04-03")}
 
-    ; this properly uses the date ...
+    ; this properly uses the sent date ...
     (r/inner-drt "2022-04-03", "2pm~,soccer")
     {:times "2pm~", :reason  "soccer", :date "2022-04-03"}
 

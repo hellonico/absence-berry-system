@@ -133,18 +133,15 @@
            (route/not-found "<h1>Page not found</h1>"))
 
 (defroutes debug-routes
-           (context "/debug" []
+           (context "/api" []
 
              (GET "/refresh-config" []
                (println "config refreshed")
-               (config.core/reload-env)
-               "config refreshed")
+               (rj/json-response
+                 (config.core/reload-env)))
 
              (GET "/date/:date" [date]
-               {:body
-                (apply
-                  str
-                  {:data   (p/get-fruits date)})})
+               (rj/json-response  (p/get-fruits date)))
 
              (GET "/holidays/:month/:user" [month user]
                (let [ymmonth (u/to-yearmonth month)
@@ -155,37 +152,17 @@
                           (pmap #(merge % (p/query-holidays ymmonth (:email %))))
                           (map #(merge {:late (nil? (% :holidaystart))} %))
                           )]
-                     ;(rj/json-response
-                     {:body  (:users (h/handle-month users ymmonth))}
-                     ;)
-               ))
-
-             (GET "/holidays2/:month/:user" [month user]
-               (let [ymmonth (u/to-yearmonth month)
-                     users
-                     (->> (ldap/get-users)
-                          (filter #(str/includes? (:name %) user))
-                          (map #(set/rename-keys % {:mail :email}))
-                          (pmap #(merge % (p/query-holidays ymmonth (:email %))))
-                          (map #(merge {:late (nil? (% :holidaystart))} %))
-                          )]
-
-                 {:body (apply str users)}))
+                     (rj/json-response
+                     {:body  (:users (h/handle-month users ymmonth))})))
 
              (GET "/config" []
-               {:body
-                (apply
-                  str
-                  {:config env})}
-               )
-             ;
-             ;(GET "/hello" []
-             ;  "hello")
-             ;
+               (rj/json-response
+                  {:config env}))
 
              (GET "/users" []
-               {:body
-                (ldap/get-users)})
+               (rj/json-response
+                (ldap/get-users)))
+
              (GET "/error" []
                (throw (Exception. "Hello")))))
 
@@ -214,7 +191,7 @@
       ;(wrap-sentry-tracing)
       ;(wrap-report-exceptions {})
       ;(logger/wrap-with-logger)
-      (logger/wrap-log-request-start)))
+      (logger/wrap-log-response)))
 
 (defn init []
   ;(sentry/init! (-> env :sentry :project) (-> env :sentry :options))

@@ -40,10 +40,6 @@
     #(.getDayOfMonth %)
     #(cond (= % (LocalDate/now)) "today" (is-holiday %) "weekend" :else "")))
 
-;
-;
-;
-
 (defn load-calendar
   ([_map] (load-calendar (_map :url) (_map :date-field) (_map :date-format) (_map :event-format-fn) ))
   ([ url date-field date-format event-format-fn]

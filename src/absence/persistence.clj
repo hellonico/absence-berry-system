@@ -8,7 +8,7 @@
 
 (def db (-> env :database))
 
-(defn findme [target objects _default]
+(defn- findme [target objects _default]
   (let [ks (keys objects)]
     (loop [k (first ks) ks ks]
       (if (nil? k) _default
@@ -16,7 +16,7 @@
                      (objects k)
                      (recur (first ks) (rest ks)))))))
 
-(defn add-icon "enhance entry with icons as defined in the environment"
+(defn- add-icon "enhance entry with icons as defined in the environment"
   [fruit src target _default]
   (let [
         tt (s/lower-case (src fruit))
@@ -24,16 +24,16 @@
         ]
     (conj {target icon} fruit)))
 
-(defn add-times-icon [fruit]
+(defn- add-times-icon [fruit]
   (add-icon fruit :times :times_icon "blank"))
 
-(defn add-reason-icon [fruit]
+(defn- add-reason-icon [fruit]
   (add-icon fruit :reason :reason_icon "blank"))
 
-(defn ^:deprecated check-empty-name-fields [fruit]
-  (if (empty? (:name fruit))
-    (merge fruit {:name (get (:people env) (:email fruit))})
-    fruit))
+;(defn ^:deprecated check-empty-name-fields [fruit]
+;  (if (empty? (:name fruit))
+;    (merge fruit {:name (get (:people env) (:email fruit))})
+;    fruit))
 
 (defn get-fruits-by-month
   []
@@ -52,7 +52,6 @@
   [email]
   ; telework = false and
   (->>
-
     (query db [
                (str
                  "select * from fruit where
@@ -61,8 +60,7 @@
       holidayend >= '" (u/today) "'
       order by holidaystart desc")])
 
-    (map add-reason-icon))
-  )
+    (map add-reason-icon)))
 
 (defn get-fruits
   "get fruits internal method ; raw from database"
@@ -123,7 +121,7 @@
       ((holidaystart >= '" s "' or holidayend >= '" s "') or (date >= '" s "' and date <= '" e "'))
       order by holidaystart desc")])))
 
-(defn add-metadata-to-entry
+(defn- add-metadata-to-entry
   "Add some metadata on the entry retrieved from the database.
   Notably:
   d1: holidaystart or date
@@ -148,7 +146,6 @@
   (let [count-telework (count (filter #(= 1 (% :telework)) is-in))
         count-holidays (count (filter #(not (empty? (% :holidaystart))) is-in))
         count-yoji (count (filter #(= 0 (% :telework)) is-in))]
-
   (cond
     (or
     (and (< 0 count-telework) (< 0 count-yoji))
