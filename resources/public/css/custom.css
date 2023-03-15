@@ -157,9 +157,11 @@ Select cells in table
 }
 .insertMode1 {
     background-color: lightcoral;
+    width: 100px;
 }
 .insertMode2 {
     background-color: lightgreen;
+    width: 100px;
 }
 .instruction {
     font-style: italic;
