@@ -27,7 +27,10 @@
 
 
 (defroutes base-routes
-           (GET "/delete/:id/:ymmonth" [id ymmonth]
+           (GET "/delete/:ymmonth/" [ymmonth]
+             (prn "empty delete request")
+             (ring/redirect (str "/holidays/" ymmonth)))
+           (GET "/delete/:ymmonth/:id" [id ymmonth]
              (prn "delete " id "[" ymmonth "]")
              (p/delete-by-id id)
              (ring/redirect (str "/holidays/" ymmonth)))

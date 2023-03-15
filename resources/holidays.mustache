@@ -20,14 +20,14 @@
                 &nbsp;Schedule for {{month}}
             </h4>
 
-            <button id="delete" class="insertMode1">Insert</button>
-            <span class="instruction">Insert or Delete Mode, press Ctrl key to switch mode:</span>
-
-            <br/>
             <button id="mode" class="insertMode1">Holidays</button>
             <span class="instruction">Holidays or Telework Mode, press Shift key to switch mode:</span>
 
 
+            <br/>
+
+            <button id="delete" class="insertMode1">Insert</button>
+            <span class="instruction">Insert or Delete Mode, press Alt key to switch mode:</span>
 
             <form action="/uploadHTML" method="post" enctype="multipart/form-data">
                 <input type="file" id="file" name="file">
@@ -60,7 +60,7 @@
                         </th>
                         {{#days}}
                                 <td
-                                    {{#id}}onMouseDown="onCellClick(this, {{id}}, '{{name}}', '{{reason}} <br/> {{times}}' );" data-tooltip="{{name}} : {{reason}} {{times}}"{{/id}}
+                                    {{#id}}onMouseDown="onCellClick('{{id}}', '{{name}}', '{{reason}} <br/> {{times}}' );" data-tooltip="{{name}} : {{reason}} {{times}}"{{/id}}
                                         class="{{class}}"
                                         style="padding: 0px; text-align: center;">
                                 {{#id}}
@@ -88,34 +88,33 @@
     const zeroPad = (num, places) => String(num).padStart(places, '0')
     let SHIFTDOWN = false;
 
-    function onCellClick(element, id,user,msg) {
-        console.log(element);
-        console.log(SHIFTDOWN);
+    function onCellClick(id,user,msg) {
+        ///console.log(SHIFTDOWN);
         if(SHIFTDOWN) {
+            // delete
             onClickDelete(id,user,msg);
-            console.log("Shift is down");
-            // return true;
-        } else {
-            // return false;
         }
-
     }
 
     function onClickDelete(id, user, msg) {
         console.log("DELETE:"+id+" >> "+"{{ymmonth}}")
+        ids = id
 
+        let message = msg+"<br/><label for=\"delete\">Ids</label><input onkeyup=\"hello2()\" value=\""+id+"\" id=\"deleteInput\" type=\"text\"/></br/>"
         cuteAlert({
             // type: "error",
             type: "question",
             title: user,
-            message: '<h4>'+msg+'</h4>',
+            message: message,
             confirmText: "<img style=\"height:16px;width:16px\" src=\"/images/delete.png\"/> "+"&nbsp;Delete",
             cancelText: "Close"
         }).then((e) => {
             // console.log(e);
+
+            console.log(ids);
             if(e === "confirm") {
-                console.log("/delete/"+id+"/{{ymmonth}}")
-                window.location = "/delete/"+id+"/{{ymmonth}}";
+                console.log("/delete/"+ids+"/{{ymmonth}}")
+                window.location = "/delete/{{ymmonth}}/"+encodeURIComponent(ids);
             }
         });
 
@@ -131,7 +130,7 @@
             modeButton.classList = ["insertMode2"]
             modeButton.innerText = "Telework"
         }
-        if (evtobj.ctrlKey) {
+        if (evtobj.altKey) {
             deleteButton.classList = ["insertMode2"]
             deleteButton.innerText = "Delete"
             SHIFTDOWN = true;
@@ -154,10 +153,15 @@
     // document.onkeyup=resetKeys
     var dtimes = ""
     var dreason = ""
+    let ids = ""
 
     function hello(e) {
         dtimes = document.getElementById("dtimes").value
         dreason = document.getElementById("dreason").value
+    }
+    function hello2(e) {
+        ids = document.getElementById("deleteInput").value
+        console.log("updated ids"+ids);
     }
 
     document.addEventListener("DOMContentLoaded", function (e) {

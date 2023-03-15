@@ -11,12 +11,14 @@
   (h/process-one-entry test-entry-line)
   (h/process-one-entry "nico,hellonico@gmail.com,0603,sleep,am")
 
-  (let [fa (p/query-holidays-with-filter "2023-06" "hellonico@gmail.com" "day5")]
+  (let [
+        fa (p/query-holidays-with-filter "2023-06" "hellonico@gmail.com" "day5")
+        ids (-> fa first :id)
+        ]
     (clojure.pprint/pprint fa)
-    (is (= 1 (count fa))))
-
-  (p/delete-by-id)
-  (p/delete-by-id))
+    (println ids)
+    (is (= 1 (count fa)))
+    (p/delete-by-id ids)))
 
 (deftest process-test
   (are [x y]

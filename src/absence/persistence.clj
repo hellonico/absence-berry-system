@@ -93,9 +93,10 @@
 
 (defn delete-by-id
   ([] (delete-by-id (last-id)))
-  ([id]
-   (println "DELETE:" id)
-   (delete! db :fruit ["id = ?" id])))
+  ([ids]
+   (doseq [id (str/split ids #",")]
+     (println "DELETE:" id)
+     (delete! db :fruit ["id = ?" id]))))
 
 (defn insert-one [abs]
   (println ">> " abs)
@@ -176,7 +177,7 @@
       ; merge
         (merge
         take-first
-             {:ids (str/join "," (map :id is-in)) :class (check-one-day-klass is-in) :times " " :reason (str/join " " (map #(str (:times %) ":" (:reason %)) is-in))})
+             {:id (str/join "," (map :id is-in)) :class (check-one-day-klass is-in) :times " " :reason (str/join "<br/>" (map #(str (:times %) ":" (:reason %)) is-in))})
       )))
 
 (defn- real-days [ym email]
