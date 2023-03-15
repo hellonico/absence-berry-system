@@ -49,7 +49,6 @@
                         (pmap #(merge % (p/query-holidays ymmonth (:email %))))
                         (map #(merge {:late (nil? (% :holidaystart))} %))
                         )]
-
                (h/render-html "holidays"
                               (h/handle-month users ymmonth))))
 
@@ -86,13 +85,13 @@
 
            ; js fetch request from board view
            ; TODO should be a POST
-           (GET "/hello/:reason/:user/:email/:month/:d1/:d2/:times" [reason user email month d1 d2 times]
+           (GET "/add/:reason/:user/:email/:month/:d1/:d2/:times" [reason user email month d1 d2 times]
              (println "fetch:" reason user email month d1 d2 times)
              (let [
                    ; TODO: refactor and move the pre-logic below somewhere else
                    ;_month (format "%02d" (.getValue (Month/valueOf month)))
                    _month (str/replace month "-" "")
-                   _ (println ">> " _month)
+                   ;_ (println ">> " _month)
                    dates (if (= d1 d2) (str _month d1) (str _month d1 "-" _month d2))
                    entry (h/process-one-entry user email dates reason times)]
                (println entry)
@@ -151,7 +150,9 @@
                (rj/json-response  (p/get-last-fruits n)))
 
              (GET "/delete/:id" [id]
-               (rj/json-response  (p/delete-by-id id)))
+               (if (= 0 id)
+                 (rj/json-response  (p/delete-by-id (p/last-id)))
+                 (rj/json-response  (p/delete-by-id id))))
 
              (GET "/holidays/:month/:user" [month user]
                (let [ymmonth (u/to-yearmonth month)
@@ -181,22 +182,11 @@
       (routes debug-routes base-routes)
       base-routes))
 
-(defn wrap-honeybadger [handler]
-  (fn [request]
-    (try
-    (let [response (handler request)]  response)
-    (catch Exception e
-    (do
-      (println "Honey badging:" (-> env :honey-b))
-      (hb/notify (-> env :honey-b)  (Exception. (.getMessage e)))
-     {:status 500 :body (.getMessage e)}
-     )))))
-
 (def handler
   (-> my-routes
       (wrap-multipart-params)
       (m/wrap-nocache)
-      ;(wrap-honeybadger)
+      ;(m/wrap-honeybadger)
       ;(m/wrap-nocache)
       ;(wrap-sentry-tracing)
       ;(wrap-report-exceptions {})
@@ -204,10 +194,11 @@
       (logger/wrap-log-response)))
 
 (defn init []
+
   ;(sentry/init! (-> env :sentry :project) (-> env :sentry :options))
   ;(hb/notify (-> env :hb-config) "ABS Restarted")
-  (println "Debug mode is on:" (-> env :debug))
   ;(jobs/honey-checks)
+  (println "Debug mode is on:" (-> env :debug))
   (println "Starting..." (u/now) " on port: " (-> env :server :port)))
 
 (defn -main

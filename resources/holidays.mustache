@@ -20,7 +20,9 @@
                 &nbsp;Schedule for {{month}}
             </h4>
 
-            <span class="instruction">Insert Mode, press shift to switch mode:</span> <button id="mode" class="insertMode1">Holidays</button>
+            <span class="instruction">Insert Mode, press shift to switch mode:</span>
+            <button id="mode" class="insertMode1">Holidays</button>
+            <button id="delete" class="insertMode1">Delete</button>
 
 
             <form action="/uploadHTML" method="post" enctype="multipart/form-data">
@@ -54,11 +56,11 @@
                         </th>
                         {{#days}}
                                 <td
-                                    {{#id}}onclick="onClickDelete({{id}}, '{{name}}', '{{reason}} <br/> {{times}}' );" data-tooltip="{{name}} : {{reason}} {{times}}"{{/id}}
-                                        class="{{#id}}hello{{/id}} {{class}}"
+                                    {{#id}}onMouseDown="onCellClick(this, {{id}}, '{{name}}', '{{reason}} <br/> {{times}}' );" data-tooltip="{{name}} : {{reason}} {{times}}"{{/id}}
+                                        class="{{class}}"
                                         style="padding: 0px; text-align: center;">
                                 {{#id}}
-                                    <img class="circle" height=32px" width="32px" src="/images/circle.png"/>
+
                                 {{/id}}
                                 </td>
                         {{/days}}
@@ -80,6 +82,20 @@
 <script>
 
     const zeroPad = (num, places) => String(num).padStart(places, '0')
+    let SHIFTDOWN = false;
+
+    function onCellClick(element, id,user,msg) {
+        console.log(element);
+        console.log(SHIFTDOWN);
+        if(SHIFTDOWN) {
+            onClickDelete(id,user,msg);
+            console.log("Shift is down");
+            // return true;
+        } else {
+            // return false;
+        }
+
+    }
 
     function onClickDelete(id, user, msg) {
         console.log("DELETE:"+id+" >> "+"{{ymmonth}}")
@@ -102,19 +118,29 @@
     }
 
     let modeButton = document.getElementById("mode");
+    let deleteButton = document.getElementById("delete");
     var insertMode = 1
     function detectspecialkeys(evtobj){
         //alert("you pressed one of the 'Alt', 'Ctrl', or 'Shift' keys")
-        if (evtobj.altKey || evtobj.ctrlKey || evtobj.shiftKey) {
+        // if (evtobj.altKey || evtobj.ctrlKey || evtobj.shiftKey) {
+        if (evtobj.shiftKey) {
             modeButton.classList = ["insertMode2"]
             modeButton.innerText = "Telework"
         }
+        if (evtobj.altKey) {
+            deleteButton.classList = ["insertMode2"]
+            SHIFTDOWN = true;
+        }
+
         insertMode = 2
     }
     function resetKeys(e) {
         document.getElementById("mode").classList = ["insertMode1"]
+        document.getElementById("delete").classList = ["insertMode1"]
+
         modeButton.innerText = "Holidays"
         insertMode = 1
+        SHIFTDOWN = false;
     }
 
     document.addEventListener("keydown", detectspecialkeys)
@@ -127,8 +153,6 @@
         dtimes = document.getElementById("dtimes").value
         dreason = document.getElementById("dreason").value
     }
-
-
 
     document.addEventListener("DOMContentLoaded", function (e) {
 
@@ -195,7 +219,7 @@
                         let br = dreason == "" ? "Scheduled Vacation" : dreason
                         let reason =  localInseretMode==1 ? br : "Telework"
                         let times = dtimes == "" ? "FullDay" : dtimes
-                        let url = '/hello/' + reason + "/"+user + '/' + email + '/{{ymmonth}}/' + zeroPad(min, 2) + "/" + zeroPad(max, 2) +"/" + times
+                        let url = '/add/' + reason + "/"+user + '/' + email + '/{{ymmonth}}/' + zeroPad(min, 2) + "/" + zeroPad(max, 2) +"/" + times
                          console.log(url)
                         // return true;
                         fetch(url).then((response) => {
@@ -231,9 +255,19 @@
 
 <script type="application/javascript">
 
+    // document.addEventListener("keydown", function(e) {
+    //     switch(e.which) {
+    //         case 18:
+    //             console.log("SHIFT");
+    //             SHIFTDOWN = true;
+    //             break;
+    //         default: return; // exit this handler for other keys
+    //     }
+    // });
     document.addEventListener("keyup",function(e) {
         resetKeys();
         switch(e.which) {
+
             case 27: // esc
                 window.location.href = window.location.origin;
                 break;

@@ -7,9 +7,20 @@
     (let [response (handler request)]
       (assoc-in response [:headers  "Pragma"] "no-cache"))))
 
+;(defn wrap-honeybadger [handler]
+;  (fn [request]
+;    (try
+;      (let [response (handler request)]  response)
+;      (catch Exception e
+;        (do
+;          (println "Honey badging:" (-> env :honey-b))
+;          (hb/notify (-> env :honey-b)  (Exception. (.getMessage e)))
+;          {:status 500 :body (.getMessage e)}
+;          )))))
+
 ; https://www.baeldung.com/clojure-ring
 
-;(defn wrap-fallback-exception
+;(defn wrap-sentry
 ;  [handler]
 ;  (fn [request]
 ;    (try

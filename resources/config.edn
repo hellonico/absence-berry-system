@@ -22,11 +22,12 @@
  ;          :environment "staging" :debug false ;:release "foo.bar@1.0.0" :in-app-excludes ["foo.bar"]
  ;         }
  ;         }
- :honey-b
- {:api-key "hbp_zDsCUC5t9xRSErcQQu254TvfnigSlj24Viht"
-  :env     "dev"
-  :checkin {:url "https://api.honeybadger.io/v1/check_in/QnIVLN" :interval 10}
-  }
+
+ ;:honey-b
+ ;{:api-key "hbp_zDsCUC5t9xRSErcQQu254TvfnigSlj24Viht"
+ ; :env     "dev"
+ ; :checkin {:url "https://api.honeybadger.io/v1/check_in/QnIVLN" :interval 10}
+ ; }
  :front {:links [{:a "Absence Berry Github Repository" :href "https://github.com/hellonico/absence-berry-system"} {:a "Google" :href "https://www.google.com"}]}
  :icons {:times {"full" "full"
                  "am" "am"
