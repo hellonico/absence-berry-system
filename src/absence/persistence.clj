@@ -30,11 +30,6 @@
 (defn- add-reason-icon [fruit]
   (add-icon fruit :reason :reason_icon "blank"))
 
-;(defn ^:deprecated check-empty-name-fields [fruit]
-;  (if (empty? (:name fruit))
-;    (merge fruit {:name (get (:people env) (:email fruit))})
-;    fruit))
-
 (defn get-fruits-by-month
   []
   (->>
@@ -44,9 +39,6 @@
                  "telework = false and"
                  "( holidaystart IS NOT NULL and holidayend >= '" (u/first-day-of-month) "' and holidayend <= '" (u/last-day-of-month) "') "
                  " order by holidaystart desc")])))
-
-(defn delete-by-id [id]
-  (delete! db :fruit ["id = ?" id]))
 
 (defn get-fruits-by-email
   [email]
@@ -95,8 +87,15 @@
 
 (defn get-last-fruits [n]
   (query db [(str "select * from fruit order by id desc limit " n ";")]))
+
 (defn last-id []
   (:id (first (get-last-fruits 1))))
+
+(defn delete-by-id
+  ([] (delete-by-id (last-id)))
+  ([id]
+   (println "DELETE:" id)
+   (delete! db :fruit ["id = ?" id])))
 
 (defn insert-one [abs]
   (println ">> " abs)
@@ -174,9 +173,10 @@
     (case (count is-in)
       0 (hash-map :class "day0")
       1 take-first
+      ; merge
         (merge
         take-first
-             {:class (check-one-day-klass is-in) :times " " :reason (str/join " " (map #(str (:times %) ":" (:reason %)) is-in))})
+             {:ids (str/join "," (map :id is-in)) :class (check-one-day-klass is-in) :times " " :reason (str/join " " (map #(str (:times %) ":" (:reason %)) is-in))})
       )))
 
 (defn- real-days [ym email]
@@ -188,12 +188,14 @@
   "Returns a list of days, where each day is a map"
   [ym email]
   (let [user-days-off (real-days ym email)]
-    ; (println user-days-off)
     {:days user-days-off}))
 
 (defn query-holidays-test [das email]
   (query-db-days (u/to-yearmonth das) email))
 
+(defn query-holidays-with-filter [das email filter_]
+  (let [q1 (query-holidays (u/to-yearmonth das) email)]
+    (filter #(= filter_ (:class %)) (:days q1))))
 
 (defn items-today [email]
   (let [today (u/today)

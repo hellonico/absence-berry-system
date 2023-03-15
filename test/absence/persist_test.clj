@@ -7,6 +7,17 @@
 
 (def test-entry-line "nico,hellonico@gmail.com,0603-0605,workation,all day")
 
+(deftest double-entry-test
+  (h/process-one-entry test-entry-line)
+  (h/process-one-entry "nico,hellonico@gmail.com,0603,sleep,am")
+
+  (let [fa (p/query-holidays-with-filter "2023-06" "hellonico@gmail.com" "day5")]
+    (clojure.pprint/pprint fa)
+    (is (= 1 (count fa))))
+
+  (p/delete-by-id)
+  (p/delete-by-id))
+
 (deftest process-test
   (are [x y]
     (= x y)
@@ -34,26 +45,19 @@
       (= (+ 1 (count h1) (count h2)))
       (= (count h1) (count h3)))))
 
-
-; TODO: move that to core
-(defn- delete-last[md email]
-  (let [
-       h1 (p/query-holidays-test md email)
-       ]
-    (p/delete-by-id (:id (last h1)))))
 (deftest query-holidays-test
   (let [
         [md email] ["0603" "hellonico@gmail.com"]
         entry (h/process-one-entry test-entry-line)
-        h1 (p/query-holidays-test md email)
+        ;h1 (p/query-holidays-test md email)
         q1 (p/query-holidays (u/to-yearmonth "2023-06") "hellonico@gmail.com")
         f1 (filter #(not (= "day0" (:class %))) (:days q1))
         c1 (count f1)
-        res (p/delete-by-id (:id (last h1)))
+        res (p/delete-by-id)
         f2 (filter #(not (= "day0" (:class %))) (:days q1))
         c2 (count f2)
         ]
     (is
       (= c1 3)
       (= c2 0))
-    (delete-last md email)))
+    (p/delete-by-id)))
