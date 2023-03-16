@@ -105,11 +105,11 @@
         const msgs = msg.split(',');
 
         let added = ""
-        added += `<fieldset><legend>Choose which item to delete</legend>`
+        added += `<fieldset><legend>Choose which item to delete</legend><table style="width:100%">`
         for (let i = 0; i < words.length; i++) {
-            added += `<input style="text-align:left" onclick="hello2()" class="todelete" type="checkbox" value="${words[i]}" name="${words[i]}" checked> ${msgs[i]}<br/>`
+            added += `<tr><td><input onclick="hello2()" class="todelete" type="checkbox" value="${words[i]}" name="d_${words[i]}" checked></td> <td style="width:80%">${msgs[i]}</td></td></tr>`
         }
-        added += `</fieldset>`
+        added += `</table></fieldset>`
 
         let message = added
         cuteAlert({
@@ -175,7 +175,7 @@
 
         let checkboxes = document.getElementsByClassName("todelete")
         for (const checkbox of checkboxes) {
-            console.log(checkbox.checked+":"+checkbox.value);
+            // console.log(checkbox.checked+":"+checkbox.value);
             if(checkbox.checked) {
                 if(ids !== "") {
                     ids += ","
@@ -183,7 +183,7 @@
                 ids += checkbox.value
             }
         }
-        console.log("updated ids"+ids);
+        console.log("updated ids: "+ids);
     }
 
     document.addEventListener("DOMContentLoaded", function (e) {
