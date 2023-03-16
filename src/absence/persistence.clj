@@ -94,7 +94,7 @@
 (defn delete-by-id
   ([] (delete-by-id (last-id)))
   ([ids]
-   (doseq [id (str/split ids #",")]
+   (doseq [id (str/split (str ids) #",")]
      (println "DELETE:" id)
      (delete! db :fruit ["id = ?" id]))))
 

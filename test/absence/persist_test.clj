@@ -33,7 +33,8 @@
       nil
       false
       (u/cymd "06-03")
-      (u/cymd "06-05"))))
+      (u/cymd "06-05")))
+  (p/delete-by-id))
 
 (deftest insert-delete-test
   (let [
@@ -45,7 +46,9 @@
         ]
     (is
       (= (+ 1 (count h1) (count h2)))
-      (= (count h1) (count h3)))))
+      (= (count h1) (count h3)))
+    ;(dotimes [i 3]
+      (p/delete-by-id)))
 
 (deftest query-holidays-test
   (let [
