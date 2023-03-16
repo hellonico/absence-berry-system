@@ -177,7 +177,8 @@
       ; merge
         (merge
         take-first
-             {:id (str/join "," (map :id is-in)) :class (check-one-day-klass is-in) :times " " :reason (str/join "<br/>" (map #(str (:times %) ":" (:reason %)) is-in))})
+             {:id (str/join "," (map :id is-in))
+              :class (check-one-day-klass is-in) :times " " :reason (str/join "," (map #(str (:times %) ":" (:reason %)) is-in))})
       )))
 
 (defn- real-days [ym email]

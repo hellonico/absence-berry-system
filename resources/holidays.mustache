@@ -97,10 +97,21 @@
     }
 
     function onClickDelete(id, user, msg) {
-        console.log("DELETE:"+id+" >> "+"{{ymmonth}}")
+        console.log("DELETE:"+msg+">>"+id+" >> "+"{{ymmonth}}")
+        // default to all
         ids = id
 
-        let message = msg+"<br/><label for=\"delete\">Ids</label><input onkeyup=\"hello2()\" value=\""+id+"\" id=\"deleteInput\" type=\"text\"/></br/>"
+        const words = id.split(',');
+        const msgs = msg.split(',');
+
+        let added = ""
+        added += `<fieldset><legend>Choose which item to delete</legend>`
+        for (let i = 0; i < words.length; i++) {
+            added += `<input style="text-align:left" onclick="hello2()" class="todelete" type="checkbox" value="${words[i]}" name="${words[i]}" checked> ${msgs[i]}<br/>`
+        }
+        added += `</fieldset>`
+
+        let message = added
         cuteAlert({
             // type: "error",
             type: "question",
@@ -160,7 +171,18 @@
         dreason = document.getElementById("dreason").value
     }
     function hello2(e) {
-        ids = document.getElementById("deleteInput").value
+        ids = ""
+
+        let checkboxes = document.getElementsByClassName("todelete")
+        for (const checkbox of checkboxes) {
+            console.log(checkbox.checked+":"+checkbox.value);
+            if(checkbox.checked) {
+                if(ids !== "") {
+                    ids += ","
+                }
+                ids += checkbox.value
+            }
+        }
         console.log("updated ids"+ids);
     }
 
