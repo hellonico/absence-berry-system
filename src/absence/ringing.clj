@@ -22,6 +22,9 @@
     [ring.util.response :as ring]
     [compojure.core :refer [GET POST context routes defroutes]]
     ; [compojure.handler :as handler]
+    [middleware-dev.clj-otel.api.trace.http :as mw-trace-http]
+    ;[middleware-dev.clj-otel.api.trace.span :as mw-span]
+
     [compojure.route :as route])
   (:import (java.time Month)))
 
@@ -189,6 +192,9 @@
   (-> my-routes
       (wrap-multipart-params)
       (m/wrap-nocache)
+      ;(mw-span/add-span-data! {:attributes {:service.counter/count @counter}})
+      ;(mw-span/with-span! {:name request-name} response)
+      (mw-trace-http/wrap-server-span)
       ;(m/wrap-honeybadger)
       ;(m/wrap-nocache)
       ;(wrap-sentry-tracing)

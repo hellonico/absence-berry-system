@@ -2,7 +2,11 @@
   :plugins [[lein-ring "0.12.6"]]
   :main absence.ringing
   :repositories [["bintray" "https://jcenter.bintray.com/"]]
-  :jvm-opts ["-Duser.timezone=Asia/Tokyo" "-Dfile.encoding=UTF-8" "-Dclojure.tools.logging.factory=clojure.tools.logging.impl/jul-factory"]
+  :jvm-opts ["-Duser.timezone=Asia/Tokyo" "-Dfile.encoding=UTF-8" "-Dclojure.tools.logging.factory=clojure.tools.logging.impl/jul-factory"
+             "-javaagent:middleware-javaagent.jar"
+             "-Dotel.resource.attributes=project.name=ABS"
+             "-Dotel.service.name=ABS"
+             ]
   :profiles {:mail {:aot [absence.receive] :main absence.receive :uberjar-name "abs-mail.jar"}
              :ring {:aot [absence.ringing] :main absence.ringing :uberjar-name "abs-ring.jar"}
              :dev {
@@ -46,4 +50,7 @@
 
                  ; testing
                  [ring/ring-mock "0.4.0"]
+
+                 ; middleware
+                 [org.clojars.middleware-dev/clj-otel-api "0.1.12-SNAPSHOT"]
                  ])
