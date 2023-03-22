@@ -119,10 +119,10 @@
 ;
 ;
 
-
-(defn record->map
-  [record]
-  (let [f #(if (record? %) (record->map %) %)
-        ks (keys record)
-        vs (map f (vals record))]
-    (zipmap ks vs)))
+;
+;(defn record->map
+;  [record]
+;  (let [f #(if (record? %) (record->map %) %)
+;        ks (keys record)
+;        vs (map f (vals record))]
+;    (zipmap ks vs)))
