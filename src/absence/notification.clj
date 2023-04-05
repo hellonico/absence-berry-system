@@ -49,7 +49,7 @@
     :date (:date drt)
     :holidaystart (:holidaystart drt)
     :holidayend (:holidayend drt)
-    :telework (= (str/lower-case (:reason drt)) "telework")}))
+    :telework (str/starts-with? (str/lower-case (:reason drt)) "telework") }))
 
 (defn parse-msg [msg]
   (let [drt (day-reason-times msg)]

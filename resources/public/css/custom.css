@@ -146,6 +146,9 @@ Select cells in table
 .day1 { /*telework*/
     background-color: lightgreen;
 }
+.day11 { /*telework*/
+    background-color: limegreen;
+}
 .day2 { /*holidays*/
     background-color: lightcoral;
 }

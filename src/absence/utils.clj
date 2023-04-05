@@ -4,7 +4,7 @@
     [java.time.format DateTimeFormatter]
     [java.io File FileWriter]
     (java.text SimpleDateFormat)
-    (java.util Calendar Date)
+    (java.util Calendar Date Locale)
     (java.time.temporal TemporalAdjusters))
     (:require [clojure.pprint]))
 
@@ -31,7 +31,12 @@
     (.set cal Calendar/YEAR year)
     (fmt (.getTime cal))))
 
-
+(def list-of-world-countries
+  (map #(->> %
+             (Locale. "")
+             (.getDisplayCountry)
+             clojure.string/lower-case)
+       (Locale/getISOCountries)))
 
 (defn string-date-to-cal [short-date]
     (let[

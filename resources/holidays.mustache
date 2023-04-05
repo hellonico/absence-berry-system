@@ -167,7 +167,7 @@
     let ids = ""
 
     function hello(e) {
-        dtimes = document.getElementById("dtimes").value
+        dtimes = document.getElementById("dtimes")?.value
         dreason = document.getElementById("dreason").value
     }
     function hello2(e) {
@@ -235,7 +235,7 @@
                 var title = localInseretMode==1 ? "Holiday <br/>from {{month}} " + min + " to {{month}}" + max : "Telework <br/> from {{month}}" + min + " to {{month}}" + max;
                 title = user + "<br/>" + title
 
-                var message = localInseretMode==1 ? "<label for=\"dtimes\">Times</label><input onkeyup='hello()' id=\"dtimes\" type=\"text\"/></br/><label for=\"dreason\">Reason</label><input onkeyup='hello()' id=\"dreason\" type=\"text\"/>" : "Telework"
+                var message = localInseretMode==1 ? "<label for=\"dtimes\">Times</label><input onkeyup='hello()' id=\"dtimes\" type=\"text\"/></br/><label for=\"dreason\">Reason</label><input onkeyup='hello()' id=\"dreason\" type=\"text\"/>" : "<label for=\"dreason\">Telework Country</label><input onkeyup='hello()' id=\"dreason\" placeholder=\"Leave Empty if in Japan\" type=\"text\"/>"
 
                 cuteAlert({
                     type: "question",
@@ -246,13 +246,15 @@
                 }).then((e) => {
                     console.log(e)
 
-                    if (e == ("confirm")) {
+                    if (e === "confirm") {
 
-                        let br = dreason == "" ? "Scheduled Vacation" : dreason
-                        let reason =  localInseretMode==1 ? br : "Telework"
-                        let times = dtimes == "" ? "FullDay" : dtimes
+                        let br = dreason === "" ? "Scheduled Vacation" : dreason
+                        let teleworkReason = dreason === "" ? "Telework" : "telework_" + dreason
+                        let reason =  localInseretMode==1 ? br : teleworkReason
+                        console.log(reason);
+                        let times = dtimes === "" || dtimes === undefined ? "FullDay" : dtimes
                         let url = '/add/' + reason + "/"+user + '/' + email + '/{{ymmonth}}/' + zeroPad(min, 2) + "/" + zeroPad(max, 2) +"/" + times
-                         console.log(url)
+                        // console.log(url)
                         // return true;
                         fetch(url).then((response) => {
                             const queryString = window.location.search;

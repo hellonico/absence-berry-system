@@ -194,7 +194,8 @@
       (m/wrap-nocache)
       ;(mw-span/add-span-data! {:attributes {:service.counter/count @counter}})
       ;(mw-span/with-span! {:name request-name} response)
-      (mw-trace-http/wrap-server-span)
+      ;(mw-trace-http/wrap-server-span)
+
       ;(m/wrap-honeybadger)
       ;(m/wrap-nocache)
       ;(wrap-sentry-tracing)

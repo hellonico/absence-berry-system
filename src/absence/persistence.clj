@@ -132,9 +132,10 @@
   (merge entry
        {:class (str "day"
                     (cond
+                      (and (= (entry :telework) 1) (str/includes? (entry :reason) "_")) 11
                       (= (entry :telework) 1) 1
                       (not (empty? (entry :holidaystart))) 2
-                      :default 3))}
+                      :else 3))}
      (if (not (empty? (entry :holidaystart)))
        {:d1 (u/to-local (:holidaystart entry)) :d2 (u/to-local (:holidayend entry))}
        {:d1 (u/to-local (:date entry)) :d2 (u/to-local (:date entry))})))
@@ -145,23 +146,51 @@
       (or (.isEqual day (vec_ :d2)) (.isBefore day (vec_ :d2)))))
 
 (defn- check-one-day-klass [is-in]
-  (let [count-telework (count (filter #(= 1 (% :telework)) is-in))
+  (let [telework-days (filter #(= 1 (% :telework)) is-in)
+        count-telework (count telework-days)
         count-holidays (count (filter #(not (empty? (% :holidaystart))) is-in))
-        count-yoji (count (filter #(= 0 (% :telework)) is-in))]
+        count-yoji (count (filter #(= 0 (% :telework)) is-in))
+
+        is-day-mixed (or
+                       (and (< 0 count-telework) (< 0 count-yoji))
+                       (and (< 0 count-holidays) (< 0 count-yoji))
+                       (and (< 0 count-holidays) (< 0 count-telework)))
+
+        is-day-telework (and
+                           (< 0 count-telework)
+                           (= 0 count-yoji)
+                           (= 0 count-holidays)
+                           ;(str/includes? (:reason (first telework-days)) "_")
+                           )
+
+        is-day-with-yoji (and (= 0 count-holidays) (= 0 count-telework) (< 0 count-yoji))
+
+        ]
   (cond
-    (or
-    (and (< 0 count-telework) (< 0 count-yoji))
-    (and (< 0 count-holidays) (< 0 count-yoji))
-    (and (< 0 count-holidays) (< 0 count-telework)))
     ; new mixed
+    ; TODO: check, this should always be this one (we have multiple entries...)
+    is-day-mixed
     "day5"
-    (and (< 0 count-telework) (= 0 count-yoji) (= 0 count-holidays))
-    ; telework
+
+    ; telework home
+    ; TODO: check, probably not used
+    is-day-telework
     "day1"
-    (and (= 0 count-holidays) (= 0 count-telework) (< 0 count-yoji))
+
+    ; telework away, contains "_"
+    ; TODO: check, probably not used
+    ;is-day-telework
+    ;"day11"
+
+    ; yoji aru
+    ; TODO: check, probably not used
+    is-day-with-yoji
     "day3"
-    ; beige
-    :else "day2" ; holidays
+
+    ; holidays
+    ; TODO: check, probably not used
+    :else
+    "day2"
     )
   ))
 
