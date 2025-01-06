@@ -119,6 +119,10 @@
 ;
 (defn current-month []
   (.getMonth (YearMonth/now)))
+
+(defn next-month []
+  (.getMonth (.plusMonths (YearMonth/now) 1)))
+
 (defn current-year []
   (.getYear (YearMonth/now)))
 (defn current-year-with-md [md]

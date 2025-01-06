@@ -82,7 +82,7 @@
              (h/render-html
                "fruitsbyemail"
                {:month  true
-                :email  (u/current-month)
+                :email  (str (u/current-month) "/" (u/next-month))
                 :fruits (p/get-fruits-by-twomonths)}))
 
            (GET "/" []
