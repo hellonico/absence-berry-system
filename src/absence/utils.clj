@@ -78,6 +78,11 @@
 (defn last-day-of-month []
   (.with (LocalDate/now) (TemporalAdjusters/lastDayOfMonth)))
 
+(defn last-day-of-next-month []
+  (-> (LocalDate/now)
+      (.plusMonths 1)
+      (.with (TemporalAdjusters/lastDayOfMonth))))
+
 (defn month-day-range [ym] 
   (range 1 (inc (.getDayOfMonth (.atEndOfMonth ym)))))
 

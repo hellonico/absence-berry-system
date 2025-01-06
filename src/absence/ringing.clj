@@ -78,6 +78,13 @@
                 :email  (u/current-month)
                 :fruits (p/get-fruits-by-month)}))
 
+           (GET "/twomonths" []
+             (h/render-html
+               "fruitsbyemail"
+               {:month  true
+                :email  (u/current-month)
+                :fruits (p/get-fruits-by-twomonths)}))
+
            (GET "/" []
              (h/render-html
                "index"

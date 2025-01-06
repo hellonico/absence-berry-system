@@ -30,8 +30,8 @@
 (defn- add-reason-icon [fruit]
   (add-icon fruit :reason :reason_icon "blank"))
 
-(defn get-fruits-by-month
-  []
+(defn get-fruits-by-start-end
+  [start end]
   (->>
     (query db [
                (str
@@ -39,6 +39,16 @@
                  "telework = false and"
                  "( holidaystart IS NOT NULL and holidayend >= '" (u/first-day-of-month) "' and holidayend <= '" (u/last-day-of-month) "') "
                  " order by holidaystart desc")])))
+
+(defn get-fruits-by-month
+  []
+  (get-fruits-by-start-end (u/first-day-of-month) (u/last-day-of-month))
+  )
+
+(defn get-fruits-by-twomonths
+  []
+  (get-fruits-by-start-end (u/first-day-of-month) (u/last-day-of-next-month))
+  )
 
 (defn get-fruits-by-email
   [email]
